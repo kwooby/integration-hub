@@ -2,29 +2,20 @@ import psycopg2
 import os
 from dotenv import load_dotenv
 from flask import Flask, jsonify
+
 from database import get_db_connection
+
+from routes.users import users_bp
+from routes.products import products_bp
+from routes.orders import orders_bp
 
 load_dotenv()
 
 app = Flask(__name__)
 
-@app.route('/users')
-def get_users():
-    conn = get_db_connection()
-    cursor = conn.cursor()
-
-    cursor.execute("""
-        SELECT *
-        FROM users
-        ORDER BY id;
-    """)
-
-    users = cursor.fetchall()
-
-    cursor.close()
-    conn.close()
-
-    return jsonify(users)
+app.register_blueprint(users_bp)
+app.register_blueprint(products_bp)
+app.register_blueprint(orders_bp)
 
 @app.route('/')
 def home():
