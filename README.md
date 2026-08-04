@@ -1,45 +1,111 @@
 # Integration Hub
 
-Integration Hub is a backend portfolio project built with Flask and PostgreSQL that simulates how enterprise systems communicate through a REST API.
+Integration Hub is a backend portfolio project that simulates how enterprise systems coordinate orders, inventory, payments, shipping, and notifications through a centralized API.
 
-The project focuses on backend architecture, relational database design, and business workflows such as order processing and inventory management.
+Rather than each service operating independently, the Integration Hub acts as the orchestration layer that validates requests, coordinates business logic, updates shared data, and records the results of each operation.
 
-## Tech Stack
+The goal of this project is to demonstrate backend software engineering concepts commonly used in production systems, including REST APIs, relational database design, transactions, SQL joins, and business workflow automation.
+
+---
+
+## Features
+
+### Orders
+
+* Create new orders
+* Retrieve all orders
+* Retrieve individual orders by ID
+* Associate orders with order items
+* Calculate order totals on the server
+
+### Inventory
+
+* Validate available inventory before creating an order
+* Prevent purchases when stock is insufficient
+* Automatically reduce inventory after successful orders
+
+### Data Validation
+
+* Validate users before order creation
+* Validate products before order creation
+* Validate inventory records before processing
+
+### Database
+
+* PostgreSQL relational database
+* Foreign key relationships
+* SQL JOIN queries
+* Transaction management using commit and rollback
+
+### API
+
+* RESTful endpoints
+* JSON request and response handling
+* Consistent HTTP status codes
+* Error handling with try/except/finally
+
+---
+
+## Technology Stack
 
 * Python
 * Flask
 * PostgreSQL
 * psycopg2
-* Render
+* Git
+* GitHub
+* Postman
 
-## Current Features
+---
 
-* PostgreSQL database integration
-* Relational database schema
-* Flask Blueprints
-* REST API endpoints:
+## Current Architecture
 
-  * `GET /users`
-  * `GET /products`
-  * `GET /orders`
+Client
+   │
+   ▼
+Flask API (Integration Hub)
+   │
+   ├── Users
+   ├── Products
+   ├── Inventory
+   ├── Orders
+   ├── Order Items
+   ├── Payments (In Progress)
+   ├── Shipping (In Progress)
+   └── Notifications (Planned)
 
-## Planned Features
+---
 
-* Create and update orders
+## Database Concepts Demonstrated
+
+* Relational database design
+* Primary and foreign keys
+* One-to-many relationships
+* SQL joins
+* Transactions
+* Server-side business logic
+* Data validation
+
+---
+
+## Project Goals
+
+This project is being built to simulate the responsibilities of an enterprise integration platform. Rather than focusing on a single CRUD application, Integration Hub demonstrates how multiple business domains interact while maintaining data integrity and consistent workflows.
+
+Current development focuses on:
+
+* Order processing
 * Inventory management
-* Shipping workflow
-* Payment processing
-* Notification system
+* Payment simulation
+* Shipping workflows
+* Notification services
 
-## Running the Project
+Future versions will continue expanding these integrations while improving authentication, testing, documentation, and overall architecture.
 
-```bash
-pip install -r requirements.txt
-flask run
-```
+---
 
-Create a `.env` file containing:
+## Status
 
-```env
-DATABASE_URL=your_database_url
-```
+🚧 Active Development
+
+This project is actively being expanded to simulate real-world backend integrations while following clean architecture and REST API design principles.
