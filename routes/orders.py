@@ -39,6 +39,15 @@ def create_order():
     """, (user_id, status, total))
 
     order_id = cursor.fetchone()["id"]
+    
+    product_id = data["product_id"]
+    quantity = data["quantity"]
+    price = data["price"]
+
+    cursor.execute("""
+        INSERT INTO order_items (order_id, product_id, quantity, price)
+        VALUES (%s, %s, %s, %s)
+    """, (order_id, product_id, quantity, price))
 
     conn.commit()
 
