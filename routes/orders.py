@@ -141,7 +141,20 @@ def get_order(order_id):
                 "error": "Order not found."
             }), 404
 
-        return jsonify(order)
+        cursor.execute("""
+            SELECT *
+            FROM orders
+            JOIN order_items
+            ON orders.id = order_items.order_id
+            WHERE orders.id = %s
+        """, (order_id,))
+
+        items = cursor.fetchall()
+
+        return jsonify({
+            "order": order,
+            "items": items
+        })
 
     except Exception as e:
         print(e)
