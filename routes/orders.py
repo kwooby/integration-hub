@@ -27,10 +27,8 @@ def create_order():
 
     user_id = data["user_id"]
     status = data["status"]
-    total = data["total"]
     product_id = data["product_id"]
     quantity = data["quantity"]
-    price = data["price"]
     
     conn = get_db_connection()
     cursor = conn.cursor()
@@ -51,6 +49,14 @@ def create_order():
 
     product = cursor.fetchone()
 
+    cursor.execute("""
+        SELECT *
+        FROM inventory
+        WHERE product_id = %s
+    """, (product_id,))
+
+    inventory = cursor.fetchone()
+
     if user is None:
         cursor.close()
         conn.close()
@@ -66,6 +72,33 @@ def create_order():
         return jsonify({
             "error": "Product not found."
         }), 404
+
+    if inventory is None:
+        cursor.close()
+        conn.close()
+
+        return jsonify({
+            "error": "Inventory record not found."
+        }), 404
+
+    stock = inventory["quantity"]
+
+    if quantity > stock:
+        cursor.close()
+        conn.close()
+
+        return jsonify({
+            "error": "Insufficient inventory."
+        }), 400
+
+    cursor.execute("""
+        UPDATE inventory
+        SET quantity = quantity - %s
+        WHERE product_id = %s
+    """, (quantity, product_id))
+    
+    price = product["price"]
+    total = price * quantity
 
     cursor.execute("""
         INSERT INTO orders (user_id, status, total)
