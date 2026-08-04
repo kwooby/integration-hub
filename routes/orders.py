@@ -120,3 +120,36 @@ def create_order():
     finally:
         cursor.close()
         conn.close()
+
+@orders_bp.route("/orders/<int:order_id>", methods=["GET"])
+def get_order(order_id):
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    try:
+        cursor.execute("""
+            SELECT *
+            FROM orders
+            where id = %s
+        """, (order_id,))
+
+        order = cursor.fetchone()
+
+        if order is None:
+            return jsonify({
+                "error": "Order not found."
+            }), 404
+
+        return jsonify(order)
+
+    except Exception as e:
+        print(e)
+        
+        return jsonify({
+            "message": "An unexpected error occurred."
+        }), 500
+
+    finally:
+        cursor.close()
+        conn.close()
