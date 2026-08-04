@@ -28,9 +28,44 @@ def create_order():
     user_id = data["user_id"]
     status = data["status"]
     total = data["total"]
+    product_id = data["product_id"]
+    quantity = data["quantity"]
+    price = data["price"]
     
     conn = get_db_connection()
     cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT *
+        FROM users
+        WHERE id = %s
+    """, (user_id,))
+
+    user = cursor.fetchone()
+
+    cursor.execute("""
+        SELECT *
+        FROM products
+        WHERE id = %s
+    """, (product_id,))
+
+    product = cursor.fetchone()
+
+    if user is None:
+        cursor.close()
+        conn.close()
+
+        return jsonify({
+            "error": "User not found."
+        }), 404
+    
+    if product is None:
+        cursor.close()
+        conn.close()
+
+        return jsonify({
+            "error": "Product not found."
+        }), 404
 
     cursor.execute("""
         INSERT INTO orders (user_id, status, total)
@@ -39,10 +74,6 @@ def create_order():
     """, (user_id, status, total))
 
     order_id = cursor.fetchone()["id"]
-    
-    product_id = data["product_id"]
-    quantity = data["quantity"]
-    price = data["price"]
 
     cursor.execute("""
         INSERT INTO order_items (order_id, product_id, quantity, price)
