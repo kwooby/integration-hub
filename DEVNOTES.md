@@ -4,6 +4,32 @@
 
 ----------
 
+## 08/05/2026
+
+----------
+
+COMPLETED:
+    -Created the `shipments` database table.
+    -Implemented `GET /shipments`.
+    -Implemented `GET /shipments/<shipment_id>`.
+    -Implemented `POST /shipments`.
+    -Added validation to ensure an order exists before creating a shipment.
+    -Prevented duplicate shipments for the same order.
+    -Established a foreign key relationship between `shipments.order_id` and `orders.id`.
+    -Tested successful shipment creation, duplicate shipment validation, and invalid order validation.
+
+ISSUES ENCOUNTERED:
+    -pgAdmin Query Tool was connected to the wrong database, preventing the `shipments` table from being created.
+    -Initial shipment tests failed because deleted order IDs were assumed to still exist.
+    -Attempting to reuse the `get_order` route highlighted the difference between HTTP route handlers and reusable database lookup logic.
+
+NEXT:
+    -Implement `PATCH /shipments/<shipment_id>/status`.
+    -Update shipment status lifecycle (pending → shipped → delivered).
+    -Begin simulating shipment updates from an external integration.
+
+----------
+
 ## 08/04/2026
 
 ----------
@@ -15,30 +41,22 @@ ORDERS:
     -Implemented server-side price retrieval
     -Calculated order totals on the server
 
-----------
-
 VALIDATION:
     -Validated user existence before order creation
     -Validated product existence before order creation
     -Validated inventory record existence
     -Prevented orders with insufficient inventory
 
-----------
-
 INVENTORY:
     -Updated inventory after successful order creation
     -Separated inventory validation from product validation
     -Prevented inventory updates when validation fails
-
-----------
 
 DATABASE:
     -Implemented transaction handling
     -Added commit/rollback workflow
     -Ensured atomic database operations
     -Refactored resource cleanup using try/except/finally
-
-----------
 
 API:
     -Added GET /orders/'id'

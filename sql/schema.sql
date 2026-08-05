@@ -32,4 +32,15 @@ CREATE TABLE order_items (
     product_id INTEGER REFERENCES products(id),
     quantity INTEGER NOT NULL,
     price DECIMAL(10,2) NOT NULL
-)
+);
+
+CREATE TABLE shipments (
+    id SERIAL PRIMARY KEY,
+    order_id INTEGER UNIQUE NOT NULL REFERENCES orders(id),
+    carrier VARCHAR(50) NOT NULL,
+    tracking_number VARCHAR(100) UNIQUE NOT NULL,
+    status VARCHAR(50) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    shipped_at TIMESTAMP,
+    delivered_at TIMESTAMP
+);

@@ -37,6 +37,15 @@ The goal of this project is to demonstrate backend software engineering concepts
 * SQL JOIN queries
 * Transaction management using commit and rollback
 
+### Shipping Module
+
+* Create shipments linked to existing orders.
+* Retrieve all shipments.
+* Retrieve individual shipments by ID.
+* Prevent duplicate shipments for the same order.
+* Validate that an order exists before creating a shipment.
+* Store carrier, tracking number, shipment status, and shipping timestamps.
+
 ### API
 
 * RESTful endpoints
@@ -71,7 +80,7 @@ Flask API (Integration Hub)
    ├── Orders
    ├── Order Items
    ├── Payments (In Progress)
-   ├── Shipping (In Progress)
+   ├── Shipping
    └── Notifications (Planned)
 
 ---
