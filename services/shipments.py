@@ -3,6 +3,13 @@ from database import get_db_connection
 
 shipments_bp = Blueprint("shipments", __name__)
 
+ALLOWED_STATUSES = [
+    "Pending",
+    "Shipped",
+    "Delivered"
+]
+
+# HELPERS
 def order_exists(order_id):
     conn = get_db_connection()
     cursor = conn.cursor()
@@ -21,6 +28,26 @@ def order_exists(order_id):
         cursor.close()
         conn.close()
 
+def find_shipment(shipment_id):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    try:
+        cursor.execute("""
+            SELECT *
+            FROM shipments
+            WHERE id = %s
+        """, (shipment_id,))
+
+        shipment = cursor.fetchone()
+
+        return shipment
+
+    finally:
+        cursor.close()
+        conn.close()
+
+# GET
 @shipments_bp.route("/shipments", methods=["GET"])
 def get_shipments():
     conn = get_db_connection()
@@ -39,6 +66,18 @@ def get_shipments():
 
     return jsonify(shipments)
 
+@shipments_bp.route("/shipments/<int:shipment_id>", methods=["GET"])
+def get_shipment(shipment_id):
+    shipment = find_shipment(shipment_id)
+
+    if shipment is None:
+        return jsonify({
+            "error": "Shipment not found."
+        }), 404
+
+    return jsonify(shipment)
+
+# POST
 @shipments_bp.route("/shipments", methods=["POST"])
 def create_shipments():
     conn = get_db_connection()
@@ -58,6 +97,11 @@ def create_shipments():
             return jsonify({
                 "error": "Order not found."
             }), 404
+
+        if status not in ALLOWED_STATUSES:
+            return jsonify({
+                "error": "Invalid shipment status."
+            }), 400
 
         cursor.execute("""
             SELECT *
@@ -95,33 +139,74 @@ def create_shipments():
         cursor.close()
         conn.close()
 
-@shipments_bp.route("/shipments/<int:shipment_id>", methods=["GET"])
-def get_shipment(shipment_id):
+# PATCH
+@shipments_bp.route("/shipments/<int:shipment_id>", methods=["PATCH"])
+def patch_shipment(shipment_id):
+    data = request.get_json()
+
+    if not data:
+        return jsonify({
+                "error": "No fields provided."
+        }), 400
+
+    shipment = find_shipment(shipment_id)
+
+    if shipment is None:
+        return jsonify({
+            "error": "Shipment not found."
+            }), 404
+    
+    status = data.get("status", shipment["status"])
+    carrier = data.get("carrier", shipment["carrier"])
+    tracking_number = data.get("tracking_number", shipment["tracking_number"])
+
+    if status not in ALLOWED_STATUSES:
+        return jsonify({
+            "error": "Invalid shipment status."
+        }), 400
+
+    if not carrier:
+        return jsonify({
+                "error": "Carrier is required."
+        }), 400
+    
+    if not status:
+        return jsonify({
+                "error": "Status is required."
+        }), 400
+
+    if not tracking_number:
+        return jsonify({
+                "error": "Tracking number is required."
+        }), 400
+
     conn = get_db_connection()
     cursor = conn.cursor()
 
     try:
         cursor.execute("""
-            SELECT *
-            FROM shipments
-            WHERE id = %s
-        """, (shipment_id,))
+            UPDATE shipments
+            SET
+                carrier = %s,
+                tracking_number = %s,
+                status = %s
+            WHERE id = %s;
+        """, (carrier, tracking_number, status, shipment_id))
 
-        shipment = cursor.fetchone()
+        conn.commit()
 
-        if shipment is None:
-            return jsonify({
-                "error": "Shipment not found."
-            }), 404
-
-        return jsonify(shipment)
+        return jsonify({
+            "message": "Shipment updated."
+            })
 
     except Exception as e:
+        conn.rollback()
         print(e)
 
         return jsonify({
-            "message": "An unexpected error occurred."
-        }), 500
+            "error": "An unexpected error occurred."
+            }), 500
+        
     finally:
         cursor.close()
         conn.close()

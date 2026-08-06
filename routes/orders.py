@@ -3,6 +3,7 @@ from database import get_db_connection
 
 orders_bp = Blueprint("orders", __name__)
 
+# GET
 @orders_bp.route('/orders', methods=["GET"])
 def get_orders():
     conn = get_db_connection()
@@ -21,6 +22,53 @@ def get_orders():
 
     return jsonify(orders)
 
+@orders_bp.route("/orders/<int:order_id>", methods=["GET"])
+def get_order(order_id):
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    try:
+        cursor.execute("""
+            SELECT *
+            FROM orders
+            where id = %s
+        """, (order_id,))
+
+        order = cursor.fetchone()
+
+        if order is None:
+            return jsonify({
+                "error": "Order not found."
+            }), 404
+
+        cursor.execute("""
+            SELECT *
+            FROM orders
+            JOIN order_items
+            ON orders.id = order_items.order_id
+            WHERE orders.id = %s
+        """, (order_id,))
+
+        items = cursor.fetchall()
+
+        return jsonify({
+            "order": order,
+            "items": items
+        })
+
+    except Exception as e:
+        print(e)
+        
+        return jsonify({
+            "message": "An unexpected error occurred."
+        }), 500
+
+    finally:
+        cursor.close()
+        conn.close()
+
+# POST
 @orders_bp.route('/orders', methods=["POST"])
 def create_order():
     
@@ -121,48 +169,4 @@ def create_order():
         cursor.close()
         conn.close()
 
-@orders_bp.route("/orders/<int:order_id>", methods=["GET"])
-def get_order(order_id):
-
-    conn = get_db_connection()
-    cursor = conn.cursor()
-
-    try:
-        cursor.execute("""
-            SELECT *
-            FROM orders
-            where id = %s
-        """, (order_id,))
-
-        order = cursor.fetchone()
-
-        if order is None:
-            return jsonify({
-                "error": "Order not found."
-            }), 404
-
-        cursor.execute("""
-            SELECT *
-            FROM orders
-            JOIN order_items
-            ON orders.id = order_items.order_id
-            WHERE orders.id = %s
-        """, (order_id,))
-
-        items = cursor.fetchall()
-
-        return jsonify({
-            "order": order,
-            "items": items
-        })
-
-    except Exception as e:
-        print(e)
-        
-        return jsonify({
-            "message": "An unexpected error occurred."
-        }), 500
-
-    finally:
-        cursor.close()
-        conn.close()
+# PATCH
