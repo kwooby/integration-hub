@@ -3,8 +3,35 @@ from database import get_db_connection
 
 orders_bp = Blueprint("orders", __name__)
 
+ALLOWED_ORDER_STATUSES = [
+    "Pending",
+    "Processing",
+    "Copmpleted",
+    "Cancelled"
+]
+
+# HELPERS
+def find_order(order_id):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    try:
+        cursor.execute("""
+            SELECT *
+            FROM orders
+            WHERE id = %s
+        """, (order_id,))
+
+        order = cursor.fetchone()
+
+        return order
+
+    finally:
+        cursor.close()
+        conn.close()
+
 # GET
-@orders_bp.route('/orders', methods=["GET"])
+@orders_bp.route("/orders", methods=["GET"])
 def get_orders():
     conn = get_db_connection()
     cursor = conn.cursor()
@@ -69,7 +96,7 @@ def get_order(order_id):
         conn.close()
 
 # POST
-@orders_bp.route('/orders', methods=["POST"])
+@orders_bp.route("/orders", methods=["POST"])
 def create_order():
     
     conn = get_db_connection()
@@ -175,3 +202,54 @@ def create_order():
         conn.close()
 
 # PATCH
+@orders_bp.route("/orders/<int:order_id>", methods=["PATCH"])
+def patch_order(order_id):
+    data = request.get_json()
+
+    if not data:
+        return jsonify({
+            "error": "No fields provided."
+        }), 400
+
+    order = find_order(order_id)
+
+    if order is None:
+        return jsonify({
+            "error": "Order not found."
+        }), 404
+
+    status = data.get("status", order["status"])
+
+    if status not in ALLOWED_ORDER_STATUSES:
+        return jsonify({
+            "error": "Invalid order status."
+        }), 400
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    try:
+        cursor.execute("""
+            UPDATE orders
+            SET
+                status = %s
+            WHERE id = %s;
+        """, (status, order_id))
+
+        conn.commit()
+
+        return jsonify({
+            "message": "Order status updated."
+        })
+
+    except Exception as e:
+        conn.rollback()
+        print(e)
+
+        return jsonify({
+            "error": "Unexpected error occurred."
+        }), 500
+
+    finally:
+        cursor.close()
+        conn.close()

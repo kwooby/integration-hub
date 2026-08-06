@@ -17,6 +17,7 @@ The goal of this project is to demonstrate backend software engineering concepts
 * Retrieve individual orders by ID
 * Associate orders with order items
 * Calculate order totals on the server
+* Update order status using PATCH
 
 ### Inventory
 

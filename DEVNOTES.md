@@ -9,11 +9,13 @@
 ----------
 
 COMPLETED:
--PATCH /SHIPMENTS:
-    -Implemented `PATCH /shipments/<shipment_id>`
-    -Added support for partial shipment updates using `PATCH`
-    -Added validation for valid shipment statuses
-    -Added validation to prevent empty carrier, tracking number, and status fields
+-PATCH /SHIPMENTS, /ORDERS:
+    -Implemented:
+        -`PATCH /shipments/<shipment_id>`
+        -`PATCH /orders/<order_id>`
+    -Added support for partial shipment and order updates using `PATCH`
+    -Added validation for valid shipment and order statuses
+    -Added validation to prevent empty carrier, tracking number, and status fields in shipments
 
 -/PAYMENTS:
     -Created the `payments` database table
@@ -36,7 +38,6 @@ ISSUES ENCOUNTERED:
     -Adjusted validation order to check resource existence before performing additional business validations
 
 NEXT:
-    -Implement the remaining `PATCH` endpoints for the API
     -Add consistent validation across all resources where applicable
     -Test all endpoints end-to-end to verify resource relationships and business rules
     -Begin polishing the API for portfolio presentation and documentation
