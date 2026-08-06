@@ -34,6 +34,15 @@ CREATE TABLE order_items (
     price DECIMAL(10,2) NOT NULL
 );
 
+CREATE TABLE payments (
+    id SERIAL PRIMARY KEY,
+    order_id INTEGER UNIQUE NOT NULL REFERENCES orders(id),
+    status VARCHAR(50) NOT NULL,
+    amount DECIMAL(10,2) NOT NULL,
+    transaction_id VARCHAR(50) UNIQUE NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 CREATE TABLE shipments (
     id SERIAL PRIMARY KEY,
     order_id INTEGER UNIQUE NOT NULL REFERENCES orders(id),

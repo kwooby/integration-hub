@@ -1,4 +1,4 @@
-from flask import Flask, Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request
 from database import get_db_connection
 
 orders_bp = Blueprint("orders", __name__)
@@ -117,6 +117,11 @@ def create_order():
                 "error": "Product not found."
             }), 404
 
+        if quantity <= 0:
+            return jsonify({
+                "error": "Quantity must be greater than zero."
+            }), 400
+        
         if inventory is None:
             return jsonify({
                 "error": "Inventory record not found."

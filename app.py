@@ -9,6 +9,7 @@ from routes.users import users_bp
 from routes.products import products_bp
 from routes.orders import orders_bp
 from services.shipments import shipments_bp
+from services.payments import payments_bp
 
 load_dotenv()
 
@@ -19,6 +20,7 @@ app.register_blueprint(products_bp)
 app.register_blueprint(orders_bp)
 
 app.register_blueprint(shipments_bp)
+app.register_blueprint(payments_bp)
 
 @app.route('/')
 def home():

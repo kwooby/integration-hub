@@ -1,9 +1,9 @@
-from flask import Flask, Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request
 from database import get_db_connection
 
 shipments_bp = Blueprint("shipments", __name__)
 
-ALLOWED_STATUSES = [
+ALLOWED_SHIPMENT_STATUSES = [
     "Pending",
     "Shipped",
     "Delivered"
@@ -52,19 +52,21 @@ def find_shipment(shipment_id):
 def get_shipments():
     conn = get_db_connection()
     cursor = conn.cursor()
+    
+    try:
+        cursor.execute("""
+            SELECT *
+            FROM shipments
+            ORDER BY id;
+        """)
 
-    cursor.execute("""
-        SELECT *
-        FROM shipments
-        ORDER BY id;
-    """)
+        shipments = cursor.fetchall()
 
-    shipments = cursor.fetchall()
+        return jsonify(shipments)
 
-    cursor.close()
-    conn.close()
-
-    return jsonify(shipments)
+    finally:
+        cursor.close()
+        conn.close()
 
 @shipments_bp.route("/shipments/<int:shipment_id>", methods=["GET"])
 def get_shipment(shipment_id):
@@ -79,7 +81,7 @@ def get_shipment(shipment_id):
 
 # POST
 @shipments_bp.route("/shipments", methods=["POST"])
-def create_shipments():
+def create_shipment():
     conn = get_db_connection()
     cursor = conn.cursor()
 
@@ -98,7 +100,7 @@ def create_shipments():
                 "error": "Order not found."
             }), 404
 
-        if status not in ALLOWED_STATUSES:
+        if status not in ALLOWED_SHIPMENT_STATUSES:
             return jsonify({
                 "error": "Invalid shipment status."
             }), 400
@@ -160,7 +162,7 @@ def patch_shipment(shipment_id):
     carrier = data.get("carrier", shipment["carrier"])
     tracking_number = data.get("tracking_number", shipment["tracking_number"])
 
-    if status not in ALLOWED_STATUSES:
+    if status not in ALLOWED_SHIPMENT_STATUSES:
         return jsonify({
             "error": "Invalid shipment status."
         }), 400

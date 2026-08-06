@@ -29,6 +29,12 @@ The goal of this project is to demonstrate backend software engineering concepts
 * Validate users before order creation
 * Validate products before order creation
 * Validate inventory records before processing
+* Validate that orders exist before shipments or payments are created.
+* Duplicate shipments are prevented
+* Duplicate payments are prevented
+* Payment amounts must match the associated order total
+* Shipment and payment statuses are validated
+* Inventory is checked before creating an order
 
 ### Database
 
@@ -45,6 +51,19 @@ The goal of this project is to demonstrate backend software engineering concepts
 * Prevent duplicate shipments for the same order.
 * Validate that an order exists before creating a shipment.
 * Store carrier, tracking number, shipment status, and shipping timestamps.
+* Update shipment information using PATCH.
+
+## Payments Module
+
+* Create payments linked to existing orders.
+* Retrieve all payments.
+* Retrieve individual payments by ID.
+* Update payment information using PATCH.
+* Prevent duplicate payments for the same order.
+* Validate that an order exists before creating a payment.
+* Validate payment statuses.
+* Ensure payment amounts match the associated order total.
+* Store payment status, transaction ID, and amount.
 
 ### API
 
@@ -79,8 +98,8 @@ Flask API (Integration Hub)
    ├── Inventory
    ├── Orders
    ├── Order Items
-   ├── Payments (In Progress)
-   ├── Shipping
+   ├── Payments
+   ├── Shipments
    └── Notifications (Planned)
 
 ---

@@ -4,29 +4,66 @@
 
 ----------
 
+## 08/06/2026
+
+----------
+
+COMPLETED:
+-PATCH /SHIPMENTS:
+    -Implemented `PATCH /shipments/<shipment_id>`
+    -Added support for partial shipment updates using `PATCH`
+    -Added validation for valid shipment statuses
+    -Added validation to prevent empty carrier, tracking number, and status fields
+
+-/PAYMENTS:
+    -Created the `payments` database table
+    -Implemented `GET /payments`
+    -Implemented `GET /payments/<payment_id>`
+    -Implemented `POST /payments`
+    -Implemented `PATCH /payments/<payment_id>`
+    -Added validation to ensure an order exists before creating a payment
+    -Prevented duplicate payments for the same order
+    -Added validation for allowed payment statuses
+    -Added validation to ensure payment amounts are greater than zero
+    -Added business validation to ensure payment amounts match the associated order total
+    -Added validation to prevent empty transaction IDs
+    -Established a foreign key relationship between `paymentsorder_id` and `ordersid`
+    -Tested successful payment creation, duplicate payment validation, invalid payment statuses, invalid payment amounts, and empty transaction IDs
+
+ISSUES ENCOUNTERED:
+    -Worked through designing partial updates using `dataget()` while preserving existing field values
+    -Refactored repeated shipment lookup logic into reusable helper functions to simplify route handlers
+    -Adjusted validation order to check resource existence before performing additional business validations
+
+NEXT:
+    -Implement the remaining `PATCH` endpoints for the API
+    -Add consistent validation across all resources where applicable
+    -Test all endpoints end-to-end to verify resource relationships and business rules
+    -Begin polishing the API for portfolio presentation and documentation
+
 ## 08/05/2026
 
 ----------
 
 COMPLETED:
-    -Created the `shipments` database table.
-    -Implemented `GET /shipments`.
-    -Implemented `GET /shipments/<shipment_id>`.
-    -Implemented `POST /shipments`.
-    -Added validation to ensure an order exists before creating a shipment.
-    -Prevented duplicate shipments for the same order.
-    -Established a foreign key relationship between `shipments.order_id` and `orders.id`.
-    -Tested successful shipment creation, duplicate shipment validation, and invalid order validation.
+    -Created the `shipments` database table
+    -Implemented `GET /shipments`
+    -Implemented `GET /shipments/<shipment_id>`
+    -Implemented `POST /shipments`
+    -Added validation to ensure an order exists before creating a shipment
+    -Prevented duplicate shipments for the same order
+    -Established a foreign key relationship between `shipmentsorder_id` and `ordersid`
+    -Tested successful shipment creation, duplicate shipment validation, and invalid order validation
 
 ISSUES ENCOUNTERED:
-    -pgAdmin Query Tool was connected to the wrong database, preventing the `shipments` table from being created.
-    -Initial shipment tests failed because deleted order IDs were assumed to still exist.
-    -Attempting to reuse the `get_order` route highlighted the difference between HTTP route handlers and reusable database lookup logic.
+    -pgAdmin Query Tool was connected to the wrong database, preventing the `shipments` table from being created
+    -Initial shipment tests failed because deleted order IDs were assumed to still exist
+    -Attempting to reuse the `get_order` route highlighted the difference between HTTP route handlers and reusable database lookup logic
 
 NEXT:
-    -Implement `PATCH /shipments/<shipment_id>/status`.
-    -Update shipment status lifecycle (pending → shipped → delivered).
-    -Begin simulating shipment updates from an external integration.
+    -Implement `PATCH /shipments/<shipment_id>/status`
+    -Update shipment status lifecycle (pending → shipped → delivered)
+    -Begin simulating shipment updates from an external integration
 
 ----------
 
@@ -98,7 +135,7 @@ PROJECT SETUP:
     -Initial project commit
     -Configured Flask project/database connectivity
     -Installed project dependencies
-    -Generated requirements.txt
+    -Generated requirementstxt
     -Established initial project structure
 
 ----------
