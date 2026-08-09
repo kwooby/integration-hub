@@ -6,7 +6,7 @@ orders_bp = Blueprint("orders", __name__)
 ALLOWED_ORDER_STATUSES = [
     "Pending",
     "Processing",
-    "Copmpleted",
+    "Completed",
     "Cancelled"
 ]
 
@@ -253,3 +253,5 @@ def patch_order(order_id):
     finally:
         cursor.close()
         conn.close()
+
+# DELETE

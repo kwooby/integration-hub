@@ -212,3 +212,5 @@ def patch_shipment(shipment_id):
     finally:
         cursor.close()
         conn.close()
+
+# DELETE

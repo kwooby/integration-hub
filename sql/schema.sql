@@ -53,3 +53,11 @@ CREATE TABLE shipments (
     shipped_at TIMESTAMP,
     delivered_at TIMESTAMP
 );
+
+CREATE TABLE notifications (
+    id SERIAL PRIMARY KEY,
+    order_id INTEGER NOT NULL REFERENCES orders(id),
+    type VARCHAR(50) NOT NULL,
+    status VARCHAR(50) NOT NULL,
+    sent_at TIMESTAMP
+);

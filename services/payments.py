@@ -87,6 +87,11 @@ def create_payments():
     try:
         data = request.get_json()
 
+        if not data:
+            return jsonify({
+                "error": "Request body is required."
+            }), 400
+
         order_id = data["order_id"]
         status = data["status"]
         amount = data["amount"]
@@ -227,3 +232,5 @@ def patch_payment(payment_id):
     finally:
         cursor.close()
         conn.close()
+
+# DELETE
