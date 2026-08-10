@@ -1,6 +1,6 @@
 # DEVELOPER NOTES FOR INTEGRATION HUB API
 
-*TURN DEBUG OFF BEFORE DEPLOYING
+* F5 CONFIGURED TO OPEN INTEGRATION HUB BACKEND
 
 ----------
 
@@ -33,7 +33,6 @@ NEXT:
     -Review existing resource endpoints for consistency in validation and error handling.
     -Standardize PATCH validation patterns across all resources.
     -Review existing database helpers and route functions for separation of responsibilities.
-    -Review sent_at handling and Notification status transitions.
     -Perform a larger API cleanup/refactoring pass.
     -Begin front-end with REACT.
 

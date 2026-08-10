@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-from database import get_db_connection
+from backend.database import get_db_connection
 from psycopg2 import errors
 
 users_bp = Blueprint("users", __name__)

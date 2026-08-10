@@ -3,14 +3,14 @@ import os
 from dotenv import load_dotenv
 from flask import Flask, jsonify
 
-from database import get_db_connection
+from backend.database import get_db_connection
 
-from routes.users import users_bp
-from routes.products import products_bp
-from routes.orders import orders_bp
-from services.shipments import shipments_bp
-from services.payments import payments_bp
-from services.notifications import notifications_bp
+from backend.routes.users import users_bp
+from backend.routes.products import products_bp
+from backend.routes.orders import orders_bp
+from backend.services.shipments import shipments_bp
+from backend.services.payments import payments_bp
+from backend.services.notifications import notifications_bp
 
 load_dotenv()
 
