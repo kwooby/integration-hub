@@ -228,3 +228,38 @@ def patch_notification(notification_id):
         conn.close()
 
 # DELETE
+@notifications_bp.route("/notifications/<int:notification_id>", methods=["DELETE"])
+def delete_notification(notification_id):
+    notification = find_notification(notification_id)
+
+    if notification is None:
+        return jsonify({
+            "error": "Notification not found."
+        }), 404
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    try:
+        cursor.execute("""
+            DELETE FROM notifications
+            WHERE id = %s
+        """, (notification_id,))
+
+        conn.commit()
+
+        return jsonify({
+            "message": "Notification deleted successfully."
+        }), 200
+
+    except Exception as e:
+        conn.rollback()
+        print(e)
+
+        return jsonify({
+            "error": "An unexpected error occurred."
+        }), 500
+
+    finally:
+        cursor.close()
+        conn.close()

@@ -4,6 +4,39 @@
 
 ----------
 
+## 08/10/2026
+
+----------
+
+COMPLETED:
+    - /DELETE route implemented in all files (DELETE Sweep!)
+        -`/users` PASS
+        -`/payments` PASS
+        -`/orders` PASS
+        -`/shipments` PASS
+        -`/notifications` PASS
+
+NOTES:
+    -Added `errors.ForeignKeyViolation` to users.
+        -If user has an existing order, user cannot be deleted and 409 error will be shown.
+    -`/orders/DELETE`
+        -Added `errors.ForeignKeyViolation` to orders.
+            -409 error will appear if order has open associated records.
+        -Explicit errors/eligible for deletion.
+            -'Processing' and 'Pending' orders are not eligible for deletion.
+            -Orders with Completed or Cancelled status are eligible for deletion, but PostgreSQL can still prevent deletion when related records reference the order.
+            -Foreign key constraints protect dependent records such as payments, shipments, notifications, and order items from becoming orphaned.
+            -Application-level deletion rules and database-level foreign key constraints work independently.
+    -Order Items /DELETE intentionally omitted because they're dependent on the order
+
+NEXT:
+    -Review existing resource endpoints for consistency in validation and error handling.
+    -Standardize PATCH validation patterns across all resources.
+    -Review existing database helpers and route functions for separation of responsibilities.
+    -Review sent_at handling and Notification status transitions.
+    -Perform a larger API cleanup/refactoring pass.
+    -Begin front-end with REACT.
+
 ## 08/09/2026
 
 ----------

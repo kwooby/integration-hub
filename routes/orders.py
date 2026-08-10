@@ -1,11 +1,17 @@
 from flask import Blueprint, jsonify, request
 from database import get_db_connection
+from psycopg2 import errors
 
 orders_bp = Blueprint("orders", __name__)
 
 ALLOWED_ORDER_STATUSES = [
     "Pending",
     "Processing",
+    "Completed",
+    "Cancelled"
+]
+
+DELETABLE_ORDER_STATUS = [
     "Completed",
     "Cancelled"
 ]
@@ -255,3 +261,49 @@ def patch_order(order_id):
         conn.close()
 
 # DELETE
+@orders_bp.route("/orders/<int:order_id>", methods=["DELETE"])
+def delete_order(order_id):
+    order = find_order(order_id)
+
+    if order is None:
+        return jsonify({
+            "error": "Order not found."
+        }), 404
+
+    if order["status"] not in DELETABLE_ORDER_STATUS:
+        return jsonify({
+            "error": "Only completed or cancelled orders can be deleted."
+        }), 409
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    try:
+        cursor.execute("""
+            DELETE FROM orders
+            WHERE id = %s
+        """, (order_id,))
+
+        conn.commit()
+
+        return jsonify({
+            "message": "Order deleted successfully."
+        }), 200
+
+    except errors.ForeignKeyViolation:
+        conn.rollback()
+
+        return jsonify({
+            "error": "Order cannot be deleted because it has associated records."
+        }), 409
+
+    except Exception as e:
+        conn.rollback()
+        print(e)
+
+        return jsonify({
+            "error": "An unexpected error occurred."
+        }), 500
+    finally:
+        cursor.close()
+        conn.close()

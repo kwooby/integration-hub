@@ -214,3 +214,38 @@ def patch_shipment(shipment_id):
         conn.close()
 
 # DELETE
+@shipments_bp.route("/shipments/<int:shipment_id>", methods=["DELETE"])
+def delete_shipment(shipment_id):
+    shipment = find_shipment(shipment_id)
+
+    if shipment is None:
+        return jsonify({
+            "error": "Shipment not found."
+        }), 404
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    try:
+        cursor.execute("""
+            DELETE FROM shipments
+            WHERE id = %s
+        """, (shipment_id,))
+
+        conn.commit()
+
+        return jsonify({
+            "message": "Shipment deleted successfully."
+        }), 200
+    
+    except Exception as e:
+        conn.rollback()
+        print(e)
+
+        return jsonify({
+            "error": "An unexpected error occurred."
+        }), 500
+
+    finally:
+        cursor.close()
+        conn.close()

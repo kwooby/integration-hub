@@ -1,5 +1,6 @@
 from flask import Blueprint, jsonify, request
 from database import get_db_connection
+from psycopg2 import errors
 
 users_bp = Blueprint("users", __name__)
 
@@ -202,3 +203,45 @@ def patch_user(user_id):
         conn.close()
 
 # DELETE
+@users_bp.route("/users/<int:user_id>", methods=["DELETE"])
+def delete_user(user_id):
+    user = find_user(user_id)
+
+    if user is None:
+        return jsonify({
+            "error": "User not found."
+        }), 404
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    try:
+        cursor.execute("""
+            DELETE FROM users
+            WHERE id = %s
+        """, (user_id,))
+
+        conn.commit()
+
+        return jsonify({
+            "message": "User deleted successfully."
+        }), 200
+
+    except errors.ForeignKeyViolation:
+        conn.rollback()
+
+        return jsonify({
+            "error": "User cannot be deleted because they have existing orders."
+        }), 409
+
+    except Exception as e:
+        conn.rollback()
+        print(e)
+
+        return jsonify({
+            "error": "An unexpected error occurred."
+        }), 500
+
+    finally:
+        cursor.close()
+        conn.close()

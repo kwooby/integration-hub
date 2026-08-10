@@ -234,3 +234,38 @@ def patch_payment(payment_id):
         conn.close()
 
 # DELETE
+@payments_bp.route("/payments/<int:payment_id>", methods=["DELETE"])
+def delete_payment(payment_id):
+    payment = find_payment(payment_id)
+
+    if payment is None:
+        return jsonify({
+            "error": "Payment not found."
+        }), 404
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    try:
+        cursor.execute("""
+            DELETE FROM payments
+            WHERE id = %s
+        """, (payment_id,))
+
+        conn.commit()
+
+        return jsonify({
+            "message": "Payment deleted successfully."
+        }), 200
+
+    except Exception as e:
+        conn.rollback()
+        print(e)
+
+        return jsonify({
+            "error": "An unexpected error occurred."
+        }), 500
+    
+    finally:
+        cursor.close()
+        conn.close()

@@ -16,9 +16,11 @@ The goal of this project is to demonstrate backend software engineering concepts
 * Retrieve all users
 * Retrieve individual users by ID
 * Update user information using PATCH
+* Delete users
 * Validate required user fields
 * Prevent duplicate email addresses
 * Preserve existing user information during partial updates
+* Prevent deletion of users with associated orders
 
 ### Orders
 
@@ -28,6 +30,9 @@ The goal of this project is to demonstrate backend software engineering concepts
 * Associate orders with order items
 * Calculate order totals on the server
 * Update order status using PATCH
+* Delete completed or cancelled orders
+* Prevent deletion of active orders
+* Prevent deletion when associated records still exist
 
 ### Inventory
 
@@ -48,7 +53,8 @@ The goal of this project is to demonstrate backend software engineering concepts
 * Validate shipment, payment, and notification statuses
 * Validate notification types
 * Validate notification timestamps based on notification status
-* Inventory is checked before creating an order
+* Prevent deletion of resources when foreign key constraints would be violated
+* Use appropriate HTTP status codes for invalid requests, missing resources, and conflicts
 
 ### Database
 
@@ -58,17 +64,19 @@ The goal of this project is to demonstrate backend software engineering concepts
 * SQL JOIN queries
 * Transaction management using commit and rollback
 * Server-generated IDs
-* Server-side timestamps where appropriate
+* Server-side business logic
+* Referential integrity enforcement
 
 ### Shipping Module
 
 * Create shipments linked to existing orders
 * Retrieve all shipments
 * Retrieve individual shipments by ID
+* Update shipment information using PATCH
+* Delete shipments
 * Prevent duplicate shipments for the same order
 * Validate that an order exists before creating a shipment
 * Store carrier, tracking number, shipment status, and shipping timestamps
-* Update shipment information using PATCH
 
 ### Payments Module
 
@@ -76,6 +84,7 @@ The goal of this project is to demonstrate backend software engineering concepts
 * Retrieve all payments
 * Retrieve individual payments by ID
 * Update payment information using PATCH
+* Delete payments
 * Prevent duplicate payments for the same order
 * Validate that an order exists before creating a payment
 * Validate payment statuses
@@ -87,7 +96,8 @@ The goal of this project is to demonstrate backend software engineering concepts
 * Create notifications linked to existing orders
 * Retrieve all notifications
 * Retrieve individual notifications by ID
-* Update notification status using PATCH
+* Update notification status and `sent_at` using PATCH
+* Delete notifications
 * Validate notification statuses
 * Validate notification types
 * Track when notifications are sent using `sent_at`
@@ -95,12 +105,21 @@ The goal of this project is to demonstrate backend software engineering concepts
 * Keep `sent_at` empty while notifications remain `Pending`
 * Support multiple notifications for the same order
 
+### Order Items
+
+* Create order items as part of the order creation workflow
+* Retrieve order items through individual order requests
+* Associate order items with existing orders and products
+* Store quantity and price at the time of the order
+* Order items are intentionally not independently deleted to preserve order totals and transaction integrity
+
 ### API
 
 * RESTful endpoints
 * JSON request and response handling
-* Consistent HTTP status codes
+* GET, POST, PATCH, and DELETE methods
 * Partial updates using PATCH
+* Consistent HTTP status codes
 * Error handling with try/except/finally
 * Resource-specific database helper functions
 * Postman endpoint testing
@@ -150,6 +169,7 @@ Flask API (Integration Hub)
 * Database-generated IDs
 * Partial record updates
 * Referential integrity
+* Foreign key constraint handling
 
 ---
 
@@ -166,6 +186,7 @@ Current development focuses on:
 * Shipping workflows
 * Notification services
 * API validation and error handling
+* Resource lifecycle management
 
 Future versions will continue expanding these integrations while improving authentication, testing, documentation, and overall architecture.
 
