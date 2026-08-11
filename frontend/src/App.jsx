@@ -1,8 +1,14 @@
-import './App.css'
+import Navbar from './components/Navbar.jsx'
+import Sidebar from './components/Sidebar.jsx'
+import MainContent from './components/MainContent.jsx'
 
 function App() {
   return (
-    <h1>Integration Hub</h1>
+    <>
+      <Navbar />
+      <Sidebar />
+      <MainContent />
+    </>
   )
 }
 
