@@ -4,6 +4,36 @@
 
 ----------
 
+## 08/11/2026
+
+----------
+
+COMPLETED:
+    -Standardized backend structure and route patterns across resources.
+    -Renamed notification type column to notification_type for clarity and consistency.
+    -Reviewed and standardized helper functions across resource files.
+    -Completed the products resource with full CRUD functionality:
+        -GET /products PASS
+        -GET /products/product_id PASS
+        -POST /products PASS
+        -PATCH /products/product_id PASS
+        -DELETE /products/product_id PASS
+    -Added product validation for required names, whitespace-only names, and valid prices.
+    -Implemented automatic SKU generation using the PostgreSQL product ID sequence.
+    -Made SKUs system-generated and read-only through the API.
+    -Added foreign-key handling for products with existing inventory.
+    -Reviewed and cleaned up PATCH behavior to properly support partial updates.
+    -Tested and corrected route syntax, database sequence handling, and cursor result handling.
+
+BACKEND STATUS:
+    -Backend resources are now standardized and complete.
+    -Products resource is fully implemented and ready for comprehensive endpoint testing.
+    -Backend is ready to transition toward frontend development with React.
+
+NEXT:
+    -Fix any remaining inconsistencies or edge cases discovered during testing.
+    -Begin React frontend development and API integration.
+
 ## 08/10/2026
 
 ----------
@@ -15,6 +45,9 @@ COMPLETED:
         -`/orders` PASS
         -`/shipments` PASS
         -`/notifications` PASS
+    -Restructured the Integration Hub to separate the Flask backend from the future React frontend
+        -Cleaned up dependencies
+        -Configured development enviroment for easier local development
 
 NOTES:
     -Added `errors.ForeignKeyViolation` to users.

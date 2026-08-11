@@ -65,7 +65,7 @@ def get_order(order_id):
         cursor.execute("""
             SELECT *
             FROM orders
-            where id = %s
+            WHERE id = %s
         """, (order_id,))
 
         order = cursor.fetchone()
@@ -77,10 +77,8 @@ def get_order(order_id):
 
         cursor.execute("""
             SELECT *
-            FROM orders
-            JOIN order_items
-            ON orders.id = order_items.order_id
-            WHERE orders.id = %s
+            FROM order_items
+            WHERE order_id = %s
         """, (order_id,))
 
         items = cursor.fetchall()
@@ -104,12 +102,16 @@ def get_order(order_id):
 # POST
 @orders_bp.route("/orders", methods=["POST"])
 def create_order():
-    
     conn = get_db_connection()
     cursor = conn.cursor()
 
     try:
         data = request.get_json()
+
+        if not data:
+            return jsonify({
+                "error": "Request body is required."
+            }), 400
 
         user_id = data["user_id"]
         status = data["status"]
@@ -180,7 +182,10 @@ def create_order():
         cursor.execute("""
             INSERT INTO order_items (order_id, product_id, quantity, price)
             VALUES (%s, %s, %s, %s)
+            RETURNING *
         """, (order_id, product_id, quantity, price))
+
+        order = cursor.fetchone()
         
         cursor.execute("""
             UPDATE inventory
@@ -192,7 +197,7 @@ def create_order():
         
         return jsonify({
             "message": "Order created",
-            "order_id": order_id
+            "order": order
         })
 
     except Exception as e:
@@ -239,13 +244,17 @@ def patch_order(order_id):
             UPDATE orders
             SET
                 status = %s
-            WHERE id = %s;
+            WHERE id = %s
+            RETURNING *;
         """, (status, order_id))
+
+        order = cursor.fetchone()
 
         conn.commit()
 
         return jsonify({
-            "message": "Order status updated."
+            "message": "Order status updated.",
+            "order": order
         })
 
     except Exception as e:

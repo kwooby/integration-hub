@@ -88,6 +88,11 @@ def create_shipment():
     try:
         data = request.get_json()
 
+        if not data:
+            return jsonify({
+                "error": "Request body is required."
+            }), 400
+
         order_id = data["order_id"]
         carrier = data["carrier"]
         tracking_number = data["tracking_number"]
@@ -121,13 +126,17 @@ def create_shipment():
         cursor.execute("""
             INSERT INTO shipments (order_id, carrier, tracking_number, status)
             VALUES (%s, %s, %s, %s)
+            RETURNING *
         """, (order_id, carrier, tracking_number, status))
+
+        shipment = cursor.fetchone()
 
         conn.commit()
 
         return jsonify({
-            "message": "Shipment created."
-        })
+            "message": "Shipment created.",
+            "shipment": shipment
+        }), 201
 
     except Exception as e:
         conn.rollback()
@@ -192,13 +201,17 @@ def patch_shipment(shipment_id):
                 carrier = %s,
                 tracking_number = %s,
                 status = %s
-            WHERE id = %s;
+            WHERE id = %s
+            RETURNING *;
         """, (carrier, tracking_number, status, shipment_id))
+
+        shipment = cursor.fetchone()
 
         conn.commit()
 
         return jsonify({
-            "message": "Shipment updated."
+            "message": "Shipment updated.",
+            "shipment": shipment
             })
 
     except Exception as e:

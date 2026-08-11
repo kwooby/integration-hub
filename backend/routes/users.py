@@ -19,7 +19,6 @@ def find_user(user_id):
         user = cursor.fetchone()
 
         return user
-
     finally:
         cursor.close()
         conn.close()
@@ -49,7 +48,7 @@ def get_user(user_id):
 
     if user is None:
         return jsonify({
-                "error": "User not found."
+            "error": "User not found."
         }), 404
 
     return jsonify(user)
@@ -107,7 +106,10 @@ def create_user():
 
         conn.commit()
 
-        return jsonify(user), 201
+        return jsonify({
+            "message": "User created.",
+            "user" : user
+        }), 201
 
     except Exception as e:
         conn.rollback()
@@ -162,7 +164,7 @@ def patch_user(user_id):
             SELECT *
             FROM users
             WHERE email = %s
-            AND id != %s
+            AND id != %s;
         """, (email, user_id))
 
         existing_user = cursor.fetchone()
@@ -178,7 +180,7 @@ def patch_user(user_id):
                 name = %s,
                 email = %s
             WHERE id = %s
-            RETURNING *
+            RETURNING *;
         """, (name, email, user_id))
 
         user = cursor.fetchone()

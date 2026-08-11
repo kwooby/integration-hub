@@ -52,20 +52,18 @@ def get_payments():
     conn = get_db_connection()
     cursor = conn.cursor()
 
-    try:
-        cursor.execute("""
-            SELECT *
-            FROM payments
-            ORDER BY id;
-        """)
+    cursor.execute("""
+        SELECT *
+        FROM payments
+        ORDER BY id;
+    """)
 
-        payments = cursor.fetchall()
+    payments = cursor.fetchall()
 
-        return jsonify(payments)
+    cursor.close()
+    conn.close()
 
-    finally:
-        cursor.close()
-        conn.close()
+    return jsonify(payments)
 
 @payments_bp.route("/payments/<int:payment_id>", methods=["GET"])
 def get_payment(payment_id):
@@ -140,13 +138,17 @@ def create_payments():
         cursor.execute("""
             INSERT INTO payments (order_id, status, amount, transaction_id)
             VALUES (%s, %s, %s, %s)
+            RETURNING *;
             """, (order_id, status, amount, transaction_id))
+
+        payment = cursor.fetchone()
 
         conn.commit()
 
         return jsonify({
-            "message": "Payment created."
-        })
+            "message": "Payment created.",
+            "payment": payment
+        }), 201
     
     except Exception as e:
         conn.rollback()
@@ -211,14 +213,18 @@ def patch_payment(payment_id):
             SET
                 status = %s,
                 amount = %s,
-                transaction_id = %s
-            WHERE id = %s;
+                transaction_id = %s,
+            WHERE id = %s,
+            RETURNING *;
         """, (status, amount, transaction_id, payment_id))
+
+        payment = cursor.fetchone()
 
         conn.commit()
 
         return jsonify({
-            "message": "Payment updated."
+            "message": "Payment updated.",
+            "payment": payment
         })
 
     except Exception as e:

@@ -99,7 +99,7 @@ def create_notifications():
                 "error": "Request body is required."
             }), 400
 
-        type = data["type"]
+        notification_type = data["notification_type"]
         status = data["status"]
         sent_at = data.get("sent_at")
 
@@ -117,7 +117,7 @@ def create_notifications():
                 "error": "Invalid notification status."
             }), 400
 
-        if type not in ALLOWED_NOTIFICATION_TYPES:
+        if notification_type not in ALLOWED_NOTIFICATION_TYPES:
             return jsonify({
                 "error": "Invalid notification type."
             }), 400
@@ -133,16 +133,19 @@ def create_notifications():
             }), 400
 
         cursor.execute("""
-            INSERT INTO notifications (order_id, type, status, sent_at)
+            INSERT INTO notifications (order_id, notification_type, status, sent_at)
             VALUES (%s, %s, %s, %s)
             RETURNING *;
-        """, (order_id, type, status, sent_at))
+        """, (order_id, notification_type, status, sent_at))
 
         notification = cursor.fetchone()
 
         conn.commit()
 
-        return jsonify(notification), 201
+        return jsonify({
+            "message": "Notification created.",
+            "notification": notification
+        }), 201
 
     except Exception as e:
         conn.rollback()
@@ -213,7 +216,10 @@ def patch_notification(notification_id):
 
         conn.commit()
 
-        return jsonify(notification)
+        return jsonify({
+            "message": "Notification updated.",
+            "notification": notification
+            }), 201
 
     except Exception as e:
         conn.rollback()

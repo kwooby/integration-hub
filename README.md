@@ -1,199 +1,197 @@
 # Integration Hub
 
-Integration Hub is a backend portfolio project that simulates how enterprise systems coordinate orders, inventory, payments, shipping, users, and notifications through a centralized API.
+A Flask-based backend API designed to simulate an integration hub connecting common business resources such as orders, payments, shipments, notifications, products, and inventory.
 
-Rather than each service operating independently, the Integration Hub acts as the orchestration layer that validates requests, coordinates business logic, updates shared data, and records the results of each operation.
+The project is being developed as a full-stack application, with a React frontend planned to consume the Flask API.
 
-The goal of this project is to demonstrate backend software engineering concepts commonly used in production systems, including REST APIs, relational database design, transactions, SQL joins, data validation, and business workflow automation.
+## Architecture
 
----
+```text
+React Frontend
+      │
+      ▼
+Flask API
+      │
+      ▼
+PostgreSQL Database
+```
 
-## Features
+The backend is contained in the `backend` directory, with the frontend planned as a separate React application.
 
-### Users
+## Current Resources
 
-* Create new users
-* Retrieve all users
-* Retrieve individual users by ID
-* Update user information using PATCH
-* Delete users
-* Validate required user fields
-* Prevent duplicate email addresses
-* Preserve existing user information during partial updates
-* Prevent deletion of users with associated orders
+The API currently supports:
 
-### Orders
+* Users
+* Orders
+* Order Items
+* Payments
+* Shipments
+* Notifications
+* Products
+* Inventory
 
-* Create new orders
-* Retrieve all orders
-* Retrieve individual orders by ID
-* Associate orders with order items
-* Calculate order totals on the server
-* Update order status using PATCH
-* Delete completed or cancelled orders
-* Prevent deletion of active orders
-* Prevent deletion when associated records still exist
+## API Operations
 
-### Inventory
+Resources follow a consistent REST-style structure where applicable:
 
-* Validate available inventory before creating an order
-* Prevent purchases when stock is insufficient
-* Automatically reduce inventory after successful orders
+| Method | Purpose                    |
+| ------ | -------------------------- |
+| GET    | Retrieve resources         |
+| POST   | Create resources           |
+| PATCH  | Partially update resources |
+| DELETE | Delete resources           |
 
-### Data Validation
+### Products
 
-* Validate users before order creation
-* Validate products before order creation
-* Validate inventory records before processing
-* Validate that orders exist before shipments, payments, or notifications are created
-* Prevent duplicate shipments
-* Prevent duplicate payments
-* Prevent duplicate email addresses for users
-* Validate payment amounts against the associated order total
-* Validate shipment, payment, and notification statuses
-* Validate notification types
-* Validate notification timestamps based on notification status
-* Prevent deletion of resources when foreign key constraints would be violated
-* Use appropriate HTTP status codes for invalid requests, missing resources, and conflicts
+The Products resource currently supports full CRUD functionality:
 
-### Database
+```text
+GET     /products
+GET     /products/<product_id>
+POST    /products
+PATCH   /products/<product_id>
+DELETE  /products/<product_id>
+```
 
-* PostgreSQL relational database
-* Foreign key relationships
-* Unique constraints
-* SQL JOIN queries
-* Transaction management using commit and rollback
-* Server-generated IDs
-* Server-side business logic
-* Referential integrity enforcement
+Product SKUs are generated automatically by the backend using the PostgreSQL product ID sequence.
 
-### Shipping Module
+## Backend Structure
 
-* Create shipments linked to existing orders
-* Retrieve all shipments
-* Retrieve individual shipments by ID
-* Update shipment information using PATCH
-* Delete shipments
-* Prevent duplicate shipments for the same order
-* Validate that an order exists before creating a shipment
-* Store carrier, tracking number, shipment status, and shipping timestamps
+```text
+integration-hub/
+│
+├── backend/
+│   ├── .venv/
+│   ├── app.py
+│   ├── database.py
+│   ├── products.py
+│   ├── orders.py
+│   ├── payments.py
+│   ├── shipments.py
+│   ├── notifications.py
+│   ├── users.py
+│   ├── inventory.py
+│   ├── seed.sql
+│   ├── requirements.txt
+│
+├── frontend/    
+│    └── React application (planned)
+│
+├── .gitignore
+└── README.md
+```
 
-### Payments Module
+Resource files contain their own routes and resource-specific helper functions. Database connections are handled through shared database functionality.
 
-* Create payments linked to existing orders
-* Retrieve all payments
-* Retrieve individual payments by ID
-* Update payment information using PATCH
-* Delete payments
-* Prevent duplicate payments for the same order
-* Validate that an order exists before creating a payment
-* Validate payment statuses
-* Ensure payment amounts match the associated order total
-* Store payment status, transaction ID, and amount
+## Database
 
-### Notifications Module
+The application uses PostgreSQL for persistent data storage.
 
-* Create notifications linked to existing orders
-* Retrieve all notifications
-* Retrieve individual notifications by ID
-* Update notification status and `sent_at` using PATCH
-* Delete notifications
-* Validate notification statuses
-* Validate notification types
-* Track when notifications are sent using `sent_at`
-* Require `sent_at` when a notification status is `Sent`
-* Keep `sent_at` empty while notifications remain `Pending`
-* Support multiple notifications for the same order
+The database contains relationships between resources, including:
 
-### Order Items
+```text
+Orders
+  │
+  ├── Order Items
+  │
+  ├── Payments
+  │
+  └── Shipments
 
-* Create order items as part of the order creation workflow
-* Retrieve order items through individual order requests
-* Associate order items with existing orders and products
-* Store quantity and price at the time of the order
-* Order items are intentionally not independently deleted to preserve order totals and transaction integrity
+Products
+  │
+  └── Inventory
 
-### API
+Orders
+  │
+  └── Notifications
+```
 
-* RESTful endpoints
-* JSON request and response handling
-* GET, POST, PATCH, and DELETE methods
-* Partial updates using PATCH
-* Consistent HTTP status codes
-* Error handling with try/except/finally
-* Resource-specific database helper functions
-* Postman endpoint testing
+Foreign-key constraints are used to maintain relationships and prevent invalid references between resources.
 
----
+## Validation & Error Handling
 
-## Technology Stack
+The API includes validation for required fields, resource existence, valid status values, invalid prices, duplicate records, and foreign-key constraints.
+
+Common HTTP responses include:
+
+* `200 OK` — Successful request
+* `201 Created` — Resource successfully created
+* `400 Bad Request` — Invalid or missing request data
+* `404 Not Found` — Requested resource does not exist
+* `409 Conflict` — Request conflicts with an existing resource or database constraint
+* `500 Internal Server Error` — Unexpected server error
+
+Database operations use transaction handling with rollback behavior for unexpected errors.
+
+## Technologies
+
+### BACKTECH
 
 * Python
 * Flask
 * PostgreSQL
 * psycopg2
-* Git
-* GitHub
-* Postman
+* SQLAlchemy
+* Alembic
+* python-dotenv
 
----
+### FRONTTECH
 
-## Current Architecture
+* React
+* Vite
 
-Client
-│
-▼
-Flask API (Integration Hub)
-│
-├── Users
-├── Products
-├── Inventory
-├── Orders
-├── Order Items
-├── Payments
-├── Shipments
-└── Notifications
+The React frontend will be developed separately and will consume the Flask API.
 
----
+## Development Environment
 
-## Database Concepts Demonstrated
+The backend uses a Python virtual environment located inside the `backend` directory.
 
-* Relational database design
-* Primary and foreign keys
-* Unique constraints
-* One-to-many relationships
-* SQL joins
-* Transactions
-* Server-side business logic
-* Data validation
-* Database-generated IDs
-* Partial record updates
-* Referential integrity
-* Foreign key constraint handling
+Dependencies are listed in:
 
----
+```text
+backend/requirements.txt
+```
+
+The frontend will maintain its own Node.js dependencies and development environment.
 
 ## Project Goals
 
-This project is being built to simulate the responsibilities of an enterprise integration platform. Rather than focusing on a single CRUD application, Integration Hub demonstrates how multiple business domains interact while maintaining data integrity and consistent workflows.
+The Integration Hub is intended to demonstrate:
 
-Current development focuses on:
-
-* User management
-* Order processing
-* Inventory management
-* Payment simulation
-* Shipping workflows
-* Notification services
+* REST API development
+* Flask application architecture
+* PostgreSQL database design
+* CRUD operations
+* Database relationships and foreign keys
 * API validation and error handling
-* Resource lifecycle management
+* Backend/frontend integration
+* React development
+* Integration-focused application architecture
 
-Future versions will continue expanding these integrations while improving authentication, testing, documentation, and overall architecture.
+## Current Status
 
----
+### Backend
 
-## Status
+**Feature development:** Complete
 
-🚧 Active Development
+The backend resources have been implemented and standardized. Final endpoint testing and cleanup remain before beginning frontend integration.
 
-This project is actively being expanded to simulate real-world backend integrations while following clean architecture and REST API design principles.
+### Frontend
+
+**Status:** Not yet implemented
+
+The next major phase of development is building the React frontend and connecting it to the Flask API.
+
+## Future Development
+
+Planned work includes:
+
+* Complete final backend endpoint testing
+* Build the React frontend
+* Connect React components to the Flask API
+* Display and manage API resources through the frontend
+* Add integration-focused UI functionality
+* Continue improving validation and error handling
+* Deploy the completed application
