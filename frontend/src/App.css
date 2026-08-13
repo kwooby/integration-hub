@@ -1,0 +1,7 @@
+.app-layout {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    min-height: calc(100vh - 60px);
+    min-width: calc(100vh - 60px);
+}

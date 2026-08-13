@@ -1,0 +1,22 @@
+.header {
+    display: flex;
+    justify-content: flex-start;
+    padding: 10px;
+    background-color: #385c38;
+    color: white;
+}
+
+.header-title {
+    flex: 1;
+    padding: 0 15px;
+    margin: 0;
+    border-radius: 5px;
+    width: 10%;
+    text-align: center;
+}
+
+.header-caption {
+    flex: 1;
+    text-align: end;
+    font-size: smaller;
+}

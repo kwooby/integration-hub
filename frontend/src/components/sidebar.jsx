@@ -1,10 +1,12 @@
+import './Sidebar.css'
+
 function Sidebar() {
     return (
-        <aside>
+        <aside className="sidebar">
             <h2>Navigation</h2>
 
-            <nav>
-                <ul>
+            <nav className="sidebar-nav">
+                <ul className="sidebar-list">
                     <li>Dashboard</li>
                     <li>Users</li>
                     <li>Orders</li>

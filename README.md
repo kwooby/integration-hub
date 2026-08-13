@@ -1,197 +1,303 @@
 # Integration Hub
 
-A Flask-based backend API designed to simulate an integration hub connecting common business resources such as orders, payments, shipments, notifications, products, and inventory.
+A full-stack integration and order management application designed to simulate how multiple business systems can communicate through a centralized API.
 
-The project is being developed as a full-stack application, with a React frontend planned to consume the Flask API.
+Integration Hub provides a Flask REST API backed by PostgreSQL, with a React frontend currently being developed to provide a user-friendly interface for interacting with the system.
+
+## Current Status
+
+**Active Development**
+
+The backend API and PostgreSQL database are substantially implemented, including CRUD operations and validation across the primary resources.
+
+The React frontend is currently under development. The initial application structure, Dashboard, navigation, and responsive layout are being built before connecting the frontend to the existing API.
+
+## Tech-Stack
+
+### Frontend
+
+* React
+* Vite
+* JavaScript
+* CSS
+* ESLint
+
+### Backend
+
+* Python
+* Flask
+* Flask Blueprints
+* PostgreSQL
+* psycopg2
+
+### Development-Testing
+
+* VS Code
+* Postman
+* pgAdmin
+* Git / GitHub
 
 ## Architecture
 
 ```text
-React Frontend
-      │
-      ▼
-Flask API
-      │
-      ▼
-PostgreSQL Database
+                    ┌─────────────────────┐
+                    │    React Frontend   │
+                    │                     │
+                    │  Dashboard          │
+                    │  Navbar             │
+                    │  Sidebar            │
+                    │  Application Pages  │
+                    └──────────┬──────────┘
+                               │
+                               │ HTTP Requests
+                               ▼
+                    ┌─────────────────────┐
+                    │     Flask API       │
+                    │                     │
+                    │ Users               │
+                    │ Orders              │
+                    │ Products            │
+                    │ Inventory           │
+                    │ Payments            │
+                    │ Shipments           │
+                    │ Notifications       │
+                    └──────────┬──────────┘
+                               │
+                               │ SQL
+                               ▼
+                    ┌─────────────────────┐
+                    │     PostgreSQL      │
+                    │                     │
+                    │ Application Data    │
+                    └─────────────────────┘
 ```
 
-The backend is contained in the `backend` directory, with the frontend planned as a separate React application.
+## Project Structure
 
-## Current Resources
-
-The API currently supports:
-
-* Users
-* Orders
-* Order Items
-* Payments
-* Shipments
-* Notifications
-* Products
-* Inventory
-
-## API Operations
-
-Resources follow a consistent REST-style structure where applicable:
-
-| Method | Purpose                    |
-| ------ | -------------------------- |
-| GET    | Retrieve resources         |
-| POST   | Create resources           |
-| PATCH  | Partially update resources |
-| DELETE | Delete resources           |
-
-### Products
-
-The Products resource currently supports full CRUD functionality:
+The project is organized into separate frontend and backend applications.
 
 ```text
-GET     /products
-GET     /products/<product_id>
-POST    /products
-PATCH   /products/<product_id>
-DELETE  /products/<product_id>
-```
-
-Product SKUs are generated automatically by the backend using the PostgreSQL product ID sequence.
-
-## Backend Structure
-
-```text
-integration-hub/
+Integration-Hub/
+│
+├── frontend/
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── Navbar.jsx
+│   │   │   ├── Sidebar.jsx
+│   │   │   └── MainContent.jsx
+│   │   │
+│   │   ├── pages/
+│   │   │   └── Dashboard.jsx
+│   │   │
+│   │   ├── App.jsx
+│   │   └── index.css
+│   │
+│   ├── package.json
+│   └── ...
 │
 ├── backend/
-│   ├── .venv/
-│   ├── app.py
-│   ├── database.py
-│   ├── products.py
-│   ├── orders.py
-│   ├── payments.py
-│   ├── shipments.py
-│   ├── notifications.py
-│   ├── users.py
-│   ├── inventory.py
-│   ├── seed.sql
-│   ├── requirements.txt
-│
-├── frontend/    
-│    └── React application (planned)
+│   ├── ...
+│   └── ...
 │
 ├── .gitignore
 └── README.md
 ```
 
-Resource files contain their own routes and resource-specific helper functions. Database connections are handled through shared database functionality.
+> The frontend structure is actively evolving as additional pages and routing are introduced.
+
+## Backend
+
+The backend acts as the central integration layer for the application.
+
+### API Resources
+
+| Resource      | Supported Operations                |
+| ------------- | ----------------------------------- |
+| Users         | GET, GET by ID, POST, PATCH         |
+| Orders        | GET, GET by ID, POST, PATCH         |
+| Products      | GET, GET by ID, POST, PATCH, DELETE |
+| Inventory     | API development                     |
+| Payments      | GET, GET by ID, POST                |
+| Shipments     | GET, GET by ID, POST, PATCH         |
+| Notifications | GET, GET by ID, POST, PATCH         |
+
+The API includes validation and error handling to prevent invalid or inconsistent data from entering the system.
+
+Examples include:
+
+* Required field validation
+* Duplicate record prevention
+* Foreign-key validation
+* Valid status validation
+* Positive payment and product amounts
+* Payment amount validation against the associated order
+* Shipment and notification validation
+* Appropriate HTTP status codes for successful and failed requests
 
 ## Database
 
-The application uses PostgreSQL for persistent data storage.
+Integration Hub uses PostgreSQL for persistent application data.
 
-The database contains relationships between resources, including:
+The database models the relationships between the major business resources, including:
 
 ```text
+Users
+  │
+  ▼
 Orders
-  │
-  ├── Order Items
-  │
   ├── Payments
-  │
-  └── Shipments
+  ├── Shipments
+  └── Notifications
 
 Products
   │
-  └── Inventory
-
-Orders
-  │
-  └── Notifications
+  ▼
+Inventory
 ```
 
-Foreign-key constraints are used to maintain relationships and prevent invalid references between resources.
+PostgreSQL provides persistent storage for the application's users, orders, products, inventory, payments, shipments, and notifications.
 
-## Validation & Error Handling
+## Frontend
 
-The API includes validation for required fields, resource existence, valid status values, invalid prices, duplicate records, and foreign-key constraints.
+The React frontend is being developed as the user-facing application for Integration Hub.
 
-Common HTTP responses include:
-
-* `200 OK` — Successful request
-* `201 Created` — Resource successfully created
-* `400 Bad Request` — Invalid or missing request data
-* `404 Not Found` — Requested resource does not exist
-* `409 Conflict` — Request conflicts with an existing resource or database constraint
-* `500 Internal Server Error` — Unexpected server error
-
-Database operations use transaction handling with rollback behavior for unexpected errors.
-
-## Technologies
-
-### BACKTECH
-
-* Python
-* Flask
-* PostgreSQL
-* psycopg2
-* SQLAlchemy
-* Alembic
-* python-dotenv
-
-### FRONTTECH
-
-* React
-* Vite
-
-The React frontend will be developed separately and will consume the Flask API.
-
-## Development Environment
-
-The backend uses a Python virtual environment located inside the `backend` directory.
-
-Dependencies are listed in:
+The initial component architecture is:
 
 ```text
-backend/requirements.txt
+App
+│
+├── Navbar
+│
+├── Sidebar
+│
+└── MainContent
+    │
+    └── Dashboard
 ```
 
-The frontend will maintain its own Node.js dependencies and development environment.
+### Dashboard
 
-## Project Goals
+The Dashboard is currently the primary frontend page.
 
-The Integration Hub is intended to demonstrate:
+It includes planned overview sections for:
 
-* REST API development
-* Flask application architecture
-* PostgreSQL database design
+* Orders
+* Payments
+* Shipments
+* Notifications
+
+The Dashboard also contains:
+
+* Recent orders table
+* Recent notifications table
+* Overview information
+* Navigation through the application shell
+* Dashboard statistic cards
+
+The current focus is on establishing a clean, responsive layout and consistent visual design before connecting the Dashboard to live API data.
+
+## Frontend-Roadmap
+
+The frontend is being developed in stages:
+
+* [x] Initialize React application with Vite
+* [x] Remove default Vite starter content
+* [x] Establish global CSS foundation
+* [x] Create initial component structure
+* [x] Create Dashboard page
+* [x] Establish Navbar, Sidebar, and MainContent structure
+* [x] Begin Dashboard layout
+* [x] Add Dashboard statistic cards
+* [x] Add initial order and notification tables
+* [ ] Finish Dashboard styling
+* [ ] Refine responsive application layout
+* [ ] Establish consistent frontend visual style
+* [ ] Add application routing
+* [ ] Create resource pages
+* [ ] Connect React frontend to Flask API
+* [ ] Replace placeholder Dashboard data with live API data
+* [ ] Add loading and error states
+* [ ] Perform final UI and code cleanup
+
+## Running the Project
+
+### BackEnd
+
+From the project root, activate the Python virtual environment and start the Flask application.
+
+```bash
+python -m flask run
+```
+
+The backend provides the REST API consumed by the frontend.
+
+### FrontEnd
+
+Navigate to the frontend directory and install the required packages:
+
+```bash
+npm install
+```
+
+Start the React development server:
+
+```bash
+npm run dev
+```
+
+Vite will provide the local development URL for the frontend.
+
+## Environment-Variables
+
+Sensitive configuration such as database credentials should be stored in environment variables rather than committed to the repository.
+
+A typical backend environment configuration includes values for:
+
+```text
+DB_HOST
+DB_NAME
+DB_USER
+DB_PASSWORD
+DB_PORT
+```
+
+The `.env` file should remain excluded from version control.
+
+## Development-Goals
+
+Integration Hub is being built as a portfolio project to demonstrate practical full-stack development skills, including:
+
+* REST API design
 * CRUD operations
-* Database relationships and foreign keys
-* API validation and error handling
-* Backend/frontend integration
-* React development
-* Integration-focused application architecture
+* Database design and relationships
+* Server-side validation
+* Error handling
+* PostgreSQL integration
+* React component architecture
+* Frontend application design
+* API consumption
+* Responsive UI development
+* Git-based development workflow
 
-## Current Status
+The project is intentionally being developed from the backend outward so that the React application can consume a functional API rather than relying solely on mock data.
 
-### Backend
+## Future-Improvements
 
-**Feature development:** Complete
+Potential future improvements include:
 
-The backend resources have been implemented and standardized. Final endpoint testing and cleanup remain before beginning frontend integration.
+* Authentication and authorization
+* More advanced order workflows
+* Inventory management functionality
+* API status monitoring
+* Improved dashboard analytics
+* More detailed resource views
+* Frontend form validation
+* Improved loading and error states
+* Automated testing
+* Deployment configuration
 
-### Frontend
+## Project-Philosophy
 
-**Status:** Not yet implemented
+**Build a realistic backend integration layer first, then build a frontend that makes the system useful and understandable to a real user.**
 
-The next major phase of development is building the React frontend and connecting it to the Flask API.
-
-## Future Development
-
-Planned work includes:
-
-* Complete final backend endpoint testing
-* Build the React frontend
-* Connect React components to the Flask API
-* Display and manage API resources through the frontend
-* Add integration-focused UI functionality
-* Continue improving validation and error handling
-* Deploy the completed application
+The goal is not simply to demonstrate individual technologies, but to demonstrate how those technologies work together as a complete application.

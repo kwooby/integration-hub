@@ -1,0 +1,29 @@
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    
+    flex: 1;
+    flex: 0 0 200px;
+    background-color: white;
+    border-radius: 5px 0 0 5px;
+
+    height: 71vh;
+}
+.sidebar-list{
+    padding-left: 0;
+    justify-items: center;
+    gap: 10p
+
+}
+
+.sidebar-list li {
+    color: white;
+    background-color: #5b855b;
+    border: solid 2px white;
+    list-style: none;
+
+    padding: 8px;
+    width: 75%;
+    border-radius: 5px;
+}

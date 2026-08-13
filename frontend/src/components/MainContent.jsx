@@ -1,9 +1,10 @@
+import './MainContent.css'
 import Dashboard  from "../pages/Dashboard"
 
 function MainContent() {
     return (
-        <main>
-            <Dashboard />
+        <main className="main-content">
+                <Dashboard />
         </main>
     )
 }
