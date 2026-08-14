@@ -8,10 +8,11 @@
     box-sizing: border-box;
 
     padding: 7px;
-    background-color: rgb(215, 243, 210);
+    background-color: rgb(243, 230, 210);
     gap: 10px;
 
-    height: 71vh;
+    height: 100vh;
+    color:rgb(87, 55, 18)
 }
 
 .dashboard-sections {
@@ -28,8 +29,15 @@
     gap: 20px;
 }
 
+.stat-card h3, section h2 {
+    color: rgb(87, 55, 18);
+    background-color: rgb(250, 246, 215);
+    border-radius: 5px;
+    padding: 5px 10px;
+}
+
 .dashboard-header {
-    background-color: #5b855b;
+    background-color: rgb(59, 29, 9);
     color: white;
     padding-top: 3px;
     width: 250px;

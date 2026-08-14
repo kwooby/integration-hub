@@ -6,6 +6,30 @@
 
 ## 08/13/2026
 
+COMPLETED:
+    -Fixed layout being scrollable.
+        -App.css now has body ruleset for overflow: hidden.
+    -Continued making the dashboard layout cohesive.
+        -This would be the landing page, people would open it to this exact page.
+        -Color change.
+            -Trying browns and yellows in combination. Going to sit on it and look tomorrow to see if I still like it.
+            -Honestly I already like the green better but we can still sit on it and see.
+            -Looks like coffee right now. Looks okay.
+        -Since the overflow:hidden now prevents overflow to become scrollable, height on both sidebar and dashboard components is now 100vh.
+        -Dashboard fits very nicely on the screen.
+    -Sidebar navigation buttons are now clickable.
+        -They are mapped with temporary names same as their own.
+
+NEXT:
+    -Finish dashboard styling.
+        -Polish dashboard tables.
+        -Follow similar style to rest of application.
+        -Prepare for the stat cards to take backend data.
+    -Finish preparing Dashboard for backend connection.
+    -Configure open local host frontend to F6.
+        -Much later, since we're working in the directory we need, this isn't as necessary as the backend configuration.
+        -This would moreso be for other developers, and giving them the option to open the localhost for both ends easily.
+
 ----------
 
 COMPLETED:
