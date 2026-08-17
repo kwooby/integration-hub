@@ -1,9 +1,8 @@
 import psycopg2
+from flask_cors import CORS
 import os
 from dotenv import load_dotenv
-from flask import Flask, jsonify
-
-from backend.database import get_db_connection
+from flask import Flask
 
 from backend.routes.users import users_bp
 from backend.routes.products import products_bp
@@ -15,6 +14,7 @@ from backend.services.notifications import notifications_bp
 load_dotenv()
 
 app = Flask(__name__)
+CORS(app)
 
 app.register_blueprint(users_bp)
 app.register_blueprint(products_bp)

@@ -1,14 +1,32 @@
 # DEVELOPER NOTES FOR INTEGRATION HUB API FRONTEND
 
-* __ CONFIGURED TO OPEN INTEGRATION HUB FRONTEND
-
 ----------
 
 ## 08/17/2026
 
 COMPLETED:
-    -Finished basic stylized layout
-        -Went back to green as the overall color theme
+    -Finalized the basic stylized layout for the Integration Hub frontend.
+        -Settled on green as the overall application color theme.
+        -Completed the initial dashboard styling and visual structure.
+    -Began connecting the React frontend to the Flask backend API.
+        -Configured CORS to allow the React development server to communicate with the Flask API.
+        -Connected the Dashboard to the /orders endpoint using JavaScript fetch().
+        -Successfully retrieved seeded PostgreSQL order data through the Flask API.
+    -Added React state management for API data.
+        -Used useState() to store orders, payments, shipments, and notifications.
+        -Used useEffect() to perform API requests when the Dashboard loads.
+    -Connected backend data to the Dashboard stat cards.
+        -Calculated resource totals using JavaScript .length.
+        -Replaced static values with dynamically retrieved API data.
+        -Verified that the stat cards display the actual data stored in PostgreSQL.
+    -Improved understanding of the React data flow:
+        -PostgreSQL → Flask API → fetch() → React state → JavaScript calculations → JSX/UI.
+    -Reviewed React component organization and began establishing a consistent structure for -state, effects, calculations, and UI logic.
+
+NEXT:
+    -Connect the remaining Dashboard data to their respective API endpoints.
+    -Begin displaying individual order information in the Dashboard.
+    -Continue replacing static/placeholder Dashboard content with live API data.
 
 ## 08/14/2026
 

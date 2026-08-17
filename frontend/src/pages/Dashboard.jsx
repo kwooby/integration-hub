@@ -1,6 +1,50 @@
 import './Dashboard.css'
+import { useEffect, useState } from "react";
 
 function Dashboard() {
+
+    const [orders, setOrders] = useState([])
+    const [payments, setPayments] = useState([])
+    const [shipments, setShipments] = useState([])
+    const [notifications, setNotifications] = useState([])
+
+    useEffect(() => {
+        fetch("http://localhost:5000/orders")
+            .then(response => response.json())
+            .then(data => {
+                setOrders(data);
+            })
+        }, []);
+
+    useEffect(() => {
+        fetch("http://localhost:5000/payments")
+            .then(response => response.json())
+            .then(data => {
+                setPayments(data)
+            })
+    }, []);
+
+    useEffect(() => {
+        fetch("http://localhost:5000/shipments")
+            .then(response => response.json())
+            .then(data => {
+                setShipments(data)
+            })
+    }, []);
+
+    useEffect(() => {
+        fetch("http://localhost:5000/notifications")
+            .then(response => response.json())
+            .then(data => {
+                setNotifications(data)
+            })
+    }, []);
+
+    const orderCount = orders.length;
+    const paymentCount = payments.length;
+    const shipmentCount = shipments.length;
+    const notificationCount = notifications.length;
+
     return (
         <div className="dashboard">
             <header className="dashboard-header">
@@ -13,22 +57,22 @@ function Dashboard() {
 
                     <div className="stat-card">
                         <h3>Orders</h3>
-                        <p>124</p>
+                        <p>{orderCount}</p>
                     </div>
 
                     <div className="stat-card">
                         <h3>Payments</h3>
-                        <p>110</p>
+                        <p>{paymentCount}</p>
                     </div>
 
                     <div className="stat-card">
                         <h3>Shipments</h3>
-                        <p>97</p>
+                        <p>{shipmentCount}</p>
                     </div>
 
                     <div className="stat-card">
                         <h3>Notifications</h3>
-                        <p>154</p>
+                        <p>{notificationCount}</p>
                     </div>
 
                 </section>
