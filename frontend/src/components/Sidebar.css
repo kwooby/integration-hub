@@ -13,7 +13,7 @@
 
 .sidebar h2 {
     text-decoration: underline;
-    color: rgb(59, 29, 9);
+    color: rgb(31, 61, 46);
 }
 
 .sidebar-list a, .sidebar-list a:visited {
@@ -22,7 +22,7 @@
 }
 
 .sidebar-list a:hover {
-    color: rgb(59, 29, 9);
+    color: rgb(31, 61, 46);
 }
 
 .sidebar-list{
@@ -33,11 +33,15 @@
 
 .sidebar-list li {
     color: white;
-    background-color: #8d6246;
+    background-color: rgb(31, 61, 46);
     border: solid 2px rgb(250, 246, 215);
     list-style: none;
 
     padding: 8px;
     width: 75%;
     border-radius: 5px;
+}
+
+.sidebar-list li:hover {
+    background-color: rgb(255, 244, 193);
 }

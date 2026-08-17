@@ -3,16 +3,16 @@
     flex: 2;
     flex-direction: column;
     align-items: center;
-    width: 100vh;
+    width: 100%;
 
     box-sizing: border-box;
 
     padding: 7px;
-    background-color: rgb(243, 230, 210);
+    background-color: rgb(166, 206, 190);
     gap: 10px;
 
     height: 100vh;
-    color:rgb(87, 55, 18)
+    color:rgb(31, 61, 46);
 }
 
 .dashboard-sections {
@@ -21,7 +21,7 @@
     text-align: center;
     justify-items: center;
     padding: 9px;
-    background-color: white;
+    background-color: rgb(250, 249, 240);
 }
 
 .dashboard-stats {
@@ -29,15 +29,21 @@
     gap: 20px;
 }
 
-.stat-card h3, section h2 {
-    color: rgb(87, 55, 18);
-    background-color: rgb(250, 246, 215);
+.stat-card h3 {
+    color: rgb(36, 54, 45);
+    background-color: rgb(208, 236, 220);
     border-radius: 5px;
     padding: 5px 10px;
 }
 
+section h2 {
+    background-color: rgb(208, 236, 220);
+    color: rgb(36, 54, 45);
+    border-radius: 5px
+}
+
 .dashboard-header {
-    background-color: rgb(59, 29, 9);
+    background-color: rgb(9, 59, 31);
     color: white;
     padding-top: 3px;
     width: 250px;
@@ -45,11 +51,22 @@
     text-align: center;
 }
 
+section table {
+    width: 70vh;
+    border-collapse: separate;
+    border-spacing: 80px 0;
+}
+
+.recent-notifications table {
+    margin-right: 13px
+}
+
 .dashboard-header h2 {
     margin: 0;
     text-align: center;
 }
 
-.dashboard th, .dashboard td {
+thead, tbody {
     padding: 0 9px 9px 0;
 }
+

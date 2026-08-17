@@ -4,7 +4,15 @@
 
 ----------
 
-## 08/13/2026
+## 08/17/2026
+
+COMPLETED:
+    -Finished basic stylized layout
+        -Went back to green as the overall color theme
+
+## 08/14/2026
+
+----------
 
 COMPLETED:
     -Fixed layout being scrollable.
@@ -29,6 +37,8 @@ NEXT:
     -Configure open local host frontend to F6.
         -Much later, since we're working in the directory we need, this isn't as necessary as the backend configuration.
         -This would moreso be for other developers, and giving them the option to open the localhost for both ends easily.
+
+## 08/13/2026
 
 ----------
 
