@@ -2,7 +2,51 @@
 
 ----------
 
+## 08/18/2026
+
+COMPLETED:
+    -Continued development of the Integration Hub React frontend.
+    -Connected the Dashboard to the Flask backend API.
+        -Fetches Orders, Payments, Shipments, and Notifications data.
+        -Consolidated dashboard requests into a single useEffect.
+        -Used Promise.all() to handle multiple API requests concurrently.
+    -Added basic dashboard loading and error handling.
+        -Added loading state while API requests are in progress.
+        -Added error state for failed requests.
+        -Added HTTP response validation using response.ok.
+        -Added console error logging for debugging.
+    -Added Recent Orders dashboard section.
+        -Displays the 5 most recent orders.
+        -Reverses the returned data so the newest records appear first.
+        -Dynamically renders order rows using .map().
+        -Added a "No recent orders" empty state.
+    -Added Recent Notifications dashboard section.
+        -Displays the 5 most recent notifications.
+        -Dynamically renders notification rows using .map().
+        -Displays N/A when a notification does not have a sent_at value.
+        -Added a "No recent notifications" empty state.
+    -Improved dashboard table styling.
+        -Prevented table content from wrapping unnecessarily.
+        -Reworked table spacing and sizing for better readability.
+        -Centered empty-state messages using colSpan.
+    -Reviewed React concepts including:
+        -Array .map()
+        -React key props
+        -Conditional rendering
+        -Ternary operators
+        -async / await
+        -Promise.all()
+        -Response JSON parsing
+    -Tested the Dashboard with live backend data and verified basic loading/error behavior.
+
+NEXT:
+    -Continue building out the remaining Integration Hub frontend resource pages.
+    -Further refine dashboard styling based on real data.
+    -Test dashboard behavior with different API/data states.
+
 ## 08/17/2026
+
+----------
 
 COMPLETED:
     -Finalized the basic stylized layout for the Integration Hub frontend.

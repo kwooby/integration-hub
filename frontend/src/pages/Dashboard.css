@@ -1,3 +1,5 @@
+/* Dashboard Layout */
+
 .dashboard {
     display: flex;
     flex: 2;
@@ -8,65 +10,107 @@
     box-sizing: border-box;
 
     padding: 7px;
-    background-color: rgb(166, 206, 190);
     gap: 10px;
 
-    height: 100vh;
-    color:rgb(31, 61, 46);
+    background-color: rgb(166, 206, 190);
+    color: rgb(31, 61, 46);
 }
 
+/* Dashboard Sections */
+
 .dashboard-sections {
-    width: 90vh;
+    width: 90%;
+
+    padding: 9px;
+
     border-radius: 5px;
+
+    background-color: rgb(250, 249, 240);
+
     text-align: center;
     justify-items: center;
-    padding: 9px;
-    background-color: rgb(250, 249, 240);
 }
+
+
+/* Dashboard Header */
+
+.dashboard-header {
+    width: 250px;
+
+    padding-top: 3px;
+
+    border-radius: 5px;
+
+    background-color: rgb(9, 59, 31);
+    color: white;
+
+    text-align: center;
+}
+
+.dashboard-header h2 {
+    margin: 0;
+
+    text-align: center;
+}
+
+
+/* Dashboard Stats */
 
 .dashboard-stats {
     display: flex;
     gap: 20px;
 }
 
-.stat-card h3 {
-    color: rgb(36, 54, 45);
-    background-color: rgb(208, 236, 220);
-    border-radius: 5px;
-    padding: 5px 10px;
+.stat-card p {
+    padding: 15px 0;
+    border-radius: 15px;
+    background-color: rgb(225, 245, 230);
 }
+
+.stat-card h3 {
+    padding: 5px 10px;
+    border-radius: 5px;
+    background-color: rgb(208, 236, 220);
+    color: rgb(36, 54, 45);
+}
+
+
+/* Section Headings */
 
 section h2 {
+    border-radius: 5px;
+
     background-color: rgb(208, 236, 220);
     color: rgb(36, 54, 45);
-    border-radius: 5px
 }
 
-.dashboard-header {
-    background-color: rgb(9, 59, 31);
-    color: white;
-    padding-top: 3px;
-    width: 250px;
-    border-radius: 5px;
-    text-align: center;
-}
+
+/* Tables */
 
 section table {
-    width: 70vh;
-    border-collapse: separate;
-    border-spacing: 80px 0;
+    width: 100%;
+
+    border-collapse: collapse;
 }
 
-.recent-notifications table {
-    margin-right: 13px
+section th,
+section td {
+    padding: 6px 12px;
+
+    white-space: nowrap;
 }
 
-.dashboard-header h2 {
-    margin: 0;
-    text-align: center;
+section td {
+    border: solid 1px rgb(179, 219, 191);
 }
 
-thead, tbody {
-    padding: 0 9px 9px 0;
+/* Recent Data */
+
+.recent-orders,
+.recent-notifications {
+    width: 100%;
 }
 
+.no-data {
+text-align: center;
+}
