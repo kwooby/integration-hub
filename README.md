@@ -209,12 +209,12 @@ The frontend is being developed in stages:
 * [x] Begin Dashboard layout
 * [x] Add Dashboard statistic cards
 * [x] Add initial order and notification tables
-* [ ] Finish Dashboard styling
+* [x] Finish Dashboard styling
 * [ ] Refine responsive application layout
-* [ ] Establish consistent frontend visual style
+* [x] Establish consistent frontend visual style
 * [ ] Add application routing
 * [ ] Create resource pages
-* [ ] Connect React frontend to Flask API
+* [x] Connect React frontend to Flask API
 * [ ] Replace placeholder Dashboard data with live API data
 * [ ] Add loading and error states
 * [ ] Perform final UI and code cleanup

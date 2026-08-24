@@ -2,6 +2,43 @@
 
 ----------
 
+## 08/24/2026
+
+COMPLETED:
+
+    REACT ROUTER AND PAGES:
+
+    - Added React Router to handle navigation between application pages
+    - Added routes for the Dashboard and Orders pages
+    - Connected Sidebar navigation to routes using `Link`
+    - Kept shared layout components such as Header and Sidebar outside the routed pages
+    - Removed the need for `MainContent` to directly render the Dashboard
+
+    ORDERS PAGE:
+
+    - Created the Orders page and connected it to the Flask `/orders` endpoint
+    - Added loading and error state handling
+    - Displayed orders in a table
+    - Added an empty-state message when no orders are available
+    - Used a copied array (`[...orders]`) before reversing orders to avoid mutating React state
+
+TROUBLESHOOTING:
+
+    - Fixed React Router import/path issues
+    - Fixed Python backend startup by running the Flask application as a module
+    - Practiced reading Vite and browser console errors to identify import and runtime issues
+    - Deleted 'MainContent.jsx' and 'MainContent.css' in preference of importing Dashboard directly
+        - MainContent was basically just a container for the dashboard, creating multiple dashboards
+        - This was confusing and MainContent did not have anything that Dashboard didn't already have
+        - Therefore, deleting felt warranted
+
+NEXT:
+    - Add the skeletons: Payments and Shipments page
+        - Connect sideBar navigation to pages
+    - Add basic footer component to balance page
+    - Connect /PATCH and /DELETE routes to Orders page
+    - Continued styling of all pages
+
 ## 08/18/2026
 
 COMPLETED:

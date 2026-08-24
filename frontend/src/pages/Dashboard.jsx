@@ -8,7 +8,7 @@ function Dashboard() {
     const [notifications, setNotifications] = useState([])
     
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null)
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         const fetchDashboardData = async () => {
@@ -25,7 +25,7 @@ function Dashboard() {
                     fetch("http://localhost:5000/orders"),
                     fetch("http://localhost:5000/payments"),
                     fetch("http://localhost:5000/shipments"),
-                    fetch("http://localhost:5000/notifications"),
+                    fetch("http://localhost:5000/notifications")
                 ]);
 
                 if (
@@ -51,7 +51,7 @@ function Dashboard() {
                 setError("Unable to connect to the server.")
             } finally {
                 setLoading(false)
-            }
+            };
         };
 
         fetchDashboardData();
