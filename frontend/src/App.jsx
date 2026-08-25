@@ -6,6 +6,7 @@ import Sidebar from './components/Sidebar.jsx'
 
 import Orders from './pages/Orders.jsx'
 import Dashboard from './pages/Dashboard.jsx';
+import Payments from './pages/Payments.jsx';
 
 function App() {
     return (
@@ -19,6 +20,7 @@ function App() {
                     <Routes>
                         <Route path="/" element={<Dashboard />} />
                         <Route path="/orders" element={<Orders />} />
+                        <Route path="/payments" element={<Payments />} />
                     </Routes>
                 </div>
             </BrowserRouter>

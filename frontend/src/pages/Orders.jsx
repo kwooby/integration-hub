@@ -2,7 +2,7 @@ import './Orders.css'
 import { useEffect, useState } from "react";
 
 function Orders() {
-    const [orders, setOrders] = useState([])
+    const [orders, setOrders] = useState([]);
 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
