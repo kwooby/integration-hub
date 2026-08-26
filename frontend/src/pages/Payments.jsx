@@ -5,7 +5,7 @@ function Payments() {
     const [payments, setPayments] = useState([]);
 
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null)
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         const fetchPayments = async () => {
@@ -25,9 +25,9 @@ function Payments() {
 
             } catch (error) {
                 console.error(error);
-                setError("Unable to connect to server.")
+                setError("Unable to connect to server.");
             } finally {
-                setLoading(false)
+                setLoading(false);
             }
         };
     

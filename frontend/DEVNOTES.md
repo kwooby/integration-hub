@@ -2,10 +2,23 @@
 
 ----------
 
+## 08/25/2026
+
+COMPLETED:
+    - Added React routes for Shipments and Payments pages
+    - Connected sidebar navigation for both pages using Link
+    - Kept consistent styling between all hub pages
+
+NEXT:
+    - Add Notifications page skeleton
+        - Connect sidebar navigation
+    - Add basic footer component
+    - Connect /PATCH and /DELETE routes to Orders page
+    - Continued styling of all pages
+
 ## 08/24/2026
 
 COMPLETED:
-
     REACT ROUTER AND PAGES:
 
     - Added React Router to handle navigation between application pages
@@ -23,7 +36,6 @@ COMPLETED:
     - Used a copied array (`[...orders]`) before reversing orders to avoid mutating React state
 
 TROUBLESHOOTING:
-
     - Fixed React Router import/path issues
     - Fixed Python backend startup by running the Flask application as a module
     - Practiced reading Vite and browser console errors to identify import and runtime issues

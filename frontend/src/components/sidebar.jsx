@@ -10,9 +10,9 @@ function Sidebar() {
                 <ul className="sidebar-list">
                     <li><Link to="/">Dashboard</Link></li>
                     <li><Link to="/orders">Orders</Link></li>
-                    <li><a href="payments">Payments</a></li>
-                    <li><a href="shipments">Shipments</a></li>
-                    <li><a href="notifications">Notifications</a></li>
+                    <li><Link to="payments">Payments</Link></li>
+                    <li><Link to="shipments">Shipments</Link></li>
+                    <li><Link to="notifications">Notifications</Link></li>
                 </ul>
             </nav>
         </aside>
