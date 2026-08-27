@@ -2,6 +2,26 @@
 
 ----------
 
+## 08/27/2026
+
+COMPLETED:
+    - Added React routes for Notifications page
+        - Connected sidebar navigation
+        - Styling from other pages is maintained
+    - Added order lookup with order items to Orders page with GET/'id'
+        - This is not stylized yet, but should maintain style consistency with rest of pages and especially the Orders page
+        - Search by order number
+        - Order lookup shows both order details and details of the item(s) ordered
+        - If order does not exist, order error appears
+        - If items exist in order, details of items will appear as well, otherwise item order error appears
+    - Added bare basics of the Products page (just to make the Hub work for debug)
+
+NEXT:
+    - Add 'Create Order' with POST (Orders)
+    - Add 'Edit Order' with PATCH (Orders)
+    - Stylize find order table
+    - Finish Products page skeleton
+
 ## 08/25/2026
 
 COMPLETED:
