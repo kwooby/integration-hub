@@ -13,6 +13,7 @@ function Sidebar() {
                     <li><Link to="payments">Payments</Link></li>
                     <li><Link to="shipments">Shipments</Link></li>
                     <li><Link to="notifications">Notifications</Link></li>
+                    <li><Link to="products">Products</Link></li>
                 </ul>
             </nav>
         </aside>
