@@ -1,4 +1,4 @@
-.orders {
+.notifications {
     display: flex;
     flex: 2;
     flex-direction: column;
@@ -13,7 +13,7 @@
     color: rgb(31, 61, 46);
 }
 
-.orders-header {
+.notifications-header {
     width: 250px;
     border-radius: 5px;
 
@@ -23,12 +23,12 @@
     text-align: center;
 }
 
-.all-orders {
+.all-notifications {
     width: 100%;
     background-color: rgb(250, 249, 240);
     border-radius: 5px;
 }
 
-.all-orders thead {
+.all-notifications thead {
     background-color: rgb(208, 236, 220);
 }

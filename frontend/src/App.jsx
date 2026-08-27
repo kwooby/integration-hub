@@ -8,6 +8,7 @@ import Orders from './pages/Orders.jsx'
 import Dashboard from './pages/Dashboard.jsx';
 import Payments from './pages/Payments.jsx';
 import Shipments from './pages/Shipments.jsx';
+import Notifications from './pages/Notifications.jsx';
 
 function App() {
     return (
@@ -23,6 +24,7 @@ function App() {
                         <Route path="/orders" element={<Orders />} />
                         <Route path="/payments" element={<Payments />} />
                         <Route path="/shipments" element={<Shipments />} />
+                        <Route path="/notifications" element={<Notifications />} />
                     </Routes>
                 </div>
             </BrowserRouter>
