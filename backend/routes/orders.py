@@ -279,6 +279,8 @@ def delete_order(order_id):
             "error": "Order not found."
         }), 404
 
+    print("TEST")
+
     if order["status"] not in DELETABLE_ORDER_STATUS:
         return jsonify({
             "error": "Only completed or cancelled orders can be deleted."

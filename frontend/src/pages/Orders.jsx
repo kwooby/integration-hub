@@ -34,14 +34,15 @@ function Orders() {
         fetchOrders();
     }, []);
 
-    const [orderId, setOrderId] = useState("");
+    const [findOrderId, setFindOrderId] = useState("");
+    const [updateOrderId, setUpdateOrderId] = useState("");
+    const [deleteOrderId, setDeleteOrderId] = useState("");
 
     const [order, setOrder] = useState(null);
     const [orderItems, setOrderItems] = useState([]);
 
     const [orderLoading, setOrderLoading] = useState(false);
     const [orderError, setOrderError] = useState(null);
-    const [orderItemsError, setOrderItemsError] = useState(null);
 
     const findOrder = async (id) => {
         setOrderLoading(true);
@@ -69,6 +70,113 @@ function Orders() {
         };
     };
 
+    const [creatingOrder, setCreatingOrder] = useState(false);
+    const [createOrderError, setCreateOrderError] = useState(null);
+
+    const handleCreateSubmit = (event) => {
+        event.preventDefault();
+
+        const formData = new FormData(event.target);
+        const orderData = Object.fromEntries(formData);
+
+        orderData.user_id = Number(orderData.user_id);
+        orderData.product_id = Number(orderData.product_id);
+        orderData.quantity = Number(orderData.quantity);
+
+        createOrder(orderData)
+    }
+
+    const createOrder=  async (orderData) => {
+        setCreatingOrder(true);
+        setCreateOrderError(null);
+
+        try {
+            const response = await fetch("http://localhost:5000/orders", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(orderData)
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error);
+            }
+
+            const data = await response.json();
+
+            return data;
+
+        } catch (error) {
+            setCreateOrderError(error.message);
+        } finally {
+            setCreatingOrder(false);
+        }
+    };
+
+    const [updatingOrder, setUpdatingOrder] = useState(false);
+    const [updateOrderError, setUpdateOrderError] = useState(null);
+
+    const handleUpdateSubmit = (event) => {
+        event.preventDefault();
+
+        const formData = new FormData(event.target);
+        const orderData = Object.fromEntries(formData);
+
+        updateOrder(updateOrderId, orderData);
+    };
+
+    const updateOrder = async (id, orderData) => {
+        setUpdatingOrder(true);
+        setUpdateOrderError(null);
+
+        try {
+            const response = await fetch(`http://localhost:5000/orders/${id}`,  {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(orderData)
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error);
+            }
+
+            const data = await response.json();
+
+            return data;
+
+        } catch (error) {
+            setUpdateOrderError(error.message);
+        } finally {
+            setUpdatingOrder(false);
+        }
+    };
+
+    const [deletingOrder, setDeletingOrder] = useState(false);
+    const [deleteOrderError, setDeleteOrderError] = useState(null);
+
+    const handleDeleteSubmit = (event) => {
+        event.preventDefault();
+
+        deleteOrder(deleteOrderId)
+    };
+
+    const deleteOrder = async (id) => {
+        setDeletingOrder(true);
+        setDeleteOrderError(null);
+
+        const response = await fetch(`http://localhost:5000/orders/${id}`, {
+            method: "DELETE"
+        });
+
+        const data = await response.json();
+        return data;
+    }
+
     const reverseOrders = [...orders].reverse()
 
     return (
@@ -76,7 +184,7 @@ function Orders() {
             {loading ? (
                 <p>Loading orders...</p>
             ) : error ? (
-                <p>{orderError}</p>
+                <p>{error}</p>
             ) : (
                 <>
                     <header className="orders-header">
@@ -116,11 +224,11 @@ function Orders() {
 
                         <input 
                             type="text"
-                            value={orderId}
-                            onChange={(event) => setOrderId(event.target.value)}
+                            value={findOrderId}
+                            onChange={(event) => setFindOrderId(event.target.value)}
                         />
 
-                        <button onClick={() => findOrder(orderId)}>
+                        <button onClick={() => findOrder(findOrderId)}>
                             Search
                         </button>
 
@@ -176,6 +284,103 @@ function Orders() {
                                 <p>No items found.</p>
                             )}
                         </section>
+                    </section>
+
+                    <section className="create-order">
+                        <h2>Create Order</h2>
+
+                        <form onSubmit={handleCreateSubmit}>
+                            <label>
+                                User ID: 
+                                <input type="number" name="user_id" required />
+                            </label>
+
+                            <label>
+                                Status:
+
+                                <select name="status" required>
+                                    <option value="">Select status</option>
+                                    <option value="Pending">Pending</option>
+                                    <option value="Processing">Processing</option>
+                                    <option value="Completed">Completed</option>
+                                    <option value="Cancelled">Cancelled</option>
+                                </select>
+                            </label>
+
+                            <label>
+                                Product ID: 
+                                <input type="number" name="product_id" required />
+                            </label>
+
+                            <label>
+                                Quantity:
+                                <input type="number" name="quantity" required />
+                            </label>
+
+                            <button type="submit">
+                                Create Order
+                            </button>
+                        </form>
+
+                        {creatingOrder && <p>Creating order...</p>}
+                        {createOrderError && <p>{createOrderError}</p>}
+                    </section>
+
+                    <section className="update-order">
+                        <h2>Update Order Status</h2>
+
+                        <form onSubmit={handleUpdateSubmit}>
+                            <label>
+                                OrderID: 
+                                <input
+                                    type="number"
+                                    value={updateOrderId}
+                                    onChange={(event) => setUpdateOrderId(event.target.value)}
+                                    required
+                                />
+                            </label>
+
+                            <label>
+                                Status: 
+                                <select name="status" required>
+                                    <option calue="">Select status</option>
+                                    <option value="Pending">Pending</option>
+                                    <option value="Processing">Processing</option>
+                                    <option value="Completed">Completed</option>
+                                    <option value="Cancelled">Cancelled</option>
+                                </select>
+                            </label>
+
+                            <button type="submit">
+                                Update Order
+                            </button>
+                        </form>
+
+                        {updatingOrder && <p>Updating order...</p>}
+                        {updateOrderError && <p>{updateOrderError}</p>}
+                    </section>
+
+                    <section className="delete-order">
+                        <h2>Delete Order</h2>
+
+                        <form onSubmit={handleDeleteSubmit}>
+                            <label>
+                                Order ID:
+                                <input 
+                                    type="number"
+                                    value={deleteOrderId}
+                                    onChange={(event) => setDeleteOrderId(event.target.value)}
+                                    required
+                                />
+                            </label>
+
+                            <button type="submit">
+                                Delete Order
+                            </button>
+                        </form>
+
+                        {deletingOrder && <p>Deleting order...</p>}
+                        {deleteOrderError && <p>{deleteOrderError}</p>}
                     </section>
                 </>
             )}
