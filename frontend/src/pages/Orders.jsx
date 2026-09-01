@@ -169,13 +169,27 @@ function Orders() {
         setDeletingOrder(true);
         setDeleteOrderError(null);
 
-        const response = await fetch(`http://localhost:5000/orders/${id}`, {
-            method: "DELETE"
-        });
+        try {
 
-        const data = await response.json();
-        return data;
-    }
+            const response = await fetch(`http://localhost:5000/orders/${id}`, {
+                method: "DELETE"
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error);
+            }
+
+            const data = await response.json();
+
+            return data;
+
+        } catch (error) {
+            setDeleteOrderError(error.message);
+        } finally {
+            setDeletingOrder(false);
+        }
+    };
 
     const reverseOrders = [...orders].reverse()
 

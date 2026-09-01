@@ -291,6 +291,11 @@ def delete_order(order_id):
 
     try:
         cursor.execute("""
+            DELETE FROM order_items
+            WHERE order_id = %s
+        """, (order_id,))
+
+        cursor.execute("""
             DELETE FROM orders
             WHERE id = %s
         """, (order_id,))
