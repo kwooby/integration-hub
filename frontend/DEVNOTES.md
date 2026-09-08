@@ -2,6 +2,95 @@
 
 ----------
 
+## 09/08/2026
+
+COMPLETED:
+
+    -UPDATE PAYMENT BUG IS FIXED!
+        - Issue was the set total amount for payment, which we changed to allow partial payments last work session
+        - Syntax error in update payments SQL from working
+        - 
+
+## 09/03/2026
+
+COMPLETED:
+
+    - CREATE PAYMENT BUG IS FIXED!!!
+        - Transaction ID is now generated rather than manually added
+        - Create payment only asks for amount, order ID and status for clarity
+    - Add find order box to the create payments section to facilitate finding the order information (ID, amount)
+    - Full Test Delete payment, working
+    - Add PATCH/UPDATE in payments page
+        - DOES NOT WORK, NEEDS DEBUG
+        - 404, thinking its something to do with the payment ID not going through
+
+NEXT:
+
+    - FIX UPDATE PAYMENT BUG
+    - Continue standardizing style across API
+    - Commit frontend Payments CRUD features
+    - Start CRUD features for Shipments
+    - Add more pages for accessibility:
+        - Users
+        - Products (jsx is added for this one but there is nothing in it, just the ability to click on a blank screen)
+
+## 09/01/2026
+
+COMPLETED:
+
+    - DELETE ORDER BUG IS FIXED!
+        - It WAS the associated items!
+        - Add delete order items to Delete Order, so associated records will delete with order on submit as long as the order status is 'Cancelled' or 'Completed'
+    -  Add some CRUD features to Payments page
+        - Get payment by ID WORKS
+        - Delete payment WORKS
+        - Create payment DOES NOT WORK
+
+NEXT:
+
+    - Fix update payment bug (debug notes in notebook)
+    - Finish typing Devnotes
+    - Standardize style between pages
+    - Begin add CRUD for shipments page
+    
+
+## 08/31/2026
+
+COMPLETED:
+
+    - Add CRUD functionality and features to frontend Orders page
+        - Get existing order by ID
+        - Create new order
+        - Edit/Update existing order
+        - Delete existing order
+    - DELETE refusing deletion on account of associated items (order items) attached to it
+        -Will debug next session
+    - Basic stylization of Orders page
+        - Sections are okay, more readable
+        - Not done with this but leaving for later with focus on implementing CRUD in rest of pages before fully committing to a style
+
+NEXT:
+
+    - DEBUG DELETE FEATURE ON ORDERS PAGE!!!!!
+        - It is most certainly the associated items (order items) still being attached to the order itself
+        - Speculating on the 'deletable status' function also stopping the order from being able to delete
+        - Surface level tests still point to the associated items problem
+    - Add CRUD functionality features to Payments page
+        - GET<id>
+        - POST
+        - PATCH
+        - DELETE
+    - Continued advancement of frontend stylization
+
+NOTES:
+    - Eventually, we will want to make the 'all [resource]' sections to show chunks at a time rather than every [resource] possible
+        - Perhaps 10 per page, with next and previous buttons as well as page numbers to facilitate navigation
+    - Creating a payment is not streamlined, even despite it not fully working right now
+        - Putting a 'find order' section near the create payments might help for clarity
+        - Right now it's difficult to create a payment because switching back and forth throws the flow and accessibility off greatly
+        - Even if it's just for reference to the order, I should have something tangible that can be interacted with and looked at while creating a payment for a specific order
+    - We still need to fix the css for the Orders page, its all one column, probably not good
+
 ## 08/27/2026
 
 COMPLETED:

@@ -1,3 +1,4 @@
+import uuid
 from flask import Blueprint, jsonify, request
 from backend.database import get_db_connection
 
@@ -93,7 +94,8 @@ def create_payments():
         order_id = data["order_id"]
         status = data["status"]
         amount = data["amount"]
-        transaction_id = data["transaction_id"]
+
+        transaction_id = f"TXN-{uuid.uuid4()}"
 
         order = order_exists(order_id)
 
@@ -101,19 +103,6 @@ def create_payments():
             return jsonify({
                 "error": "Order not found."
             }), 404
-
-        cursor.execute("""
-            SELECT *
-            FROM payments
-            WHERE order_id = %s
-        """, (order_id,))
-
-        existing_payment = cursor.fetchone()
-
-        if existing_payment is not None:
-            return jsonify({
-                "error": "Payment already exists for this order."
-            }), 400
 
         if status not in ALLOWED_PAYMENT_STATUSES:
             return jsonify({
@@ -125,15 +114,20 @@ def create_payments():
                 "error": "Amount must be greater than zero."
             }), 400
 
-        if amount != order["total"]:
+        cursor.execute("""
+            SELECT COALESCE(SUM(amount), 0) AS paid
+            FROM payments
+            WHERE order_id = %s
+        """, (order_id,))
+
+        paid = cursor.fetchone()["paid"]
+        remaining = order["total"] - paid
+
+        if amount > remaining:
             return jsonify({
-                "error": "Payment amount does not match order total."
+                "error": "Payment exceeds remaining order balance."
             }), 400
 
-        if not transaction_id:
-            return jsonify({
-                "error": "Transaction ID is required."
-            }), 400
 
         cursor.execute("""
             INSERT INTO payments (order_id, status, amount, transaction_id)
@@ -194,11 +188,6 @@ def patch_payment(payment_id):
             "error": "Amount must be greater than zero."
         }), 400
 
-    if amount != order["total"]:
-        return jsonify({
-            "error": "Amount must match order total."
-        }), 400
-
     if not transaction_id:
         return jsonify({
             "error": "Transaction ID cannot be empty."
@@ -213,8 +202,8 @@ def patch_payment(payment_id):
             SET
                 status = %s,
                 amount = %s,
-                transaction_id = %s,
-            WHERE id = %s,
+                transaction_id = %s
+            WHERE id = %s
             RETURNING *;
         """, (status, amount, transaction_id, payment_id))
 

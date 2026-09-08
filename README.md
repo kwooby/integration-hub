@@ -61,6 +61,7 @@ The React frontend is currently under development. The initial application struc
                     │ Payments            │
                     │ Shipments           │
                     │ Notifications       │
+                    │ Products            │
                     └──────────┬──────────┘
                                │
                                │ SQL
@@ -181,10 +182,13 @@ The Dashboard is currently the primary frontend page.
 
 It includes planned overview sections for:
 
-* Orders
-* Payments
-* Shipments
-* Notifications
+* [x] Orders
+* [x] Payments
+* [ ] Shipments
+* [ ] Notifications
+* [ ] Products
+* [ ] Users
+* [ ] Products
 
 The Dashboard also contains:
 
@@ -215,7 +219,8 @@ The frontend is being developed in stages:
 * [ ] Add application routing
 * [ ] Create resource pages
 * [x] Connect React frontend to Flask API
-* [ ] Replace placeholder Dashboard data with live API data
+* [x] Replace placeholder Dashboard data with live API data
+* [ ] Add CRUD features for all resource pages added
 * [ ] Add loading and error states
 * [ ] Perform final UI and code cleanup
 
@@ -226,7 +231,7 @@ The frontend is being developed in stages:
 From the project root, activate the Python virtual environment and start the Flask application.
 
 ```bash
-python -m flask run
+python -m backend.app
 ```
 
 The backend provides the REST API consumed by the frontend.

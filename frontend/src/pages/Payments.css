@@ -8,7 +8,7 @@
     box-sizing: border-box;
 
     padding: 7px;
-    gap: 10px;
+    gap:  10px;
 
     color: rgb(31, 61, 46);
 }
@@ -23,13 +23,120 @@
     text-align: center;
 }
 
+/* ALL PAYMENTS */
+
 .all-payments {
     width: 100%;
     background-color: rgb(250, 249, 240);
     border-radius: 5px;
 }
 
+.all-payments-page h2 {
+    text-align: center;
+    border-radius: 0;
+    height: 40px;
+    margin: 0;
+
+    background-color: rgb(66, 110, 86);
+    color: white;
+}
+
 .all-payments thead {
     background-color: rgb(208, 236, 220);
 
+}
+
+/* FIND PAYMENT */
+
+.find-payment {
+    display: flex;
+    flex-direction: column;
+
+    background-color: rgb(250, 249, 240);
+    border-radius: 5px;
+
+    box-sizing: border-box;
+    align-items: center;
+
+    gap: 2px;
+}
+
+.find-payment h2 {    
+    margin: 0 auto;
+    width: 100%;
+    border-radius: 5px 5px 0 0;
+    text-align: center;
+
+    height: 40px;
+
+    background-color: rgb(66, 110, 86);
+    color: white;
+}
+
+.find-payment p {
+    margin: 0;
+}
+
+.find-payment-table {
+    width: 100%;
+}
+
+
+/* CREATE PAYMENT */
+
+.create-payment {
+    background-color: rgb(250, 249, 240);
+    padding-bottom: 7px;
+
+    box-sizing: border-box;
+    border-radius: 5px;
+}
+
+.create-payment h2 {
+    text-align: center;
+    height: 40px;
+
+    border-radius: 0;
+    margin: 0;
+    border-radius: 5px 5px 0 0;
+
+    background-color: rgb(66, 110, 86);
+    color: white;
+}
+
+.create-payment form {
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    padding: 10px 0;
+
+    gap: 8px
+}
+
+.find-and-create {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    gap: 10px;
+}
+
+.find-and-create > * {
+    flex: 1;
+}
+
+.payments .find-order h2 {
+    text-align: center;
+    height: 40px;
+
+    border-radius: 5px 5px 0 0;
+    width: 100%;
+    margin: 0;
+
+    background-color: rgb(66, 110, 86);
+    color: white;
+}
+
+.payments .find-order {
+    padding: 0 0 10px 0;
 }

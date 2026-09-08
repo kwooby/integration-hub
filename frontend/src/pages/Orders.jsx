@@ -7,6 +7,25 @@ function Orders() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
+    const [findOrderId, setFindOrderId] = useState("");
+    const [updateOrderId, setUpdateOrderId] = useState("");
+    const [deleteOrderId, setDeleteOrderId] = useState("");
+
+    const [order, setOrder] = useState(null);
+    const [orderItems, setOrderItems] = useState([]);
+
+    const [orderLoading, setOrderLoading] = useState(false);
+    const [orderError, setOrderError] = useState(null);
+
+    const [creatingOrder, setCreatingOrder] = useState(false);
+    const [createOrderError, setCreateOrderError] = useState(null);
+
+    const [updatingOrder, setUpdatingOrder] = useState(false);
+    const [updateOrderError, setUpdateOrderError] = useState(null);
+
+    const [deletingOrder, setDeletingOrder] = useState(false);
+    const [deleteOrderError, setDeleteOrderError] = useState(null);
+
     useEffect(() => {
         const fetchOrders = async () => {
             setLoading(true)
@@ -34,16 +53,6 @@ function Orders() {
         fetchOrders();
     }, []);
 
-    const [findOrderId, setFindOrderId] = useState("");
-    const [updateOrderId, setUpdateOrderId] = useState("");
-    const [deleteOrderId, setDeleteOrderId] = useState("");
-
-    const [order, setOrder] = useState(null);
-    const [orderItems, setOrderItems] = useState([]);
-
-    const [orderLoading, setOrderLoading] = useState(false);
-    const [orderError, setOrderError] = useState(null);
-
     const findOrder = async (id) => {
         setOrderLoading(true);
         setOrderError(null);
@@ -70,9 +79,6 @@ function Orders() {
         };
     };
 
-    const [creatingOrder, setCreatingOrder] = useState(false);
-    const [createOrderError, setCreateOrderError] = useState(null);
-
     const handleCreateSubmit = (event) => {
         event.preventDefault();
 
@@ -84,9 +90,9 @@ function Orders() {
         orderData.quantity = Number(orderData.quantity);
 
         createOrder(orderData)
-    }
+    };
 
-    const createOrder=  async (orderData) => {
+    const createOrder =  async (orderData) => {
         setCreatingOrder(true);
         setCreateOrderError(null);
 
@@ -115,14 +121,11 @@ function Orders() {
         }
     };
 
-    const [updatingOrder, setUpdatingOrder] = useState(false);
-    const [updateOrderError, setUpdateOrderError] = useState(null);
-
-    const handleUpdateSubmit = (event) => {
+    const handleUpdateOrderSubmit = (event) => {
         event.preventDefault();
 
-        const formData = new FormData(event.target);
-        const orderData = Object.fromEntries(formData);
+        const orderFormData = new FormData(event.target);
+        const orderData = Object.fromEntries(orderFormData);
 
         updateOrder(updateOrderId, orderData);
     };
@@ -156,10 +159,7 @@ function Orders() {
         }
     };
 
-    const [deletingOrder, setDeletingOrder] = useState(false);
-    const [deleteOrderError, setDeleteOrderError] = useState(null);
-
-    const handleDeleteSubmit = (event) => {
+    const handleDeleteOrderSubmit = (event) => {
         event.preventDefault();
 
         deleteOrder(deleteOrderId)
@@ -206,6 +206,74 @@ function Orders() {
                     </header>
 
                     <section className="all-orders">
+                        <section className="find-order">
+                            <h2>Find Order</h2>
+
+                            <input 
+                                type="text"
+                                value={findOrderId}
+                                onChange={(event) => setFindOrderId(event.target.value)}
+                            />
+
+                            <button onClick={() => findOrder(findOrderId)}>
+                                Search
+                            </button>
+
+                            <section className="find-order-table">
+                                {orderLoading ? (
+                                    <p>Loading order...</p>
+                                ) : orderError ? (
+                                    <p>{orderError}</p>
+                                ) : order && (
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Order ID</th>
+                                                <th>Status</th>
+                                                <th>Total</th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+                                            <tr>
+                                                <td>{order.id}</td>
+                                                <td>{order.status}</td>
+                                                <td>{order.total}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                )}
+
+                                {orderItems.length > 0 ? (
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th>Item ID</th>
+                                                    <th>Item Price</th>
+                                                    <th>Product ID</th>
+                                                    <th>Quantity</th>
+                                                </tr>
+                                            </thead>
+
+                                            <tbody>
+                                                    {orderItems.map((item) => (
+                                                        <tr key={item.id}>
+                                                            <td>{item.id}</td>
+                                                            <td>{item.price}</td>
+                                                            <td>{item.product_id}</td>
+                                                            <td>{item.quantity}</td>
+                                                        </tr>
+                                                    ))
+                                                    }
+                                            </tbody>
+                                        </table>
+                                ) : (
+                                    <p>No items found.</p>
+                                )}
+                            </section>
+                        </section>
+
+                        <h2>All Orders</h2>
                         <table>
                             <thead>
                                 <tr>
@@ -231,73 +299,6 @@ function Orders() {
                                 )}
                             </tbody>
                         </table>
-                    </section>
-
-                    <section className="find-order">
-                        <h2>Find Order</h2>
-
-                        <input 
-                            type="text"
-                            value={findOrderId}
-                            onChange={(event) => setFindOrderId(event.target.value)}
-                        />
-
-                        <button onClick={() => findOrder(findOrderId)}>
-                            Search
-                        </button>
-
-                        <section className="find-order-table">
-                            {orderLoading ? (
-                                <p>Loading order...</p>
-                            ) : orderError ? (
-                                <p>{orderError}</p>
-                            ) : order && (
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th>Order ID</th>
-                                            <th>Status</th>
-                                            <th>Total</th>
-                                        </tr>
-                                    </thead>
-
-                                    <tbody>
-                                        <tr>
-                                            <td>{order.id}</td>
-                                            <td>{order.status}</td>
-                                            <td>{order.total}</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            )}
-
-                            {orderItems.length > 0 ? (
-                                    <table>
-                                        <thead>
-                                            <tr>
-                                                <th>Item ID</th>
-                                                <th>Item Price</th>
-                                                <th>Product ID</th>
-                                                <th>Quantity</th>
-                                            </tr>
-                                        </thead>
-
-                                        <tbody>
-                                                {orderItems.map((item) => (
-                                                    <tr key={item.id}>
-                                                        <td>{item.id}</td>
-                                                        <td>{item.price}</td>
-                                                        <td>{item.product_id}</td>
-                                                        <td>{item.quantity}</td>
-                                                    </tr>
-                                                ))
-                                                }
-                                        </tbody>
-                                    </table>
-                            ) : (
-                                <p>No items found.</p>
-                            )}
-                        </section>
                     </section>
 
                     <section className="create-order">
@@ -343,7 +344,7 @@ function Orders() {
                     <section className="update-order">
                         <h2>Update Order Status</h2>
 
-                        <form onSubmit={handleUpdateSubmit}>
+                        <form onSubmit={handleUpdateOrderSubmit}>
                             <label>
                                 OrderID: 
                                 <input
@@ -357,7 +358,7 @@ function Orders() {
                             <label>
                                 Status: 
                                 <select name="status" required>
-                                    <option calue="">Select status</option>
+                                    <option value="">Select status</option>
                                     <option value="Pending">Pending</option>
                                     <option value="Processing">Processing</option>
                                     <option value="Completed">Completed</option>
@@ -377,7 +378,7 @@ function Orders() {
                     <section className="delete-order">
                         <h2>Delete Order</h2>
 
-                        <form onSubmit={handleDeleteSubmit}>
+                        <form onSubmit={handleDeleteOrderSubmit}>
                             <label>
                                 Order ID:
                                 <input 
