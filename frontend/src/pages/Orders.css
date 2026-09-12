@@ -1,4 +1,12 @@
-/* GET ALL ORDERS */
+.orders-header {
+    width: 250px;
+    border-radius: 5px;
+
+    background-color: rgb(9, 59, 31);
+    color: white;
+
+    text-align: center;
+}
 
 .orders {
     display: flex;
@@ -10,20 +18,13 @@
     box-sizing: border-box;
 
     padding: 7px;
-    gap: 10px;
+    gap:  10px;
 
     color: rgb(31, 61, 46);
 }
 
-.orders-header {
-    width: 250px;
-    border-radius: 5px;
 
-    background-color: rgb(9, 59, 31);
-    color: white;
-
-    text-align: center;
-}
+/* GET ALL ORDERS */
 
 .all-orders {
     width: 100%;
@@ -31,44 +32,83 @@
     border-radius: 5px;
 }
 
+.all-orders h2 {
+    margin: 0 auto;
+    width: 100%;
+    height: 40px;
+
+    border-radius: 5px 5px 0 0;
+    text-align: center;
+
+    background-color: rgb(66, 110, 86);
+    color: white;
+}
+
 .all-orders thead {
     background-color: rgb(208, 236, 220);
 }
 
 
-/* FIND ORDER BY <id> */
+/* FIND ORDER */
 
-.find-order {
+.orders .find-order {
     display: flex;
     flex-direction: column;
 
     background-color: rgb(250, 249, 240);
     border-radius: 5px;
-    padding: 0 15px 25px 15px;
+
+    width: 100%;
 
     box-sizing: border-box;
     align-items: center;
 
-    gap: 6px;
+    gap: 9px;
 }
 
 .orders .find-order h2 {
+    margin: 0 auto;
+    width: 100%;
+    border-radius: 5px 5px 0 0;
     text-align: center;
-    width: 70%;
 
-    margin-bottom: 5px;
+    height: 40px;
+
+    background-color: rgb(66, 110, 86);
+    color: white;
 }
 
-.find-order button {
+.orders .find-order button {
     height: 25px;
 }
 
+.orders .find-order p {
+    margin: 0;
+}
+
+.orders .find-order .find-order-table {
+    padding-bottom: 9px;
+    width: 90%;
+}
+
+
+/* CONTAINER FOR UPDATE/CREATE */
+
+.create-update-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    gap: 10px;
+}
+
+.create-update-container > * {
+    width: 100%;
+}
 
 /* CREATE ORDER */
 
 .create-order {
     background-color: rgb(250, 249, 240);
-    width: 47vh;
     padding-bottom: 7px;
 
     box-sizing: border-box;
@@ -76,8 +116,15 @@
 }
 
 .create-order h2 {
-    justify-self: center;
-    padding: 0 25px
+    text-align: center;
+    height: 40px;
+
+    border-radius: 0;
+    margin: 0;
+    border-radius: 5px 5px 0 0;
+
+    background-color: rgb(66, 110, 86);
+    color: white;
 }
 
 .create-order form {
@@ -85,7 +132,9 @@
     flex-direction: column;
 
     align-items: center;
-    gap: 10px;
+    padding: 10px 0;
+
+    gap: 8px
 }
 
 .create-order button {
@@ -97,12 +146,11 @@
 /* UPDATE ORDER */
 
 .update-order {
+    display: flex;
+    flex-direction: column;
+
     background-color: rgb(250, 249, 240);
-    width: 40vh;
     border-radius: 5px;
-    
-    padding-bottom: 15px;
-    box-sizing: border-box;
 }
 
 .update-order form {
@@ -110,12 +158,23 @@
     flex-direction: column;
 
     align-items: center;
-    gap: 9px
+    justify-content: center;
+    padding: 10px 0;
+
+    gap: 8px;
+    width: 100%;
+    flex-wrap: wrap;
 }
 
 .update-order h2 {
-    justify-self: center;
-    padding: 1px 15px;
+    text-align: center;
+    margin-top: 0;
+
+    border-radius: 5px 5px 0 0;
+    height: 40px;
+
+    background-color: rgb(66, 110, 86);
+    color: white;
 }
 
 .update-order button {
@@ -128,32 +187,44 @@
 
 .delete-order {
     background-color: rgb(255, 239, 239);
-    width: 40vh;
+    width: 100%;
     border-radius: 5px;
     
     box-sizing: border-box;
-    padding-bottom: 10px;
 }
 
 .delete-order form {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
 
     gap: 10px;
     margin: 20px;
 
-    align-items: flex-end;
+    align-items: center;
 }
 
 .delete-order h2 {
-    justify-self: center;
-    padding: 2px 30px;
-    background-color: rgb(228, 56, 56);
+    text-align: center;
+    border-radius: 5px 5px 0 0;
+    margin-top: 0;
+
+    height: 40px;
+
+    background-color: rgb(97, 32, 32);
     color: white;
 }
 
 .delete-order button {
     height: 40px;
-    background-color: rgb(252, 55, 55);
+    background-color: rgb(97, 32, 32);
     color: white;
+
+    border-radius: 5px;
+    border: none;
+
+    margin-bottom: 0;
+}
+
+.delete-order button:hover {
+    background-color: rgb(212, 52, 52);
 }

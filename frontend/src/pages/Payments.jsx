@@ -108,7 +108,7 @@ function Payments() {
         };
     };
 
-    const handleCreateSubmit = (event) => {
+    const handleCreatePaymentSubmit = (event) => {
         event.preventDefault();
 
         const formData = new FormData(event.target);
@@ -205,7 +205,7 @@ function Payments() {
     const handleDeletePaymentSubmit = (event) => {
         event.preventDefault();
 
-        deletePayment(deletePaymentId)
+        deletePayment(deletePaymentId);
     };
 
     const deletePayment = async (id) => {
@@ -249,90 +249,128 @@ function Payments() {
                         <h2>Payments</h2>
                     </header>
 
-                    <section className="all-payments">
-                        <section className="find-payment">
-                            <h2>Find Payment</h2>
-                            <p>Payment ID: </p>
-                            <input 
-                                type="text"
-                                value={findPaymentId}
-                                onChange={(event) => setFindPaymentId(event.target.value)}
-                            />
+                    <section className="find-payment">
+                        <h2>Find Payment</h2>
+                        <p>Payment ID: </p>
+                        <input 
+                            type="text"
+                            value={findPaymentId}
+                            onChange={(event) => setFindPaymentId(event.target.value)}
+                        />
 
-                            <button onClick={() => findPayment(findPaymentId)}>
-                                Search
-                            </button>
+                        <button onClick={() => findPayment(findPaymentId)}>
+                            Search
+                        </button>
 
-                            <section className="find-payment-table">
-                                {paymentLoading ? (
-                                    <p>Loading payment...</p>
-                                ) : paymentError ? (
-                                    <p>{paymentError}</p>
-                                ) : payment && (
-                                    <table>
-                                        <thead>
-                                            <tr>
-                                                <th>Amount</th>
-                                                <th>Payment ID</th>
-                                                <th>Order ID</th>
-                                                <th>Status</th>
-                                                <th>Transaction ID</th>
-                                            </tr>
-                                        </thead>
-
-                                        <tbody>
-                                            <tr>
-                                                <td>{payment.amount}</td>
-                                                <td>{payment.id}</td>
-                                                <td>{payment.order_id}</td>
-                                                <td>{payment.status}</td>
-                                                <td>{payment.transaction_id}</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                )}
-                            </section>
-                        </section>
-
-                        <section className="all-payments-page">
-                            <h2>All Payments</h2>
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Amount</th>
-                                        <th>Payment ID</th>
-                                        <th>Order ID</th>
-                                        <th>Status</th>
-                                        <th>Transaction ID</th>
-                                    </tr>
-                                </thead>
-
-                                <tbody>
-                                    {reversePayments.length > 0 ? (
-                                        reversePayments.map((payment) => (
-                                            <tr key={payment.id}>
-                                                <td>{payment.amount}</td>
-                                                <td>{payment.id}</td>
-                                                <td>{payment.order_id}</td>
-                                                <td>{payment.status}</td>
-                                                <td>{payment.transaction_id}</td>
-                                            </tr>
-                                        ))
-                                    ) : (
-                                        <tr className="no-data">
-                                            <td colSpan="4">No payments found.</td>
+                        <section className="find-payment-table">
+                            {paymentLoading ? (
+                                <p>Loading payment...</p>
+                            ) : paymentError ? (
+                                <p>{paymentError}</p>
+                            ) : payment && (
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Amount</th>
+                                            <th>Payment ID</th>
+                                            <th>Order ID</th>
+                                            <th>Status</th>
+                                            <th>Transaction ID</th>
                                         </tr>
-                                    )}
-                                </tbody>
-                            </table>
+                                    </thead>
+
+                                    <tbody>
+                                        <tr>
+                                            <td>{payment.amount}</td>
+                                            <td>{payment.id}</td>
+                                            <td>{payment.order_id}</td>
+                                            <td>{payment.status}</td>
+                                            <td>{payment.transaction_id}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            )}
                         </section>
+                    </section>
+
+                    <section className="all-payments">
+                        <h2>All Payments</h2>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Amount</th>
+                                    <th>Payment ID</th>
+                                    <th>Order ID</th>
+                                    <th>Status</th>
+                                    <th>Transaction ID</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                {reversePayments.length > 0 ? (
+                                    reversePayments.map((payment) => (
+                                        <tr key={payment.id}>
+                                            <td>{payment.amount}</td>
+                                            <td>{payment.id}</td>
+                                            <td>{payment.order_id}</td>
+                                            <td>{payment.status}</td>
+                                            <td>{payment.transaction_id}</td>
+                                        </tr>
+                                    ))
+                                ) : (
+                                    <tr className="no-data">
+                                        <td colSpan="4">No payments found.</td>
+                                    </tr>
+                                )}
+                            </tbody>
+                        </table>
+                    </section>
+
+                    <section className="update-payment">
+                        <h2>Update Payment</h2>
+
+                        <form onSubmit={handleUpdatePaymentSubmit}>
+                            <label>
+                                Payment ID:
+                                <input
+                                    type="number"
+                                    value={updatePaymentId}
+                                    onChange={(event) => setUpdatePaymentId(event.target.value)}
+                                    required
+                                />
+                            </label>
+
+                            <label>
+                                Amount:
+                                <input type="number" name="amount" />
+                            </label>
+
+                            <label>
+                                Status:
+                                <select name="status" >
+                                    <option value="">Select status</option>
+                                    <option value="Pending">Pending</option>
+                                    <option value="Paid">Paid</option>
+                                    <option value="Failed">Failed</option>
+                                    <option value="Refunded">Refunded</option>
+                                </select>
+                            </label>
+
+                            <div className="update-payment-row">
+                                <button type="submit">
+                                    Update Payment
+                                </button>
+                            </div>
+
+                        </form>
+
                     </section>
 
                     <div className="find-and-create">
                         <section className="create-payment">
                             <h2>Create Payment</h2>
 
-                            <form onSubmit={handleCreateSubmit}>
+                            <form onSubmit={handleCreatePaymentSubmit}>
 
                                 <label>
                                     Amount:
@@ -367,11 +405,14 @@ function Payments() {
                         <section className="find-order">
                             <h2>Find Order</h2>
 
-                            <input 
-                                type="text"
-                                value={findOrderId}
-                                onChange={(event) => setFindOrderId(event.target.value)}
-                            />
+                            <label>
+                                Order ID:
+                                <input 
+                                    type="text"
+                                    value={findOrderId}
+                                    onChange={(event) => setFindOrderId(event.target.value)}
+                                />
+                            </label>
 
                             <button onClick={() => findOrder(findOrderId)}>
                                 Search
@@ -431,43 +472,6 @@ function Payments() {
                             </section>
                         </section>
                     </div>
-
-                    <section className="update-payment">
-                        <h2>Update Payment</h2>
-
-                        <form onSubmit={handleUpdatePaymentSubmit}>
-                            <label>
-                                Payment ID:
-                                <input
-                                    type="number"
-                                    value={updatePaymentId}
-                                    onChange={(event) => setUpdatePaymentId(event.target.value)}
-                                    required
-                                />
-                            </label>
-
-                            <label>
-                                Amount:
-                                <input type="number" name="amount" />
-                            </label>
-
-                            <label>
-                                Status:
-                                <select name="status" >
-                                    <option value="">Select status</option>
-                                    <option value="Pending">Pending</option>
-                                    <option value="Paid">Paid</option>
-                                    <option value="Failed">Failed</option>
-                                    <option value="Refunded">Refunded</option>
-                                </select>
-                            </label>
-
-                            <button type="submit">
-                                Update Payment
-                            </button>
-                        </form>
-
-                    </section>
 
                     <section className="delete-payment">
                         <h2>Delete Payment</h2>

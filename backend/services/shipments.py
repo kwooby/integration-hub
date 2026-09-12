@@ -1,5 +1,7 @@
+import uuid
 from flask import Blueprint, jsonify, request
 from backend.database import get_db_connection
+from datetime import datetime, timezone
 
 shipments_bp = Blueprint("shipments", __name__)
 
@@ -95,8 +97,9 @@ def create_shipment():
 
         order_id = data["order_id"]
         carrier = data["carrier"]
-        tracking_number = data["tracking_number"]
         status = data["status"]
+
+        tracking_number = f"TRK-{str(uuid.uuid4())[:8].upper()}"
 
         order = order_exists(order_id)
 
@@ -170,6 +173,7 @@ def patch_shipment(shipment_id):
     status = data.get("status", shipment["status"])
     carrier = data.get("carrier", shipment["carrier"])
     tracking_number = data.get("tracking_number", shipment["tracking_number"])
+    delivered_at = shipment["delivered_at"]
 
     if status not in ALLOWED_SHIPMENT_STATUSES:
         return jsonify({
@@ -186,6 +190,9 @@ def patch_shipment(shipment_id):
                 "error": "Status is required."
         }), 400
 
+    if data.get("status") == "Delivered":
+        delivered_at = datetime.now(timezone.utc)
+
     if not tracking_number:
         return jsonify({
                 "error": "Tracking number is required."
@@ -200,10 +207,11 @@ def patch_shipment(shipment_id):
             SET
                 carrier = %s,
                 tracking_number = %s,
-                status = %s
+                status = %s,
+                delivered_at = %s
             WHERE id = %s
             RETURNING *;
-        """, (carrier, tracking_number, status, shipment_id))
+        """, (carrier, tracking_number, status, delivered_at, shipment_id))
 
         shipment = cursor.fetchone()
 

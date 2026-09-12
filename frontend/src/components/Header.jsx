@@ -9,7 +9,6 @@ function Header() {
             <section className="header-caption">
                 <p>A full-stack API designed to simulate an integration
                 hub connecting common business resources.</p>
-                <p>Alex Davis | Kwooby</p>
             </section>
         </nav>
     )

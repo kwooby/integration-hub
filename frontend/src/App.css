@@ -10,3 +10,7 @@ body {
     background-color: rgb(166, 206, 190);
     padding-bottom: 30px;
 }
+
+* {
+    font-weight: 500;
+}

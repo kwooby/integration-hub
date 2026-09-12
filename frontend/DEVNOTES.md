@@ -2,6 +2,56 @@
 
 ----------
 
+## 09/12/2026
+
+COMPLETED:
+
+    - FIXED FIND ORDER BUG!
+        - Forgot to setOrder and setOrderItems properly oops
+    - Add update shipment
+        - Test OK
+    - Add delete shipment
+        - Test OK
+    - Took off 'shipped at' for functionality purposes
+        - Delivered at date is very long, putting both dates makes the frontend too long
+    - Stylized shipments page
+
+NEXT:
+
+    MAJOR:
+        - Begin CRUD for notifications page
+    MINOR:
+        - Add pagination for all resources features
+        - Restylize Dashboard to align better with rest of pages
+
+NOTES:
+    - Should have done a couple separate commits between finishing the CRUD functionality on the shipments page and restyling the rest of the pages
+    - Hesitant to do multiple commits per CRUD feature added, feels excessive with how quickly the features are typically implemented
+
+## 09/10/2026
+
+COMPLETED:
+    - Add find shipment by ID
+        - Tested OK
+    - Add create shipment
+        - Tested OK
+    - Add find order to facilitate create shipment for order
+        - Tested FAIL
+        - Debugging:
+            - Submit button not working
+            - Terminal appears to get the data from the backend but does not apply it to the frontend
+            - Likely something in the shipments jsx file (I'm thinking its the submit handle code)
+            - Fever omg gotta go
+
+NEXT:
+    - Fix find order bug
+    - Continue implementing CRUD functionality features to shipments page
+    - Continue adapting similar structure and style to future pages
+    - Add pagination to all [resources] features
+        - Show most recent [resources], then add navigation and pagination for rest
+
+NEXT:
+
 ## 09/08/2026
 
 COMPLETED:
@@ -9,7 +59,13 @@ COMPLETED:
     -UPDATE PAYMENT BUG IS FIXED!
         - Issue was the set total amount for payment, which we changed to allow partial payments last work session
         - Syntax error in update payments SQL from working
-        - 
+    - Standardize style between orders and payments page
+
+NEXT:
+
+    - Begin CRUD for Shipments page
+    - Add pagination to all [resource] sections on all pages
+    - 
 
 ## 09/03/2026
 

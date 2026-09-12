@@ -31,11 +31,13 @@
     border-radius: 5px;
 }
 
-.all-payments-page h2 {
+.all-payments h2 {
+    margin: 0 auto;
+    width: 100%;
+    border-radius: 5px 5px 0 0;
     text-align: center;
-    border-radius: 0;
+
     height: 40px;
-    margin: 0;
 
     background-color: rgb(66, 110, 86);
     color: white;
@@ -55,10 +57,12 @@
     background-color: rgb(250, 249, 240);
     border-radius: 5px;
 
+    width: 100%;
+
     box-sizing: border-box;
     align-items: center;
 
-    gap: 2px;
+    gap: 9px;
 }
 
 .find-payment h2 {    
@@ -114,7 +118,7 @@
     gap: 8px
 }
 
-.find-and-create {
+.payments .find-and-create {
     display: flex;
     flex-direction: row;
     width: 100%;
@@ -123,6 +127,20 @@
 
 .find-and-create > * {
     flex: 1;
+}
+
+.payments .find-order {
+    display: flex;
+    flex-direction: column;
+
+    background-color: rgb(250, 249, 240);
+    border-radius: 5px;
+    padding: 0 0 10px 0;
+
+    box-sizing: border-box;
+    align-items: center;
+
+    gap: 6px;
 }
 
 .payments .find-order h2 {
@@ -137,6 +155,93 @@
     color: white;
 }
 
-.payments .find-order {
-    padding: 0 0 10px 0;
+
+/* UPDATE PAYMENT */
+
+.update-payment {
+    display: flex;
+    flex-direction: column;
+
+    background-color: rgb(250, 249, 240);
+    border-radius: 5px;
+
+    width: 100%;
+}
+
+.update-payment form {
+    display: flex;
+    flex-direction: row;
+
+    align-items: center;
+    justify-content: center;
+    padding: 10px 0;
+
+    gap: 8px;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+.update-payment-row {
+    display: flex;
+    flex-basis: 100%;
+    justify-content: center;
+
+    padding-top: 10px;
+}
+
+.update-payment h2 {
+    text-align: center;
+    margin-top: 0;
+
+    border-radius: 5px 5px 0 0;
+    height: 40px;
+
+    background-color: rgb(66, 110, 86);
+    color: white;
+}
+
+/* DELETE PAYMENT */
+
+.delete-payment {
+    background-color: rgb(255, 239, 239);
+    width: 100%;
+    border-radius: 5px;
+    
+    box-sizing: border-box;
+}
+
+.delete-payment form {
+    display: flex;
+    flex-direction: column;
+
+    gap: 10px;
+    margin: 20px;
+
+    align-items: center;
+}
+
+.delete-payment h2 {
+    text-align: center;
+    border-radius: 5px 5px 0 0;
+    margin-top: 0;
+
+    height: 40px;
+
+    background-color: rgb(97, 32, 32);
+    color: white;
+}
+
+.delete-payment button {
+    height: 40px;
+    background-color: rgb(97, 32, 32);
+    color: white;
+
+    border-radius: 5px;
+    border: none;
+
+    margin-bottom: 0;
+}
+
+.delete-payment button:hover {
+    background-color: rgb(212, 52, 52);
 }

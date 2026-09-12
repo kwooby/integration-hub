@@ -26,30 +26,30 @@ function Orders() {
     const [deletingOrder, setDeletingOrder] = useState(false);
     const [deleteOrderError, setDeleteOrderError] = useState(null);
 
+    const fetchOrders = async () => {
+        setLoading(true)
+        setError(null)
+
+        try {
+            const response = await fetch(`http://localhost:5000/orders`);
+
+            if (!response.ok) {
+                throw new Error("Failed to load orders.")
+            };
+
+            const data = await response.json()
+
+            setOrders(data);
+
+        } catch (error) {
+            console.error(error)
+            setError("Unable to connect to the server.")
+        } finally {
+            setLoading(false)
+        }
+    };
+
     useEffect(() => {
-        const fetchOrders = async () => {
-            setLoading(true)
-            setError(null)
-
-            try {
-                const response = await fetch(`http://localhost:5000/orders`);
-
-                if (!response.ok) {
-                    throw new Error("Failed to load orders.")
-                };
-
-                const data = await response.json()
-
-                setOrders(data);
-
-            } catch (error) {
-                console.error(error)
-                setError("Unable to connect to the server.")
-            } finally {
-                setLoading(false)
-            }
-        };
-
         fetchOrders();
     }, []);
 
@@ -205,74 +205,77 @@ function Orders() {
                         <h2>Orders</h2>
                     </header>
 
-                    <section className="all-orders">
-                        <section className="find-order">
-                            <h2>Find Order</h2>
+                    <section className="find-order">
+                        <h2>Find Order</h2>
 
+                        <label>
+                            Order ID: 
                             <input 
                                 type="text"
                                 value={findOrderId}
                                 onChange={(event) => setFindOrderId(event.target.value)}
                             />
+                        </label>
 
-                            <button onClick={() => findOrder(findOrderId)}>
-                                Search
-                            </button>
+                        <button onClick={() => findOrder(findOrderId)}>
+                            Search
+                        </button>
 
-                            <section className="find-order-table">
-                                {orderLoading ? (
-                                    <p>Loading order...</p>
-                                ) : orderError ? (
-                                    <p>{orderError}</p>
-                                ) : order && (
+                        <section className="find-order-table">
+                            {orderLoading ? (
+                                <p>Loading order...</p>
+                            ) : orderError ? (
+                                <p>{orderError}</p>
+                            ) : order && (
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Order ID</th>
+                                            <th>Status</th>
+                                            <th>Total</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        <tr>
+                                            <td>{order.id}</td>
+                                            <td>{order.status}</td>
+                                            <td>{order.total}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            )}
+
+                            {orderItems.length > 0 ? (
                                     <table>
                                         <thead>
                                             <tr>
-                                                <th>Order ID</th>
-                                                <th>Status</th>
-                                                <th>Total</th>
+                                                <th>Item ID</th>
+                                                <th>Item Price</th>
+                                                <th>Product ID</th>
+                                                <th>Quantity</th>
                                             </tr>
                                         </thead>
 
                                         <tbody>
-                                            <tr>
-                                                <td>{order.id}</td>
-                                                <td>{order.status}</td>
-                                                <td>{order.total}</td>
-                                            </tr>
+                                                {orderItems.map((item) => (
+                                                    <tr key={item.id}>
+                                                        <td>{item.id}</td>
+                                                        <td>{item.price}</td>
+                                                        <td>{item.product_id}</td>
+                                                        <td>{item.quantity}</td>
+                                                    </tr>
+                                                ))
+                                                }
                                         </tbody>
                                     </table>
-                                )}
-
-                                {orderItems.length > 0 ? (
-                                        <table>
-                                            <thead>
-                                                <tr>
-                                                    <th>Item ID</th>
-                                                    <th>Item Price</th>
-                                                    <th>Product ID</th>
-                                                    <th>Quantity</th>
-                                                </tr>
-                                            </thead>
-
-                                            <tbody>
-                                                    {orderItems.map((item) => (
-                                                        <tr key={item.id}>
-                                                            <td>{item.id}</td>
-                                                            <td>{item.price}</td>
-                                                            <td>{item.product_id}</td>
-                                                            <td>{item.quantity}</td>
-                                                        </tr>
-                                                    ))
-                                                    }
-                                            </tbody>
-                                        </table>
-                                ) : (
-                                    <p>No items found.</p>
-                                )}
-                            </section>
+                            ) : (
+                                <p>No items found.</p>
+                            )}
                         </section>
+                    </section>
 
+                    <section className="all-orders">
                         <h2>All Orders</h2>
                         <table>
                             <thead>
@@ -301,78 +304,78 @@ function Orders() {
                         </table>
                     </section>
 
-                    <section className="create-order">
-                        <h2>Create Order</h2>
+                    <section className="create-update-container">
 
-                        <form onSubmit={handleCreateSubmit}>
-                            <label>
-                                User ID: 
-                                <input type="number" name="user_id" required />
-                            </label>
+                        <section className="update-order">
+                            <h2>Update Order Status</h2>
 
-                            <label>
-                                Status:
+                            <form onSubmit={handleUpdateOrderSubmit}>
+                                <label>
+                                    OrderID: 
+                                    <input
+                                        type="number"
+                                        value={updateOrderId}
+                                        onChange={(event) => setUpdateOrderId(event.target.value)}
+                                        required
+                                    />
+                                </label>
 
-                                <select name="status" required>
-                                    <option value="">Select status</option>
-                                    <option value="Pending">Pending</option>
-                                    <option value="Processing">Processing</option>
-                                    <option value="Completed">Completed</option>
-                                    <option value="Cancelled">Cancelled</option>
-                                </select>
-                            </label>
+                                <label>
+                                    Status: 
+                                    <select name="status" required>
+                                        <option value="">Select status</option>
+                                        <option value="Pending">Pending</option>
+                                        <option value="Processing">Processing</option>
+                                        <option value="Completed">Completed</option>
+                                        <option value="Cancelled">Cancelled</option>
+                                    </select>
+                                </label>
 
-                            <label>
-                                Product ID: 
-                                <input type="number" name="product_id" required />
-                            </label>
+                                <button type="submit">
+                                    Update Order
+                                </button>
+                            </form>
 
-                            <label>
-                                Quantity:
-                                <input type="number" name="quantity" required />
-                            </label>
+                            {updatingOrder && <p>Updating order...</p>}
+                            {updateOrderError && <p>{updateOrderError}</p>}
+                        </section>
 
-                            <button type="submit">
-                                Create Order
-                            </button>
-                        </form>
+                        <section className="create-order">
+                            <h2>Create Order</h2>
 
-                        {creatingOrder && <p>Creating order...</p>}
-                        {createOrderError && <p>{createOrderError}</p>}
-                    </section>
+                            <form onSubmit={handleCreateSubmit}>
 
-                    <section className="update-order">
-                        <h2>Update Order Status</h2>
+                                <label>
+                                    Status:
 
-                        <form onSubmit={handleUpdateOrderSubmit}>
-                            <label>
-                                OrderID: 
-                                <input
-                                    type="number"
-                                    value={updateOrderId}
-                                    onChange={(event) => setUpdateOrderId(event.target.value)}
-                                    required
-                                />
-                            </label>
+                                    <select name="status" required>
+                                        <option value="">Select status</option>
+                                        <option value="Pending">Pending</option>
+                                        <option value="Processing">Processing</option>
+                                        <option value="Completed">Completed</option>
+                                        <option value="Cancelled">Cancelled</option>
+                                    </select>
+                                </label>
 
-                            <label>
-                                Status: 
-                                <select name="status" required>
-                                    <option value="">Select status</option>
-                                    <option value="Pending">Pending</option>
-                                    <option value="Processing">Processing</option>
-                                    <option value="Completed">Completed</option>
-                                    <option value="Cancelled">Cancelled</option>
-                                </select>
-                            </label>
+                                <label>
+                                    Product ID: 
+                                    <input type="number" name="product_id" required />
+                                </label>
 
-                            <button type="submit">
-                                Update Order
-                            </button>
-                        </form>
+                                <label>
+                                    Quantity:
+                                    <input type="number" name="quantity" required />
+                                </label>
 
-                        {updatingOrder && <p>Updating order...</p>}
-                        {updateOrderError && <p>{updateOrderError}</p>}
+                                <button type="submit">
+                                    Create Order
+                                </button>
+                            </form>
+
+                            {creatingOrder && <p>Creating order...</p>}
+                            {createOrderError && <p>{createOrderError}</p>}
+                        </section>
+
                     </section>
 
                     <section className="delete-order">
