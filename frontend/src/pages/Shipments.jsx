@@ -15,8 +15,6 @@ function Shipments() {
     const [orderError, setOrderError] = useState(null);
 
     const [findShipmentId, setFindShipmentId] = useState("");
-    const [findShipmentIdError, setFindShipmentIdError] = useState("");
-
     const [shipmentLoading, setShipmentLoading] = useState(false);
     const [shipmentError, setShipmentError] = useState(null);
 
@@ -135,7 +133,7 @@ function Shipments() {
 
         if (!response.ok) {
             const errorData = await response.json();
-            throw new Error(errorData.error)
+            throw new Error(errorData.error || "Create shipment failed.")
         };
 
         const data = await response.json();
@@ -340,12 +338,12 @@ function Shipments() {
 
                         <label>
                             Carrier
-                            <input type="text" name="carrier" />
+                            <input type="text" name="carrier" required/>
                         </label>
 
                         <label>
                             Status
-                            <select name="status">
+                            <select name="status" required>
                                 <option value="">Select status</option>
                                 <option value="Pending">Pending</option>
                                 <option value="Shipped">Shipped</option>
@@ -358,6 +356,9 @@ function Shipments() {
                                 Update Shipment
                             </button>
                         </div>
+
+                        {updatingShipment && <p>Updating shipment...</p>}
+                        {updateShipmentError && <p>{updateShipmentError}</p>}
 
                     </form>
                 </section>
