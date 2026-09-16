@@ -1,5 +1,6 @@
 from flask import Blueprint, jsonify, request
 from backend.database import get_db_connection
+from datetime import datetime, timezone
 
 notifications_bp = Blueprint("notifications", __name__)
 
@@ -112,6 +113,9 @@ def create_notifications():
                 "error": "Order not found."
             }), 404
 
+        if data.get("status") == "Sent":
+            sent_at = datetime.now(timezone.utc)
+
         if status not in ALLOWED_NOTIFICATION_STATUSES:
             return jsonify({
                 "error": "Invalid notification status."
@@ -120,16 +124,6 @@ def create_notifications():
         if notification_type not in ALLOWED_NOTIFICATION_TYPES:
             return jsonify({
                 "error": "Invalid notification type."
-            }), 400
-
-        if status == "Sent" and not sent_at:
-            return jsonify({
-                "error": "Sent at is required when status is 'Sent'."
-            }), 400
-
-        if status != "Sent" and sent_at:
-            return jsonify({
-                "error": "Sent at can only be determined when status is 'Sent'."
             }), 400
 
         cursor.execute("""
@@ -174,6 +168,14 @@ def patch_notification(notification_id):
             "error": "Status field is required."
         }), 400
 
+    order_id = data[order_id]
+    order = order_exists(order_id)
+
+    if not order:
+        return jsonify({
+            "error": "Order does not exist."
+        }), 400
+
     notification = find_notification(notification_id)
 
     if notification is None:
@@ -182,22 +184,15 @@ def patch_notification(notification_id):
         }), 404
 
     status = data.get("status", notification["status"])
-    sent_at = data.get("sent_at", notification["sent_at"])
+    sent_at = notification["sent_at"]
 
     if status not in ALLOWED_NOTIFICATION_STATUSES:
         return jsonify({
             "error": "Invalid notification status."
         }), 400
 
-    if status == "Sent" and not sent_at:
-        return jsonify({
-            "error": "Sent at is required when status is 'Sent'."
-        }), 400
-
-    if status != "Sent" and sent_at:
-        return jsonify({
-            "error": "Sent at can only be determined when status is 'Sent'."
-        }), 400
+    if data.get("status") == "Sent":
+        sent_at = datetime.now(timezone.utc)
 
     conn = get_db_connection()
     cursor = conn.cursor()

@@ -41,7 +41,7 @@ COMPLETED:
             - Submit button not working
             - Terminal appears to get the data from the backend but does not apply it to the frontend
             - Likely something in the shipments jsx file (I'm thinking its the submit handle code)
-            - Fever omg gotta go
+            - Fever? omg gotta go
 
 NEXT:
     - Fix find order bug

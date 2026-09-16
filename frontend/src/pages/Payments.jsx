@@ -8,9 +8,9 @@ function Payments() {
     const [error, setError] = useState(null);
 
     const [findOrderId, setFindOrderId] = useState("");
-
     const [order, setOrder] = useState(null);
     const [orderItems, setOrderItems] = useState([]);
+    
     const [orderLoading, setOrderLoading] = useState(false);
     const [orderError, setOrderError] = useState(null);
 

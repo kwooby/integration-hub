@@ -136,7 +136,7 @@ function Shipments() {
         if (!response.ok) {
             const errorData = await response.json();
             throw new Error(errorData.error)
-        }
+        };
 
         const data = await response.json();
 
@@ -145,9 +145,9 @@ function Shipments() {
         return data;
 
         } catch (error) {
-            setCreatingShipmentError(error.message)
+            setCreatingShipmentError(error.message);
         } finally {
-            setCreatingShipment(false)
+            setCreatingShipment(false);
         }
     };
 
