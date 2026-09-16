@@ -135,7 +135,7 @@ function Payments() {
 
             if (!response.ok) {
                 const errorData = await response.json();
-                throw new Error(errorData.error)
+                throw new Error(errorData.error || "Create payment failed.")
             }
 
             const data = await response.json();
@@ -186,7 +186,7 @@ function Payments() {
 
             if (!response.ok) {
                 const errorData = await response.json();
-                throw new Error(errorData.error);
+                throw new Error(errorData.error || "Update payment failed.");
             }
 
             const data = await response.json();
@@ -220,7 +220,7 @@ function Payments() {
 
             if (!response.ok) {
                 const errorData = await response.json();
-                throw new Error(errorData.error);
+                throw new Error(errorData.error || "Delete payment failed.");
             }
 
             const data = await response.json();
@@ -342,12 +342,12 @@ function Payments() {
 
                             <label>
                                 Amount:
-                                <input type="number" name="amount" />
+                                <input type="number" name="amount" required/>
                             </label>
 
                             <label>
                                 Status:
-                                <select name="status" >
+                                <select name="status" required>
                                     <option value="">Select status</option>
                                     <option value="Pending">Pending</option>
                                     <option value="Paid">Paid</option>
@@ -361,6 +361,9 @@ function Payments() {
                                     Update Payment
                                 </button>
                             </div>
+
+                            {updatingPayment && <p>Updating payment...</p>}
+                            {updatePaymentError && <p>{updatePaymentError}</p>}
 
                         </form>
 
