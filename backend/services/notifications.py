@@ -105,12 +105,11 @@ def create_notifications():
         sent_at = data.get("sent_at")
 
         order_id = data["order_id"]
-
         order = order_exists(order_id)
 
-        if order is None:
+        if not order:
             return jsonify({
-                "error": "Order not found."
+                "error": "Order does not exist."
             }), 404
 
         if data.get("status") == "Sent":
@@ -168,20 +167,20 @@ def patch_notification(notification_id):
             "error": "Status field is required."
         }), 400
 
-    order_id = data[order_id]
-    order = order_exists(order_id)
-
-    if not order:
-        return jsonify({
-            "error": "Order does not exist."
-        }), 400
-
     notification = find_notification(notification_id)
 
     if notification is None:
         return jsonify({
             "error": "Notification not found."
         }), 404
+
+    order_id = data["order_id"]
+    order = order_exists(order_id)
+
+    if not order:
+        return jsonify({
+            "error": "Order does not exist."
+        }), 400
 
     status = data.get("status", notification["status"])
     sent_at = notification["sent_at"]

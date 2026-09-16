@@ -138,7 +138,7 @@ function Notifications() {
 
             if (!response.ok) {
                 const errorData = await response.json();
-                throw new Error(errorData.error);
+                throw new Error(errorData.error || "Update notification failed.");
             }
 
             const data = await response.json();
@@ -148,7 +148,7 @@ function Notifications() {
             return data;
 
         } catch (error) {
-            setUpdateNotificationError(error.error);
+            setUpdateNotificationError(error.message);
         } finally {
             setUpdatingNotification(false);
         }
@@ -180,7 +180,7 @@ function Notifications() {
 
             if (!response.ok) {
                 const errorData = await response.json();
-                throw new Error(errorData.error);
+                throw new Error(errorData.error || "Create notification failed.");
             };
 
             const data = await response.json();
@@ -190,7 +190,7 @@ function Notifications() {
             return data;
 
         } catch (error) {
-            setCreateNotificationError(error.error);
+            setCreateNotificationError(error.message);
         } finally {
             setCreatingNotification(false);
         }
@@ -213,7 +213,7 @@ function Notifications() {
 
             if (!response.ok) {
                 const errorData = await response.json();
-                throw new Error(errorData.error);
+                throw new Error(errorData.error || "Delete notification failed.");
             }
 
             const data = await response.json();
@@ -221,7 +221,7 @@ function Notifications() {
 
             return data;
         } catch (error) {
-            setDeleteNotificationError(error.error);
+            setDeleteNotificationError(error.message);
         } finally {
             setDeletingNotification(false);
         }
@@ -352,6 +352,9 @@ function Notifications() {
                                     Update
                                 </button>
                             </div>
+
+                            {updatingNotification && <p>Updating notification...</p>}
+                            {updateNotificationError && <p>{updateNotificationError}</p>}
                         </form>
 
                     </section>
@@ -370,7 +373,7 @@ function Notifications() {
                                 
                                 <label>
                                     Status
-                                    <select name="status">
+                                    <select name="status" required>
                                         <option value="">Select status</option>
                                         <option value="Pending">Pending</option>
                                         <option value="Sent">Sent</option>
@@ -380,7 +383,7 @@ function Notifications() {
 
                                 <label>
                                     Type
-                                    <select name="notification_type">
+                                    <select name="notification_type" required>
                                         <option value="">Select notification type</option>
                                         <option value="Order Confirmation">Order Confirmation</option>
                                         <option value="Payment Confirmation">Payment Confirmation</option>
