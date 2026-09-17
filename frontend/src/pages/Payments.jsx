@@ -1,5 +1,5 @@
 import './Payments.css';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 function Payments() {
     const [payments, setPayments] = useState([]);
@@ -31,12 +31,17 @@ function Payments() {
     const [deletingPayment, setDeletingPayment] = useState(false);
     const [deletePaymentError, setDeletePaymentError] = useState(null);
 
-    const fetchPayments = async () => {
+    const [page, setPage] = useState(1);
+    const [itemsPerPage] = useState(7);
+
+    const fetchPayments = useCallback(async () => {
         setLoading(true)
         setError(null)
 
         try {
-            const response = await fetch(`http://localhost:5000/payments`)
+            const response = await fetch(
+                `http://localhost:5000/payments?page=${page}&per_page=${itemsPerPage}`
+            );
 
             if (!response.ok) {
                 throw new Error("Failed to load payments.")
@@ -52,11 +57,11 @@ function Payments() {
         } finally {
             setLoading(false);
         }
-    };
+    }, [page, itemsPerPage]);
 
     useEffect(() => {
         fetchPayments();
-    }, []);
+    }, [fetchPayments]);
 
     const findOrder = async (id) => {
         setOrderLoading(true);
@@ -324,6 +329,25 @@ function Payments() {
                                 )}
                             </tbody>
                         </table>
+
+                        <div className="pagination">
+                            <button
+                                onClick={() => setPage(page - 1)}
+                                disabled={page === 1}
+                            >
+                                Previous
+                            </button>
+
+                            <span> Page {page}</span>
+
+                            <button
+                                onClick={() => setPage(page + 1)}
+                            >
+                                Next
+                            </button>
+                            
+                        </div>
+
                     </section>
 
                     <section className="update-payment">

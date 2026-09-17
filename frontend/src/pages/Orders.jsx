@@ -1,5 +1,5 @@
 import './Orders.css'
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 function Orders() {
     const [orders, setOrders] = useState([]);
@@ -26,32 +26,37 @@ function Orders() {
     const [deletingOrder, setDeletingOrder] = useState(false);
     const [deleteOrderError, setDeleteOrderError] = useState(null);
 
-    const fetchOrders = async () => {
-        setLoading(true)
-        setError(null)
+    const [page, setPage] = useState(1);
+    const [itemsPerPage] = useState(7);
+
+    const fetchOrders = useCallback(async () => {
+        setLoading(true);
+        setError(null);
 
         try {
-            const response = await fetch(`http://localhost:5000/orders`);
+            const response = await fetch(
+                `http://localhost:5000/orders?page=${page}&per_page=${itemsPerPage}`
+            );
 
             if (!response.ok) {
-                throw new Error("Failed to load orders.")
-            };
+                throw new Error("Failed to load orders.");
+            }
 
-            const data = await response.json()
+            const data = await response.json();
 
             setOrders(data);
-
+            
         } catch (error) {
-            console.error(error)
-            setError("Unable to connect to the server.")
+            console.error(error);
+            setError("Unable to connect to server.")
         } finally {
-            setLoading(false)
+            setLoading(false);
         }
-    };
+    }, [page, itemsPerPage]);
 
     useEffect(() => {
         fetchOrders();
-    }, []);
+    }, [fetchOrders]);
 
     const findOrder = async (id) => {
         setOrderLoading(true);
@@ -302,6 +307,25 @@ function Orders() {
                                 )}
                             </tbody>
                         </table>
+
+                        <div className="pagination">
+                            <button
+                                onClick={() => setPage(page - 1)}
+                                disabled={page === 1}
+                            >
+                                Previous
+                            </button>
+
+                            <span> Page {page}</span>
+
+                            <button
+                                onClick={() => setPage(page + 1)}
+                            >
+                                Next
+                            </button>
+
+                        </div>
+
                     </section>
 
                     <section className="create-update-container">

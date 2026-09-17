@@ -45,7 +45,16 @@
 
 .all-payments thead {
     background-color: rgb(208, 236, 220);
+}
 
+.payments .pagination {
+    display: flex;
+    gap: 10px;
+
+    justify-self: center;
+    justify-items: space-around;
+
+    margin: 18px 0;
 }
 
 /* FIND PAYMENT */

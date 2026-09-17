@@ -1,5 +1,5 @@
 import './Shipments.css';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 function Shipments() {
     const [shipments, setShipments] = useState([]);
@@ -31,12 +31,17 @@ function Shipments() {
     const [deletingShipment, setDeletingShipment] = useState(false);
     const [deletingShipmentError, setDeletingShipmentError] = useState(null);
 
-    const fetchShipments = async () => {
+    const [page, setPage] = useState(1);
+    const [itemsPerPage] = useState(7);
+
+    const fetchShipments = useCallback(async () => {
         setLoading(true)
         setError(null)
 
         try {
-            const response = await fetch("http://localhost:5000/shipments")
+            const response = await fetch(
+                `http://localhost:5000/shipments?page=${page}&per_page=${itemsPerPage}`
+            );
 
             if (!response.ok) {
                 throw new Error("Failed to load shipments.")
@@ -52,11 +57,11 @@ function Shipments() {
         } finally {
             setLoading(false)
         }
-    };
+    }, [page, itemsPerPage]);
 
     useEffect(() => {
         fetchShipments();
-    }, []);
+    }, [fetchShipments]);
 
     const findOrder = async (id) => {
         setOrderLoading(true);
@@ -320,6 +325,24 @@ function Shipments() {
                             )}
                         </tbody>
                     </table>
+
+                    <div className="pagination">
+                        <button
+                            onClick={() => setPage(page - 1)}
+                            disabled={page === 1}
+                        >
+                            Previous
+                        </button>
+
+                        <span>Page {page}</span>
+
+                        <button
+                            onClick={() => setPage(page + 1)}
+                        >
+                            Next
+                        </button>
+                    </div>
+
                 </section>
 
                 <section className="update-shipment">

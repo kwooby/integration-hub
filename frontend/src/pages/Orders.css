@@ -24,7 +24,7 @@
 }
 
 
-/* GET ALL ORDERS */
+/* ALL ORDERS */
 
 .all-orders {
     width: 100%;
@@ -46,6 +46,16 @@
 
 .all-orders thead {
     background-color: rgb(208, 236, 220);
+}
+
+.orders .pagination {
+    display: flex;
+    gap: 10px;
+
+    justify-self: center;
+    justify-items: space-around;
+
+    margin: 18px 0;
 }
 
 

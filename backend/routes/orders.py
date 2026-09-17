@@ -43,7 +43,7 @@ def get_orders():
     cursor = conn.cursor()
 
     page = request.args.get("page", 1, type=int)
-    per_page = request.args.get("per_page", 10, type=int)
+    per_page = request.args.get("per_page", 7, type=int)
 
     offset = (page - 1) * per_page
 

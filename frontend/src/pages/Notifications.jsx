@@ -1,5 +1,5 @@
 import './Notifications.css';
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 function Notifications() {
     const [notifications, setNotifications] = useState([]);
@@ -31,12 +31,17 @@ function Notifications() {
     const [deletingNotification, setDeletingNotification] = useState(false);
     const [deleteNotificationError, setDeleteNotificationError] = useState(null);
 
-    const fetchNotifications = async () => {
+    const [page, setPage] = useState(1);
+    const [itemsPerPage] = useState(7);
+
+    const fetchNotifications = useCallback(async () => {
         setLoading(true)
         setError(null)
 
         try {
-            const response= await fetch("http://localhost:5000/notifications");
+            const response= await fetch(
+                `http://localhost:5000/notifications?page=${page}&per_page=${itemsPerPage}}`
+            );
 
             if (!response.ok) {
                 throw new Error("Failed to load notifications.")
@@ -51,11 +56,11 @@ function Notifications() {
         } finally {
             setLoading(false)
         }
-    };
+    }, [page, itemsPerPage]);
 
     useEffect(() => {
         fetchNotifications();
-    }, []);
+    }, [fetchNotifications]);
 
     const findOrder = async (id) => {
         setOrderLoading(true);
@@ -321,6 +326,25 @@ function Notifications() {
                                 )}
                             </tbody>
                         </table>
+
+                        <div className="pagination">
+                            <button
+                                onClick={() => setPage(page - 1)}
+                                disabled={page === 1}
+                            >
+                                Previous
+                            </button>
+
+                            <span>Page {page}</span>
+
+                            <button
+                                onClick={() => setPage(page + 1)}
+                            >
+                                Next
+                            </button>
+                        
+                        </div>
+
                     </section>
 
                     <section className="update-notification">

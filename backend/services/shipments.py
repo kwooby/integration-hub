@@ -54,6 +54,11 @@ def find_shipment(shipment_id):
 def get_shipments():
     conn = get_db_connection()
     cursor = conn.cursor()
+
+    page = request.args.get("page", 1, type=int)
+    per_page = request.args.get("per_page", 7, type=int)
+
+    offset = (page - 1) * per_page
     
     try:
         cursor.execute("""
