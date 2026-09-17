@@ -19,12 +19,9 @@
 /* Dashboard Sections */
 
 .dashboard-sections {
-    width: 90%;
-
-    padding: 9px;
+    width: 100%;
 
     border-radius: 5px;
-
     background-color: rgb(250, 249, 240);
 
     text-align: center;
@@ -64,24 +61,31 @@
 .stat-card p {
     padding: 15px 0;
     border-radius: 15px;
+
+    border: solid 1px rgb(185, 216, 199);
     background-color: rgb(225, 245, 230);
 }
 
 .stat-card h3 {
     padding: 5px 10px;
     border-radius: 5px;
-    background-color: rgb(208, 236, 220);
-    color: rgb(36, 54, 45);
+
+    background-color: rgb(66, 110, 86);
+    color: white;
 }
 
 
 /* Section Headings */
 
 section h2 {
-    border-radius: 5px;
+    text-align: center;
+    margin-top: 0;
 
-    background-color: rgb(208, 236, 220);
-    color: rgb(36, 54, 45);
+    height: 40px;
+    width: 100%;
+
+    background-color: rgb(66, 110, 86);
+    color: white;
 }
 
 
@@ -113,4 +117,52 @@ section td {
 
 .no-data {
 text-align: center;
+}
+
+/* RECENT ORDERS */
+
+.dashboard .recent-orders h2 {
+    margin-bottom: 0;
+    height: 45px;
+}
+
+.dashboard .recent-orders thead {
+    background-color: rgb(225, 245, 230);
+}
+
+/* RECENT NOTIFICATIONS */
+
+.dashboard .recent-notifications h2 {
+    margin-bottom: 0;
+    height: 45px;
+}
+
+.dashboard .recent-notifications thead {
+    background-color: rgb(225, 245, 230);
+}
+
+/* VIEW ALL LINKS */
+
+.view-all-resource {
+    text-align: center;
+    justify-self: center;
+    padding: 10px;
+
+    margin: 10px 0;
+
+    border: solid 1px rgb(201, 230, 214);
+    border-radius: 5px;
+
+    width: fit-content;
+
+    background-color: rgb(235, 247, 238);
+    color: rgb(66, 110, 86);
+}
+
+.view-all-resource a:visited {
+    color: rgb(46, 95, 68);
+}
+
+.view-all-resource a:hover {
+    color: rgb(148, 104, 63);
 }

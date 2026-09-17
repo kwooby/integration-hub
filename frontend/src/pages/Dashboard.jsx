@@ -1,5 +1,6 @@
 import './Dashboard.css'
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 function Dashboard() {
     const [orders, setOrders] = useState([])
@@ -62,8 +63,8 @@ function Dashboard() {
     const shipmentCount = shipments.length;
     const notificationCount = notifications.length;
 
-    const recentOrders = orders.slice(-5).reverse();
-    const recentNotifications = notifications.slice(-5).reverse();
+    const recentOrders = orders.slice(-7).reverse();
+    const recentNotifications = notifications.slice(-7).reverse();
 
     return (
         <div className="dashboard">
@@ -131,6 +132,13 @@ function Dashboard() {
                                     )}
                                 </tbody>
                             </table>
+
+                            <div className="view-all-resource">
+                                <Link to="/orders">
+                                    View All Orders
+                                </Link>
+                            </div>
+
                         </section>
 
                         <section className="recent-notifications">
@@ -163,6 +171,13 @@ function Dashboard() {
                                     )}
                                 </tbody>
                             </table>
+
+                            <div className="view-all-resource">
+                                <Link to="/notifications">
+                                    View All Notifications
+                                </Link>
+                            </div>
+                            
                         </section>
                     </div>
                 </>

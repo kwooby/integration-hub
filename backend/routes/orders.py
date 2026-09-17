@@ -42,18 +42,24 @@ def get_orders():
     conn = get_db_connection()
     cursor = conn.cursor()
 
+    page = request.args.get("page", 1, type=int)
+    per_page = request.args.get("per_page", 10, type=int)
+
+    offset = (page - 1) * per_page
+
     cursor.execute("""
         SELECT *
         FROM orders
-        ORDER BY id;
-    """)
+        ORDER BY id
+        LIMIT %s OFFSET %s;
+    """, (per_page, offset))
 
     orders = cursor.fetchall()
 
     cursor.close()
     conn.close()
 
-    return jsonify(orders)
+    return jsonify(orders), 200
 
 @orders_bp.route("/orders/<int:order_id>", methods=["GET"])
 def get_order(order_id):
