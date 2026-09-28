@@ -315,7 +315,7 @@ function Payments() {
                                 {reversePayments.length > 0 ? (
                                     reversePayments.map((payment) => (
                                         <tr key={payment.id}>
-                                            <td>{payment.amount}</td>
+                                            <td>${payment.amount}</td>
                                             <td>{payment.id}</td>
                                             <td>{payment.order_id}</td>
                                             <td>{payment.status}</td>
@@ -465,7 +465,7 @@ function Payments() {
                                             <tr>
                                                 <td>{order.id}</td>
                                                 <td>{order.status}</td>
-                                                <td>{order.total}</td>
+                                                <td>${order.total}</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -486,7 +486,7 @@ function Payments() {
                                                     {orderItems.map((item) => (
                                                         <tr key={item.id}>
                                                             <td>{item.id}</td>
-                                                            <td>{item.price}</td>
+                                                            <td>${item.price}</td>
                                                             <td>{item.product_id}</td>
                                                             <td>{item.quantity}</td>
                                                         </tr>
@@ -499,7 +499,7 @@ function Payments() {
                                 )}
                             </section>
                         </section>
-                        
+
                     </div>
 
                     <section className="delete-payment">

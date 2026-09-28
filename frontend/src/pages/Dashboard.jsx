@@ -122,7 +122,7 @@ function Dashboard() {
                                             <tr key={order.id}>
                                                 <td>{order.id}</td>
                                                 <td>{order.status}</td>
-                                                <td>{order.total}</td>
+                                                <td>${order.total}</td>
                                             </tr>
                                     ))
                                     ) : (

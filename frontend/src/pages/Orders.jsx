@@ -245,7 +245,7 @@ function Orders() {
                                         <tr>
                                             <td>{order.id}</td>
                                             <td>{order.status}</td>
-                                            <td>{order.total}</td>
+                                            <td>${order.total}</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -266,7 +266,7 @@ function Orders() {
                                                 {orderItems.map((item) => (
                                                     <tr key={item.id}>
                                                         <td>{item.id}</td>
-                                                        <td>{item.price}</td>
+                                                        <td>${item.price}</td>
                                                         <td>{item.product_id}</td>
                                                         <td>{item.quantity}</td>
                                                     </tr>
@@ -297,7 +297,7 @@ function Orders() {
                                         <tr key={order.id}>
                                             <td>{order.id}</td>
                                             <td>{order.status}</td>
-                                            <td>{order.total}</td>
+                                            <td>${order.total}</td>
                                         </tr>
                                 ))
                                 ) : (
