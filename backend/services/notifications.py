@@ -70,8 +70,9 @@ def get_notifications():
     cursor.execute("""
         SELECT *
         FROM notifications
-        ORDER BY id;
-    """)
+        ORDER BY id
+        LIMIT %s OFFSET %s;
+    """, (per_page, offset))
 
     notifications = cursor.fetchall()
 

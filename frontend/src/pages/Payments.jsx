@@ -394,6 +394,7 @@ function Payments() {
                     </section>
 
                     <div className="find-and-create">
+
                         <section className="create-payment">
                             <h2>Create Payment</h2>
 
@@ -498,6 +499,7 @@ function Payments() {
                                 )}
                             </section>
                         </section>
+                        
                     </div>
 
                     <section className="delete-payment">

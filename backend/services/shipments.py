@@ -64,8 +64,9 @@ def get_shipments():
         cursor.execute("""
             SELECT *
             FROM shipments
-            ORDER BY id;
-        """)
+            ORDER BY id
+            LIMIT %s OFFSET %s;
+        """, (per_page, offset))
 
         shipments = cursor.fetchall()
 
