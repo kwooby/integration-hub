@@ -2,10 +2,74 @@
 
 ----------
 
+## 09/17/2026
+
+COMPLETED:
+    - Style Notifications page
+        -Keeps same layout and design style as rest of API frontend
+    - Add pagination to All[Resource] pages:
+        - All Orders
+        - All Payments
+        - All Notifications
+        - All Shipments
+    - Dashboard did not need pagination, instead button guiding user to click toview the resources page was added below the 'recent orders' and 'recent notifications' features on Dashboard
+
+NOTES:
+    - Pagination for all resources loads next page even if there is nothing to show
+    - Two resources left to complete CRUD features: Products and Users
+
+NEXT:
+    - Begin CRUD for Products page
+    - Fix page loads next wwith no available resource
+
+## 09/16/2026
+
+COMPLETED:
+    - UPDATE NOTIFICATION BUG FIX
+        - Was hard coding on the 'sent' status
+        - Code was irrelevant for the point we're in with the API and it was taking up space so it has been deleted
+    - ERROR HANDLING ON RESOURCE PAGES BUG FIX
+        - All finished resource pages should now have the proper error handling
+    - Create Notification feature added
+        - TEST OK
+        - Added order lookup to facilitate creation of notification for a specific order: TEST OK
+
+NEXT:
+    - Style Notifications page
+    - Add pagination to all resource components
+
+## 09/14/2026
+
+COMPLETED:
+    -Notifications page - CRUD features implementation
+        - Add Find (1) Notification
+            - TEST OK
+        - Add Update Notification
+            - TEST BAD
+            - Buggy: getting 400 error
+            - Likely one of the hard coded error handling in the backend python
+        - Add Delete Notification
+            - TEST OK
+
+NOTES:
+    - Discovered that the error handling in the backend is not working? *KNOWN BUG
+        - Mainly with updateResource and deleteResource?
+        - On every page, gonna have to fix that
+    - Fixing update notification bug before adding create notification feature
+
+NEXT:
+    - Finish notifs CRUD features
+        - Create notifications and TEST
+    - Fix update notif feature BUG
+        - More info in notes
+    - Fix Error Message bugs for:
+        - updateNotification, deleteNotification
+        - updatePayment, deletePayment, createPayment
+        - updateShipment, deleteShipment, createShipment
+
 ## 09/12/2026
 
 COMPLETED:
-
     - FIXED FIND ORDER BUG!
         - Forgot to setOrder and setOrderItems properly oops
     - Add update shipment
