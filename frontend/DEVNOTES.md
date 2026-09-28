@@ -2,6 +2,47 @@
 
 ----------
 
+## 09/28/2026
+
+COMPLETED:
+    - Continue add CRUD features for products page
+        - Create product: TEST OK
+            - No need to add 'find order' to create for products since the products aren't exclusively tied to specific orders
+        - Update product: TEST BAD
+            - 404 Object Error?
+            - Debugging....
+            - Oh asjfdhg forgot to add 'updateProductId' and 'setUpdateProductId' as states
+            - DEBUG OK! TEST OK.
+        - Delete product: TEST OK?ISH
+            - Delete product WORKS HOWEVER cannot delete Prod with existing inventory hard-coded in the backend
+    - Add '$' before prices and amounts for clarification of value
+
+NOTES:
+    - Instead of deleting backend error handling for Inventory check we will treat it like the order items + orders
+        - This means we will probably need to find a way to incorporate the inventory throughout the products page without overcomplicating it
+        - Will add inventory to all features on products page
+    - Inventory needs the order items treatment, its connected to products via the product id
+        - Will need to go into the backend a write some stuff in
+
+NEXT:
+    - Add inventory to all features on products page
+    - Begin Add CRUD to Users page
+
+    MINOR:
+        - Fix pagination showing page when no resource is available
+        - Style Products page
+
+## 09/20/2026
+
+COMPLETED:
+    -Begin CRUD features for Products page
+        - Fetch all products (GET ALL): TEST OK
+        - Find (1) product (GET ONE): TEST OK
+
+NEXT:
+    - Continue add CRUD features to products
+    - Fix Page loads next with no available resource (pagination: mini-bug, low priority)
+
 ## 09/17/2026
 
 COMPLETED:

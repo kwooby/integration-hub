@@ -1,6 +1,7 @@
 from flask import Flask, Blueprint, jsonify, request
 from backend.database import get_db_connection
 from psycopg2 import errors
+import uuid
 
 products_bp = Blueprint("products", __name__)
 
@@ -32,11 +33,17 @@ def get_products():
     conn = get_db_connection()
     cursor = conn.cursor()
 
+    page = request.args.get("page", 1, type=int)
+    per_page = request.args.get("per_page", 7, type=int)
+
+    offset = (page - 1) * per_page
+
     cursor.execute("""
         SELECT *
         FROM products
-        ORDER BY id;
-    """)
+        ORDER BY id
+        LIMIT %s OFFSET %s;
+    """, (per_page, offset))
 
     products = cursor.fetchall()
 
@@ -133,11 +140,6 @@ def patch_product(product_id):
         }), 400
 
     product = find_product(product_id)
-
-    if product is None:
-        return jsonify({
-            "error": "Product not found."
-        }), 404
 
     product_name = data.get("product_name", product["product_name"])
     price = data.get("price", product["price"])

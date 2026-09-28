@@ -1,11 +1,401 @@
 import './Products.css'
-import { useEffect, useState } from "react";
+import { useCallback, useDebugValue, useEffect, useState } from "react";
 
 function Products() {
     const [products, setProducts] = useState([]);
     
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+
+    const [product, setProduct] = useState(null);
+    const [productLoading, setProductLoading] = useState(false);
+    const [productError, setProductError] = useState(null);
+
+    const [inventory, setInventory] = useState("");
+
+    const [findProductId, setFindProductId] = useState("");
+
+    const [creatingProduct, setCreatingProduct] = useState(false);
+    const [createProductError, setCreateProductError] = useState(null);
+
+    const [updateProductId, setUpdateProductId] = useState("");
+    const [updatingProduct, setUpdatingProduct] = useState(false);
+    const [updateProductError, setUpdateProductError] = useState(null);
+
+    const [deleteProductId, setDeleteProductId] = useState("");
+    const [deletingProduct, setDeletingProduct] = useState(false);
+    const [deleteProductError, setDeleteProductError] = useState(null);
+
+    const [page, setPage] = useState(1);
+    const [itemsPerPage] = useState(7);
+
+    const fetchProducts = useCallback(async () => {
+        setLoading(true);
+        setError(null);
+
+        try {
+            const response = await fetch(
+                `http://localhost:5000/products?page=${page}&per_page=${itemsPerPage}`
+            );
+
+            if (!response.ok) {
+                throw new Error("Unable to fetch products.");
+            }
+
+            const data = await response.json();
+
+            setProducts(data);
+
+        } catch (error) {
+            console.error(error);
+            setError("Unable to connect to server.")
+        } finally {
+            setLoading(false);
+        }
+    }, [page, itemsPerPage]);
+
+    useEffect(() => {
+        fetchProducts();
+    }, [fetchProducts]);
+
+    const findProduct = async (id) => {
+        setProductLoading(true);
+        setProductError(null);
+        setProduct(null);
+
+        try {
+            const response = await fetch(`http://localhost:5000/products/${id}`);
+
+            if (!response.ok) {
+                throw new Error("Product not found.")
+            }
+
+            const data = await response.json();
+
+            setProduct(data);
+
+        } catch (error) {
+            console.error(error);
+            setProductError("Unable to find product.")
+        } finally {
+            setProductLoading(false);
+        };
+    };
+
+    const handleCreateProductSubmit = async (event) => {
+        event.preventDefault();
+
+        const formData = new FormData(event.target);
+        const productData = Object.fromEntries(formData);
+
+        productData.price = Number(productData.price);
+
+        createProduct(productData);
+    };
+
+    const createProduct = async (productData) => {
+        setCreatingProduct(true);
+        setCreateProductError(null);
+
+        try {
+            const response = await fetch(`http://localhost:5000/products`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(productData)
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || "Create product failed.")
+            };
+
+            const data = await response.json();
+
+            await fetchProducts();
+
+            return data;
+        } catch (error) {
+            setCreateProductError(error.message);
+        } finally {
+            setCreatingProduct(false);
+        }
+    };
+
+    const handleUpdateProductSubmit = async (event) => {
+        event.preventDefault();
+
+        const formData = new FormData(event.target);
+        const productData = Object.fromEntries(formData);
+
+        Object.keys(productData).forEach((key) => {
+
+            if (productData[key] === "") {
+                delete productData[key];
+            }
+        });
+
+        if (productData.price) {
+            productData.price = Number(productData.price);
+        };
+
+        updateProduct(updateProductId, productData);
+    };
+
+    const updateProduct = async (id, productData) => {
+        setUpdatingProduct(true);
+        setUpdateProductError(null);
+
+        try {
+            const response = await fetch(`http://localhost:5000/products/${id}`, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(productData)
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || "Update product failed.")
+            };
+
+            const data = await response.json();
+
+            await fetchProducts();
+
+            return data;
+
+        } catch (error) {
+            setUpdateProductError(error.message);
+        } finally {
+            setUpdatingProduct(false);
+        }
+    };
+
+    const handleDeleteProductSubmit = async (event) => {
+
+        event.preventDefault();
+
+        deleteProduct(deleteProductId);
+    };
+
+    const deleteProduct = async (id) => {
+        setDeletingProduct(true);
+        setDeleteProductError(null);
+
+        try {
+            const response = await fetch(`http://localhost:5000/products/${id}`, {
+                method: "DELETE"
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || "Delete product failed.")
+            }
+
+            const data = await response.json();
+            await fetchProducts();
+
+            return data
+
+        } catch (error) {
+            setDeleteProductError(error.message);
+        } finally {
+            setDeletingProduct(false);
+        }
+    };
+
+    return(
+        <div className="products">
+            {loading ? (
+                <p>Loading products...</p>
+            ) : error ? (
+                <p>{error}</p>
+            ) : (
+                <>
+                    <header className="products-header">
+                        <h2>Products</h2>
+                    </header>
+
+                    <section className="find-product">
+                        <h2>Find Product</h2>
+
+                        <p>Product ID:</p>
+                            
+                        <input 
+                            type="text"
+                            value={findProductId}
+                            onChange={(event) => setFindProductId(event.target.value)}
+                        />
+
+                        <button onClick={() => findProduct(findProductId)}>
+                            Search
+                        </button>
+
+                        <section className="find-product-table">
+                            {productLoading ? (
+                                <p>Product loading...</p>
+                            ) : productError ? (
+                                <p>{productError}</p>
+                            ) : product && (
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Product ID</th>
+                                            <th>Name</th>
+                                            <th>Price</th>
+                                            <th>SKU</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        <tr>
+                                            <td>{product.id}</td>
+                                            <td>{product.product_name}</td>
+                                            <td>{product.price}</td>
+                                            <td>{product.sku}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            )}
+                        </section>
+                    </section>
+
+                    <section className="all-products">
+                        <h2>All Products</h2>
+
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Product ID</th>
+                                    <th>Name</th>
+                                    <th>Price</th>
+                                    <th>SKU</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                {products.length > 0 ? (
+                                    products.map((product) => (
+                                        <tr key={product.id}>
+                                            <td>{product.id}</td>
+                                            <td>{product.product_name}</td>
+                                            <td>${product.price}</td>
+                                            <td>{product.sku}</td>
+                                        </tr>
+                                    ))
+                                ) : (
+                                    <tr className="no-data">
+                                        <td colSpan="4">No products found.</td>
+                                    </tr>
+                                )}
+                            </tbody>
+                        </table>
+
+                        <div className="pagination">
+                            <button
+                                onClick={() => setPage(page - 1)}
+                                disabled={page === 1}
+                            >
+                                Previous
+                            </button>
+
+                            <span>Page {page}</span>
+
+                            <button
+                                onClick={() => setPage(page + 1)}
+                            >
+                                Next
+                            </button>
+                        </div>
+                    </section>
+
+                    <section className="create-product">
+                        <h2>Create Product</h2>
+
+                        <form onSubmit={handleCreateProductSubmit}>
+                        
+                            <label>
+                                Product Name:
+                                <input type="text" name="product_name" required />
+                            </label>
+
+                            <label>
+                                Price:
+                                <input type="number" step="0.01" name="price" required />
+                            </label>
+
+                            <button type="submit">
+                                Create Product
+                            </button>
+                        </form>
+
+                        {creatingProduct && <p>Creating product...</p>}
+                        {createProductError && <p>{createProductError}</p>}
+                    </section>
+
+                    <section className="update-product">
+                        <h2>Update Product</h2>
+
+                        <form onSubmit={handleUpdateProductSubmit}>
+                            <label>
+                                Product ID:
+                                <input
+                                    type="number"
+                                    value={updateProductId}
+                                    onChange={(event) => setUpdateProductId(event.target.value)}
+                                    required
+                                />
+                            </label>
+
+                            <label>
+                                Product Name:
+                                <input type="text" name="product_name" />
+                            </label>
+
+                            <label>
+                                Price:
+                                <input type="number" step="0.01" name="price" />
+                            </label>
+
+                            <button type="submit">
+                                Update Product
+                            </button>
+                        </form>
+
+                        {updatingProduct && <p>Updating product...</p>}
+                        {updateProductError && <p>{updateProductError}</p>}
+                    </section>
+
+                    <section className="delete-product">
+                        <h2>Delete Product</h2>
+
+                        <form onSubmit={handleDeleteProductSubmit}>
+                            <label>
+                                Product ID:
+                                <input 
+                                    type="text"
+                                    value={deleteProductId}
+                                    onChange={(event) => setDeleteProductId(event.target.value)}
+                                    required
+                                />
+                            </label>
+
+                            <button type="submit">
+                                Delete Product
+                            </button>
+
+                            {deletingProduct && <p>Deleting product...</p>}
+                            {deleteProductError && <p>{deleteProductError}</p>}
+                        </form>
+                    </section>
+                </>
+            )
+            }
+        </div>
+    )
 }
 
 export default Products
