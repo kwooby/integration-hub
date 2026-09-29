@@ -90,9 +90,8 @@ def get_product(product_id):
         print(e)
 
         return jsonify({
-                "message": "An unexpected error occurred."
+            "message": "An unexpected error occurred."
         }), 500
-
     finally:
         cursor.close()
         conn.close()

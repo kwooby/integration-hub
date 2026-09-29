@@ -101,3 +101,90 @@ def get_one_inventory(inventory_id):
     finally:
         cursor.close()
         conn.close()
+
+# POST
+
+@inventory_bp.route("/inventory", methods=["POST"])
+def create_inventory():
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    try:
+        data = request.get_json()
+
+        if not data:
+            return jsonify({
+                "error": "Request body is required."
+            }), 400
+
+        quantity = data.get("quantity")
+        product_id = data.get("product_id")
+
+        if quantity is None:
+            return jsonify({
+                "error": "Quantity is required."
+            }), 400
+
+        if quantity < 0:
+            return jsonify({
+                "error": "Inventory quantity must be 0 or more."    
+            }), 400
+
+        if product_id is None:
+            return jsonify({
+                "error": "Product ID is required."
+            }), 400
+
+        product = find_product(product_id)
+
+        if product is None:
+            return jsonify({
+                "error": "Product not found."
+            }), 404
+
+        cursor.execute("""
+            SELECT * FROM inventory
+            WHERE product_id = %s
+        """, (product_id,))
+
+        inventory = cursor.fetchone()
+
+        if inventory:
+            cursor.execute("""
+                UPDATE inventory
+                SET quantity = quantity + %s
+                WHERE product_id = %s
+                RETURNING *
+            """, (quantity, product_id))
+        else:
+            cursor.execute("""
+                INSERT INTO inventory (product_id, quantity)
+                VALUES (%s, %s)
+                RETURNING *
+            """, (product_id, quantity))
+
+        inventory = cursor.fetchone()
+
+        conn.commit()
+
+        return jsonify({
+            "message": "Inventory created.",
+            "inventory": inventory
+        }), 201
+        
+    except Exception as e:
+        print(e)
+
+        return jsonify({
+            "message": "An unexpected error occurred."    
+        }), 500
+    finally:
+        cursor.close()
+        conn.close()
+
+# PATCH
+
+@inventory_bp.routes("/inventory/{id}", methods="PATCH")
+def patch_inventory(inventory_id):
+    conn = get_db_connection()
+    cursor = conn.cursor()
