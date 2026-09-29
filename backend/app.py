@@ -10,6 +10,7 @@ from backend.routes.orders import orders_bp
 from backend.services.shipments import shipments_bp
 from backend.services.payments import payments_bp
 from backend.services.notifications import notifications_bp
+from backend.services.inventory import inventory_bp
 
 load_dotenv()
 
@@ -23,6 +24,7 @@ app.register_blueprint(orders_bp)
 app.register_blueprint(shipments_bp)
 app.register_blueprint(payments_bp)
 app.register_blueprint(notifications_bp)
+app.register_blueprint(inventory_bp)
 
 @app.route('/')
 def home():

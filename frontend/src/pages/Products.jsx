@@ -11,7 +11,8 @@ function Products() {
     const [productLoading, setProductLoading] = useState(false);
     const [productError, setProductError] = useState(null);
 
-    const [inventory, setInventory] = useState("");
+    const [inventory, setInventory] = useState([]);
+    const [inventoryError, setInventoryError] = useState(null);
 
     const [findProductId, setFindProductId] = useState("");
 
@@ -32,6 +33,7 @@ function Products() {
     const fetchProducts = useCallback(async () => {
         setLoading(true);
         setError(null);
+        setInventory([]);
 
         try {
             const response = await fetch(
@@ -61,10 +63,14 @@ function Products() {
     const findProduct = async (id) => {
         setProductLoading(true);
         setProductError(null);
+        setInventoryError(null);
         setProduct(null);
+        setInventory([])
 
         try {
-            const response = await fetch(`http://localhost:5000/products/${id}`);
+            const response = await fetch(
+                `http://localhost:5000/products/${id}`
+            );
 
             if (!response.ok) {
                 throw new Error("Product not found.")
@@ -72,11 +78,17 @@ function Products() {
 
             const data = await response.json();
 
-            setProduct(data);
+            setProduct(data.product);
+            setInventory(data.inventory)
 
         } catch (error) {
             console.error(error);
-            setProductError("Unable to find product.")
+
+            if (!product) {
+                setProductError("Unable to find product.")
+            } else {
+                setInventoryError("Unable to find inventory.")
+            }
         } finally {
             setProductLoading(false);
         };
@@ -239,7 +251,9 @@ function Products() {
                                 <p>Product loading...</p>
                             ) : productError ? (
                                 <p>{productError}</p>
-                            ) : product && (
+                            ) : inventoryError ? (
+                                <p>{inventoryError}</p>
+                            ) : product && inventory && (
                                 <table>
                                     <thead>
                                         <tr>
@@ -247,6 +261,7 @@ function Products() {
                                             <th>Name</th>
                                             <th>Price</th>
                                             <th>SKU</th>
+                                            <th>Inventory</th>
                                         </tr>
                                     </thead>
 
@@ -256,6 +271,7 @@ function Products() {
                                             <td>{product.product_name}</td>
                                             <td>{product.price}</td>
                                             <td>{product.sku}</td>
+                                            <td>{inventory[0]?.quantity}</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -273,6 +289,7 @@ function Products() {
                                     <th>Name</th>
                                     <th>Price</th>
                                     <th>SKU</th>
+                                    <th>Inventory</th>
                                 </tr>
                             </thead>
 
@@ -284,6 +301,7 @@ function Products() {
                                             <td>{product.product_name}</td>
                                             <td>${product.price}</td>
                                             <td>{product.sku}</td>
+                                            <td>{inventory.quantity}</td>
                                         </tr>
                                     ))
                                 ) : (

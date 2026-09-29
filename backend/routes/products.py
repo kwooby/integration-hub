@@ -20,6 +20,7 @@ def find_product(product_id):
         product= cursor.fetchone()
 
         return product
+    
     finally:
         cursor.close()
         conn.close()
@@ -50,18 +51,51 @@ def get_products():
     cursor.close()
     conn.close()
 
-    return jsonify(products)
+    return jsonify(products), 200
 
 @products_bp.route("/products/<int:product_id>", methods=["GET"])
 def get_product(product_id):
-    product = find_product(product_id)
 
-    if product is None:
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    try:
+        cursor.execute("""
+            SELECT *
+            FROM products
+            WHERE id = %s
+        """, (product_id,))
+
+        product = cursor.fetchone()
+
+        if product is None:
+            return jsonify({
+                    "error": "Product not found."    
+            }), 404
+
+        cursor.execute("""
+            SELECT *
+            FROM inventory
+            WHERE product_id = %s
+        """, (product_id,))
+
+        inventory = cursor.fetchall()
+
         return jsonify({
-            "error": "Product not found."
-        }), 404
+                "product": product,
+                "inventory": inventory
+            }), 200
 
-    return jsonify(product)
+    except Exception as e:
+        print(e)
+
+        return jsonify({
+                "message": "An unexpected error occurred."
+        }), 500
+
+    finally:
+        cursor.close()
+        conn.close()
 
 # POST
 @products_bp.route("/products", methods=["POST"])
@@ -140,6 +174,11 @@ def patch_product(product_id):
         }), 400
 
     product = find_product(product_id)
+
+    if product is None:
+        return jsonify({
+                "error": "Product not found."
+        }), 404
 
     product_name = data.get("product_name", product["product_name"])
     price = data.get("price", product["price"])
