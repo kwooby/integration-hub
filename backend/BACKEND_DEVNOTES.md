@@ -6,15 +6,17 @@
 
 ## 09/29/2026
 
-----------
-
 COMPLETED:
     - Add `inventory.py` to services
     - Begin full CRUD functionality to inventory
         - Add GET: TEST OK
         - Add GET[id]: TEST OK
-        - Add POST TEST OK
+        - Add POST: TEST OK
             - Quantity stacks if product id already has existing inventory, otherwise new product inventory for given product id is created
+        - Add PATCH: TEST OK
+        - Add DELETE: TEST OK
+    - Full CRUD functionality for `inventory.py` added successfully
+        - Good hustle :D
 
 NOTES:
     - Adding inventory py files late, the connection to products was way more than I originally expected
@@ -23,8 +25,6 @@ NOTES:
     - Have to do full CRUD, need to be able to PATCH the inventory amount in order to properly delete (among other things) products
 
 ## 08/11/2026
-
-----------
 
 COMPLETED:
     -Standardized backend structure and route patterns across resources.

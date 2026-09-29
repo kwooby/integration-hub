@@ -243,3 +243,39 @@ def patch_inventory(inventory_id):
     finally:
         cursor.close()
         conn.close()
+
+# DELETE
+
+@inventory_bp.route("/inventory/<int:inventory_id>", methods=["DELETE"])
+def delete_inventory(inventory_id):
+    inventory = find_inventory(inventory_id)
+
+    if inventory is None:
+        return jsonify({
+            "error": "Inventory not found."    
+        }), 404
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    try:
+        cursor.execute("""
+            DELETE FROM inventory
+            WHERE id = %s
+        """, (inventory_id,))
+
+        conn.commit()
+
+        return jsonify({
+            "message": "Inventory deleted successfully."    
+        }), 200
+    except Exception as e:
+        conn.rollback()
+        print(e)
+
+        return jsonify({
+            "error": "An unexpected error occurred."
+        }), 500
+    finally:
+        cursor.close()
+        conn.close()
