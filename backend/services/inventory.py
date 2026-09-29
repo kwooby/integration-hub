@@ -184,7 +184,62 @@ def create_inventory():
 
 # PATCH
 
-@inventory_bp.routes("/inventory/{id}", methods="PATCH")
+@inventory_bp.route("/inventory/<int:inventory_id>", methods=["PATCH"])
 def patch_inventory(inventory_id):
+    data = request.get_json()
+
+    if not data:
+        return jsonify({
+            "error": "Request body required."    
+        }), 400
+
+    inventory = find_inventory(inventory_id)
+
+    if inventory is None:
+        return jsonify({
+            "error": "Inventory not found."    
+        }), 404
+
+    quantity = data.get("quantity", inventory["quantity"])
+
+    if quantity is None:
+        return jsonify({
+            "error": "Quantity is required."
+        }), 400
+
+    if quantity < 0:
+        return jsonify({
+            "error": "Inventory must me equal to or more than 0."
+        }), 400
+
     conn = get_db_connection()
     cursor = conn.cursor()
+
+    try:
+        cursor.execute("""
+            UPDATE inventory
+            SET 
+                quantity = %s
+            WHERE id = %s
+            RETURNING *;
+        """, (quantity, inventory_id))
+
+        inventory = cursor.fetchone()
+
+        conn.commit()
+
+        return jsonify({
+            "message": "Inventory udpated.",
+            "inventory": inventory
+        }), 200
+
+    except Exception as e:
+        conn.rollback()
+        print(e)
+
+        return jsonify({
+            "message": "An unexpected error occurred."    
+        }), 500
+    finally:
+        cursor.close()
+        conn.close()
