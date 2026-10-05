@@ -1,5 +1,5 @@
 import './Products.css'
-import { useCallback, useDebugValue, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 function Products() {
     const [products, setProducts] = useState([]);
@@ -23,6 +23,11 @@ function Products() {
     const [updatingProduct, setUpdatingProduct] = useState(false);
     const [updateProductError, setUpdateProductError] = useState(null);
 
+    const [updatingInventory, setUpdatingInventory] = useState(false);
+    const [updateInventoryError, setUpdateInventoryError] =useState(null);
+
+    const [updateProductInventoryId, setUpdateProductInventoryId] = useState("");
+
     const [deleteProductId, setDeleteProductId] = useState("");
     const [deletingProduct, setDeletingProduct] = useState(false);
     const [deleteProductError, setDeleteProductError] = useState(null);
@@ -33,20 +38,25 @@ function Products() {
     const fetchProducts = useCallback(async () => {
         setLoading(true);
         setError(null);
+        setInventoryError(null);
         setInventory([]);
 
         try {
-            const response = await fetch(
+            const productsResponse = await fetch(
                 `http://localhost:5000/products?page=${page}&per_page=${itemsPerPage}`
             );
 
-            if (!response.ok) {
+            const inventoryResponse = await fetch(`http://localhost:5000/inventory`)
+
+            if (!productsResponse.ok || !inventoryResponse.ok) {
                 throw new Error("Unable to fetch products.");
             }
 
-            const data = await response.json();
+            const productsData = await productsResponse.json();
+            const inventoryData = await inventoryResponse.json();
 
-            setProducts(data);
+            setProducts(productsData);
+            setInventory(inventoryData);
 
         } catch (error) {
             console.error(error);
@@ -79,7 +89,7 @@ function Products() {
             const data = await response.json();
 
             setProduct(data.product);
-            setInventory(data.inventory)
+            setInventory(data.inventory);
 
         } catch (error) {
             console.error(error);
@@ -183,6 +193,72 @@ function Products() {
             setUpdateProductError(error.message);
         } finally {
             setUpdatingProduct(false);
+        }
+    };
+
+    const handleUpdateInventorySubmit = async (event) => {
+        event.preventDefault()
+
+        const inventoryFormData = new FormData(event.target);
+        const inventoryData = Object.fromEntries(inventoryFormData);
+        
+        inventoryData.quantity = Number(inventoryData.quantity);
+
+        await updateInventory(inventoryData.product_id, inventoryData);
+
+        await fetchProducts();
+    };
+    
+    /* 
+    const findInventoryByProduct = async (productId) => {
+        try {
+            const response = await fetch(`http://localhost:5000/inventory/product/${productId}`);
+            
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || "Inventory not found")
+            };
+
+            const data = await response.json();
+
+            setProductInventory(data);
+            setUpdateInventoryId(data.id);
+
+            return data;
+
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
+    };
+    */
+
+    const updateInventory = async (id, inventoryData) => {
+        setUpdatingInventory(true);
+        setUpdateInventoryError(null);
+
+        try {
+            const response = await fetch(`http://localhost:5000/inventory/product/${id}`, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(inventoryData)
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || "Update inventory failed.")
+            }
+
+            const data = await response.json();
+
+            return data;
+
+        } catch (error) {
+            setUpdateInventoryError(error.message);
+        } finally {
+            setUpdatingInventory(false);
         }
     };
 
@@ -301,12 +377,16 @@ function Products() {
                                             <td>{product.product_name}</td>
                                             <td>${product.price}</td>
                                             <td>{product.sku}</td>
-                                            <td>{inventory.quantity}</td>
+                                            <td>
+                                                {inventory.find((item) => 
+                                                    item.product_id === product.id)?.quantity ?? 0
+                                                }
+                                            </td>
                                         </tr>
                                     ))
                                 ) : (
                                     <tr className="no-data">
-                                        <td colSpan="4">No products found.</td>
+                                        <td colSpan="5">No products found.</td>
                                     </tr>
                                 )}
                             </tbody>
@@ -354,37 +434,75 @@ function Products() {
                         {createProductError && <p>{createProductError}</p>}
                     </section>
 
-                    <section className="update-product">
-                        <h2>Update Product</h2>
+                    <section className="update-product-and-inventory">
 
-                        <form onSubmit={handleUpdateProductSubmit}>
-                            <label>
-                                Product ID:
-                                <input
-                                    type="number"
-                                    value={updateProductId}
-                                    onChange={(event) => setUpdateProductId(event.target.value)}
-                                    required
-                                />
-                            </label>
+                        <section className="update-product">
+                            <h2>Update Product</h2>
 
-                            <label>
-                                Product Name:
-                                <input type="text" name="product_name" />
-                            </label>
+                            <form onSubmit={handleUpdateProductSubmit}>
+                                <label>
+                                    Product ID:
+                                    <input
+                                        type="number"
+                                        value={updateProductId}
+                                        onChange={(event) => setUpdateProductId(event.target.value)}
+                                        required
+                                    />
+                                </label>
 
-                            <label>
-                                Price:
-                                <input type="number" step="0.01" name="price" />
-                            </label>
+                                <label>
+                                    Product Name:
+                                    <input type="text" name="product_name" />
+                                </label>
 
-                            <button type="submit">
-                                Update Product
-                            </button>
-                        </form>
+                                <label>
+                                    Price:
+                                    <input type="number" step="0.01" name="price" />
+                                </label>
 
-                        {updatingProduct && <p>Updating product...</p>}
-                        {updateProductError && <p>{updateProductError}</p>}
+                                <div class="update-product-button">
+                                    <button type="submit">
+                                        Update Product
+                                    </button>
+                                </div>
+
+                            </form>
+
+                            {updatingProduct && <p>Updating product...</p>}
+                            {updateProductError && <p>{updateProductError}</p>}
+                        </section>
+
+                        <section className="update-inventory">
+                            <h2>Update Product Inventory</h2>
+
+                            <form onSubmit={handleUpdateInventorySubmit}>
+                                <label>
+                                    Product ID:
+                                    <input 
+                                        type="number"
+                                        name="product_id"
+                                        value={updateProductInventoryId}
+                                        onChange={(event) => setUpdateProductInventoryId(event.target.value)}
+                                        required
+                                    />
+                                </label>
+
+                                <label>
+                                    Quantity:
+                                    <input type="number" name="quantity" required />
+                                </label>
+
+                                <div className="update-inventory-button">
+                                    <button type="submit">
+                                        Update Inventory
+                                    </button>            
+                                </div>
+
+                                {updatingInventory && <p>Updating inventory...</p>}
+                                {updateInventoryError && <p>{updateInventoryError}</p>}
+                            </form>
+                        </section>
+
                     </section>
 
                     <section className="delete-product">

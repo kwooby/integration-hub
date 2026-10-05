@@ -97,3 +97,132 @@
     padding-bottom: 9px;
     width: 95%;
 }
+
+/* CREATE PRODUCT */
+
+.products .create-product {
+    background-color: rgb(250, 249, 240);
+    padding-bottom: 7px;
+
+    box-sizing: border-box;
+    border-radius: 5px;
+
+    width: 100%;
+}
+
+.products .create-product h2 {
+    text-align: center;
+    height: 40px;
+
+    border-radius: 0;
+    margin: 0;
+    border-radius: 5px 5px 0 0;
+
+    background-color: rgb(66, 110, 86);
+    color: white;
+}
+
+.products .create-product form {
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    padding: 10px 0;
+
+    gap: 8px
+}
+
+/* UPDATE PRODUCT */
+
+.products .update-product-and-inventory {
+    display: flex;
+    flex-direction: row;
+
+    width: 100%;
+    gap: 10px;
+}
+
+.products .update-product-and-inventory > * {
+    flex: 1;
+}
+
+.update-product, .update-inventory {
+    display: flex;
+    flex-direction: column;
+
+    background-color: rgb(250, 249, 240);
+    border-radius: 5px;
+
+    width: 100%;
+}
+
+.update-product form, .update-inventory form {
+    display: flex;
+    flex-direction: row;
+
+    align-items: center;
+    justify-content: center;
+    padding: 10px 0;
+
+    gap: 8px;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+.update-product-button,
+.update-inventory-button {
+    flex-basis: 100%;
+    text-align: center;
+}
+
+.update-product-button button,
+.update-inventory-button button {
+    width: auto;
+    padding: 5px 10px;
+}
+
+/* DELETE PRODUCT */
+
+.delete-product {
+    background-color: rgb(255, 239, 239);
+    width: 100%;
+    border-radius: 5px;
+    
+    box-sizing: border-box;
+}
+
+.delete-product form {
+    display: flex;
+    flex-direction: column;
+
+    gap: 10px;
+    margin: 20px;
+
+    align-items: center;
+}
+
+.delete-product h2 {
+    text-align: center;
+    border-radius: 5px 5px 0 0;
+    margin-top: 0;
+
+    height: 40px;
+
+    background-color: rgb(97, 32, 32);
+    color: white;
+}
+
+.delete-product button {
+    height: 40px;
+    background-color: rgb(97, 32, 32);
+    color: white;
+
+    border-radius: 5px;
+    border: none;
+
+    margin-bottom: 0;
+}
+
+.delete-product button:hover {
+    background-color: rgb(212, 52, 52);
+}

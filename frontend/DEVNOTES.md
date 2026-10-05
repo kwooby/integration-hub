@@ -2,6 +2,27 @@
 
 ----------
 
+## 10/01/2026
+
+COMPLETED:
+    - Add inventory management feature to sections of the products page
+        - Update Product add Update Inventory section separate
+        - Different homes same street
+        - TEST OK
+    - Add inventory display alongside products
+
+NEXT:
+    - Finish adding inventory management features to products page
+        - Need on Create Product
+        - Same house
+        - I want it to submit under one button, creation of a product should also allow creation of initial inventory, if inventory is not provided it becomes 0
+    - Test all features on Products page, double check they're all working properly after all the code change I've had to do c':
+    - Especially focus test the delete products feature
+        - Make sure it still cannot delete with current existing inventory (more than 0)
+        - Delete inventory, try again, make sure it is able to delete
+        - Create a product with no inventory, delete it, make sure it goes through
+        - etc etc
+
 ## 09/28/2026
 
 COMPLETED:

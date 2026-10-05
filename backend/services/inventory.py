@@ -72,7 +72,7 @@ def get_inventory():
         conn.close()
 
 @inventory_bp.route("/inventory/<int:inventory_id>", methods=["GET"])
-def get_one_inventory(inventory_id):
+def get_inventory_by_id(inventory_id):
     conn = get_db_connection()
     cursor = conn.cursor()
 
@@ -92,6 +92,52 @@ def get_one_inventory(inventory_id):
 
         return one_inventory
 
+    except Exception as e:
+        print(e)
+
+        return jsonify({
+            "message": "An unexpected error occurred."
+        }), 500
+    finally:
+        cursor.close()
+        conn.close()
+
+@inventory_bp.route("/inventory/product/<int:product_id>", methods=["PATCH"])
+def get_inventory_by_product(product_id):
+    data = request.get_json()
+
+    if not data or "quantity" not in data:
+        return jsonify({
+            "message": "Quantity is required."    
+        }), 400
+    
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    try:
+
+        cursor.execute("""
+            UPDATE inventory
+            SET quantity = %s
+            WHERE product_id = %s
+            RETURNING *
+        """, (data["quantity"], product_id))
+
+        inventory = cursor.fetchone()
+
+        if inventory is None:
+            cursor.execute("""
+                INSERT INTO inventory (product_id, quantity)
+                VALUES (%s, %s)
+                RETURNING *
+            """, (product_id, data["quantity"]))
+
+            inventory = cursor.fetchone()
+
+        conn.commit()
+
+        return jsonify(inventory), 200
+    
     except Exception as e:
         print(e)
 
