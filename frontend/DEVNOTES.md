@@ -2,6 +2,25 @@
 
 ----------
 
+## 10/05//2026
+
+COMPLETED:
+    - Stylize CRUD features on products page
+        - Style aligns with rest of app
+        - Create product has no inventory, this is on purpose
+            - Inventory should start at 0, the default value at creation, and then be updated as needed through the `Update Product Inventory` below
+            - This was decided between the last work session and this one
+            - I just feel like because many advrtised products don't always have complete inventory at start it should be created first and inventory should be added later for simplicity of product creation
+    - With this, products CRUD features look good
+
+NEXT:
+    - Begin Users page
+        - Full CRUD functionality for all these features as well
+        - Search User, All Users, Create User, Update User, Delete User
+        - It likely won't be as complex as products since right now the plan is just to connect the users and nothing else
+            - Eventually, it would be smart to be able to see associated orders with the user, and it's very likely there is a hard coded error handling in my users backend that prevents deletion with an open associated order
+            - We will deal with that once we get there, but for now I am just doing very basic CRUD to show, create and edit users
+
 ## 10/01/2026
 
 COMPLETED:

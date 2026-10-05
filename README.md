@@ -6,11 +6,9 @@ Integration Hub provides a Flask REST API backed by PostgreSQL, with a React fro
 
 ## Current Status
 
-**Active Development**
+** UNDER ACTIVE DEVELOPMENT
 
-The backend API and PostgreSQL database are substantially implemented, including CRUD operations and validation across the primary resources.
-
-The React frontend is currently under development. The initial application structure, Dashboard, navigation, and responsive layout are being built before connecting the frontend to the existing API.
+The React frontend is currently under development with minor backend additions as the project continues to grow. Currently the Hub is about 80-90% done in the most basic sense, with continuing adaption to the application to make it more responsive and accessible to users.
 
 ## Tech-Stack
 
@@ -22,6 +20,8 @@ The React frontend is currently under development. The initial application struc
 * CSS
 * ESLint
 
+>The React frontend is being developed as the user-facing application for Integration Hub.
+
 ### Backend
 
 * Python
@@ -29,6 +29,8 @@ The React frontend is currently under development. The initial application struc
 * Flask Blueprints
 * PostgreSQL
 * psycopg2
+
+>The backend acts as the central integration layer for the application.
 
 ### Development-Testing
 
@@ -40,37 +42,38 @@ The React frontend is currently under development. The initial application struc
 ## Architecture
 
 ```text
-                    ┌─────────────────────┐
-                    │    React Frontend   │
-                    │                     │
-                    │  Dashboard          │
-                    │  Navbar             │
-                    │  Sidebar            │
-                    │  Application Pages  │
-                    └──────────┬──────────┘
-                               │
-                               │ HTTP Requests
-                               ▼
-                    ┌─────────────────────┐
-                    │     Flask API       │
-                    │                     │
-                    │ Users               │
-                    │ Orders              │
-                    │ Products            │
-                    │ Inventory           │
-                    │ Payments            │
-                    │ Shipments           │
-                    │ Notifications       │
-                    │ Products            │
-                    └──────────┬──────────┘
-                               │
-                               │ SQL
-                               ▼
-                    ┌─────────────────────┐
-                    │     PostgreSQL      │
-                    │                     │
-                    │ Application Data    │
-                    └─────────────────────┘
+
+┌─────────────────────┐
+│    React Frontend   │
+│                     │
+│  Dashboard          │
+│  Navbar             │
+│  Sidebar            │
+│  Application Pages  │
+└──────────┬──────────┘
+           │
+           │ HTTP Requests
+           ▼
+┌─────────────────────┐
+│     Flask API       │
+│                     │
+│ Users               │
+│ Orders              │
+│ Products            │
+│ Inventory           │
+│ Payments            │
+│ Shipments           │
+│ Notifications       │
+│ Products            │
+└──────────┬──────────┘
+           │
+           │ SQL
+           ▼
+┌─────────────────────┐
+│     PostgreSQL      │
+│                     │
+│ Application Data    │
+└─────────────────────┘
 ```
 
 ## Project Structure
@@ -83,12 +86,24 @@ Integration-Hub/
 ├── frontend/
 │   ├── src/
 │   │   ├── components/
-│   │   │   ├── Navbar.jsx
+│   │   │   ├── Header.jsx
+│   │   │   ├── Header.css
 │   │   │   ├── Sidebar.jsx
-│   │   │   └── MainContent.jsx
+│   │   │   └── Sidebar.css
 │   │   │
 │   │   ├── pages/
-│   │   │   └── Dashboard.jsx
+│   │   │   ├── Dashboard.jsx
+│   │   │   ├── Dashboard.css
+│   │   │   ├── Notifications.jsx
+│   │   │   ├── Notifications.css
+│   │   │   ├── Orders.jsx
+│   │   │   ├── Orders.css
+│   │   │   ├── Payments.jsx
+│   │   │   ├── Payments.css
+│   │   │   ├── Products.jsx
+│   │   │   ├── Products.css
+│   │   │   ├── Shipments.jsx
+│   │   │   └── Shipments.css
 │   │   │
 │   │   ├── App.jsx
 │   │   └── index.css
@@ -106,10 +121,6 @@ Integration-Hub/
 
 > The frontend structure is actively evolving as additional pages and routing are introduced.
 
-## Backend
-
-The backend acts as the central integration layer for the application.
-
 ### API Resources
 
 | Resource      | Supported Operations                |
@@ -117,12 +128,12 @@ The backend acts as the central integration layer for the application.
 | Users         | GET, GET by ID, POST, PATCH         |
 | Orders        | GET, GET by ID, POST, PATCH         |
 | Products      | GET, GET by ID, POST, PATCH, DELETE |
-| Inventory     | API development                     |
+|   -Inventory  | GET, GET by ID, PATCH               |
 | Payments      | GET, GET by ID, POST                |
 | Shipments     | GET, GET by ID, POST, PATCH         |
 | Notifications | GET, GET by ID, POST, PATCH         |
 
-The API includes validation and error handling to prevent invalid or inconsistent data from entering the system.
+>The API includes both hard-coded backend validation and error handling as well as REACT frontend validation and error handling to prevent invalid or inconsistent data from entering the system.
 
 Examples include:
 
@@ -130,10 +141,12 @@ Examples include:
 * Duplicate record prevention
 * Foreign-key validation
 * Valid status validation
-* Positive payment and product amounts
+* Positive payment, product, and quantity amounts
 * Payment amount validation against the associated order
+* Payment amount valid, partial payments allowed
 * Shipment and notification validation
 * Appropriate HTTP status codes for successful and failed requests
+* Associated records must be deleted prior to deleting resource, like a product cannot be deleted without first deleting its associated inventory quantity
 
 ## Database
 
@@ -158,24 +171,6 @@ Inventory
 
 PostgreSQL provides persistent storage for the application's users, orders, products, inventory, payments, shipments, and notifications.
 
-## Frontend
-
-The React frontend is being developed as the user-facing application for Integration Hub.
-
-The initial component architecture is:
-
-```text
-App
-│
-├── Navbar
-│
-├── Sidebar
-│
-└── MainContent
-    │
-    └── Dashboard
-```
-
 ### Dashboard
 
 The Dashboard is currently the primary frontend page.
@@ -183,12 +178,16 @@ The Dashboard is currently the primary frontend page.
 It includes planned overview sections for:
 
 * [x] Orders
+* [x] Notifications
+
+Other pages and sections include:
+
+* [x] Orders
 * [x] Payments
-* [ ] Shipments
-* [ ] Notifications
-* [ ] Products
+* [x] Shipments
+* [x] Notifications
+* [x] Products
 * [ ] Users
-* [ ] Products
 
 The Dashboard also contains:
 
@@ -197,8 +196,9 @@ The Dashboard also contains:
 * Overview information
 * Navigation through the application shell
 * Dashboard statistic cards
+* Link to dedicated resource page beneath resource lists
 
-The current focus is on establishing a clean, responsive layout and consistent visual design before connecting the Dashboard to live API data.
+>Current focus is on establishing a clean, responsive layout and consistent visual design.
 
 ## Frontend-Roadmap
 
@@ -216,12 +216,12 @@ The frontend is being developed in stages:
 * [x] Finish Dashboard styling
 * [ ] Refine responsive application layout
 * [x] Establish consistent frontend visual style
-* [ ] Add application routing
-* [ ] Create resource pages
+* [x] Add application routing
+* [/] Create resource pages
 * [x] Connect React frontend to Flask API
 * [x] Replace placeholder Dashboard data with live API data
-* [ ] Add CRUD features for all resource pages added
-* [ ] Add loading and error states
+* [/] Add CRUD features for all resource pages added
+* [/] Add loading and error states
 * [ ] Perform final UI and code cleanup
 
 ## Running the Project
@@ -231,6 +231,7 @@ The frontend is being developed in stages:
 From the project root, activate the Python virtual environment and start the Flask application.
 
 ```bash
+\backend\.venv\Scripts\Activate.ps1
 python -m backend.app
 ```
 
@@ -247,6 +248,7 @@ npm install
 Start the React development server:
 
 ```bash
+cd .\frontend\
 npm run dev
 ```
 
