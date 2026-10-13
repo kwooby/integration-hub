@@ -11,9 +11,21 @@ def find_user(user_id):
 
     try:
         cursor.execute("""
-            SELECT *
+            SELECT
+                users.*,
+                COUNT(orders.id) AS total_orders,
+                COUNT(orders.id) FILTER (
+                    WHERE orders.status IN (
+                        'Pending',
+                        'Processing',
+                        'Shipped'
+                )
+            ) AS open_orders
             FROM users
-            WHERE id = %s
+            LEFT JOIN orders
+                ON users.id = orders.user_id
+            WHERE users.id = %s
+            GROUP BY users.id;
         """, (user_id,))
 
         user = cursor.fetchone()
@@ -29,18 +41,36 @@ def get_users():
     conn = get_db_connection()
     cursor = conn.cursor()
 
+    page = request.args.get("page", 1, type=int)
+    per_page = request.args.get("per_page", 7, type=int)
+
+    offset = (page - 1) * per_page  
+
     cursor.execute("""
-        SELECT *
+        SELECT
+            users.*,
+            COUNT(orders.id) AS total_orders,
+            COUNT(orders.id) FILTER (
+                WHERE orders.status IN (
+                    'Pending',
+                    'Processing',
+                    'Shipped'
+                )
+            ) AS open_orders
         FROM users
-        ORDER BY id;
-    """)
+        LEFT JOIN orders
+            ON users.id = orders.user_id
+        GROUP BY users.id
+        ORDER BY users.id
+        LIMIT %s OFFSET %s;
+    """, (per_page, offset))
 
     users = cursor.fetchall()
 
     cursor.close()
     conn.close()
 
-    return jsonify(users)
+    return jsonify(users), 200
 
 @users_bp.route("/users/<int:user_id>", methods=["GET"])
 def get_user(user_id):

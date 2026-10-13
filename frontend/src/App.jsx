@@ -10,6 +10,7 @@ import Payments from './pages/Payments.jsx';
 import Shipments from './pages/Shipments.jsx';
 import Notifications from './pages/Notifications.jsx';
 import Products from './pages/Products.jsx';
+import Users from './pages/Users.jsx';
 
 function App() {
     return (
@@ -27,6 +28,7 @@ function App() {
                         <Route path="/shipments" element={<Shipments />} />
                         <Route path="/notifications" element={<Notifications />} />
                         <Route path="/products" element={<Products />} />
+                        <Route path="/users" element={<Users />} />
                     </Routes>
                 </div>
             </BrowserRouter>

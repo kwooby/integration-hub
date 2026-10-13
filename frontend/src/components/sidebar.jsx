@@ -14,6 +14,7 @@ function Sidebar() {
                     <li><Link to="shipments">Shipments</Link></li>
                     <li><Link to="notifications">Notifications</Link></li>
                     <li><Link to="products">Products</Link></li>
+                    <li><Link to="users">Users</Link></li>
                 </ul>
             </nav>
         </aside>
