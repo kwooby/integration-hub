@@ -94,6 +94,7 @@
 
 .orders .find-order p {
     margin: 0;
+    text-align: center;
 }
 
 .orders .find-order .find-order-table {
@@ -101,21 +102,27 @@
     width: 90%;
 }
 
-
-/* CONTAINER FOR UPDATE/CREATE */
-
-.orders .create-update-container {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    gap: 10px;
-}
-
-.orders .create-update-container > * {
-    width: 100%;
-}
-
 /* CREATE ORDER */
+
+.create-order-container {
+    width: 100%;
+    background-color: rgb(250, 249, 240);
+}
+
+.create-order-container details {
+    cursor: pointer;
+    font-weight: bold;
+
+    padding: 0 0 15px 15px;
+}
+
+.create-order-container h3 {
+    text-align: center;
+    text-decoration: underline;
+
+    margin-bottom: 6px;
+    margin-top: 0;
+}
 
 .create-order {
     background-color: rgb(250, 249, 240);
@@ -123,6 +130,7 @@
 
     box-sizing: border-box;
     border-radius: 5px;
+    width: 100%;
 }
 
 .create-order h2 {
@@ -135,6 +143,11 @@
 
     background-color: rgb(66, 110, 86);
     color: white;
+    
+}
+
+.create-order p {
+    text-align: center;
 }
 
 .create-order form {
@@ -142,7 +155,7 @@
     flex-direction: column;
 
     align-items: center;
-    padding: 10px 0;
+    padding: 9px 5px 0 0;
 
     gap: 8px
 }
@@ -161,6 +174,8 @@
 
     background-color: rgb(250, 249, 240);
     border-radius: 5px;
+
+    width: 100%;
 }
 
 .update-order form {
@@ -187,11 +202,65 @@
     color: white;
 }
 
+.update-order p {
+    text-align: center;
+}
+
 .update-order button {
     height: 27px;
     margin: 10px 0;
 }
 
+/* FIND PRODUCT AND USER */
+
+.find-product-user-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    gap: 10px;
+}
+
+.find-product-user-container > * {
+    width: 100%;
+}
+
+/* FIND PRODUCT */
+
+.orders .find-product {
+    display: flex;
+    flex-direction: column;
+
+    background-color: rgb(250, 249, 240);
+    border-radius: 5px;
+
+    align-items: center;
+    gap: 9px;
+}
+
+.orders .find-product button {
+    height: 25px;
+}
+
+.orders .find-product p {
+    margin: 0;
+}
+
+.orders-find-product-table {
+    width: fit-content;
+}
+
+/* FIND USER */
+
+.orders .find-user {
+    display: flex;
+    flex-direction: column;
+
+    background-color: rgb(250, 249, 240);
+    border-radius: 5px;
+    align-items: center;
+
+    gap: 9px;
+}
 
 /* DELETE ORDER */
 

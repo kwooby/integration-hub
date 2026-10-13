@@ -20,6 +20,19 @@ function Orders() {
     const [creatingOrder, setCreatingOrder] = useState(false);
     const [createOrderError, setCreateOrderError] = useState(null);
 
+    const [user, setUser] = useState(null);
+    const [userLoading, setUserLoading] = useState(false);
+    const [userError, setUserError] = useState(null);
+    const [findUserId, setFindUserId] = useState("");
+
+    const [product, setProduct] = useState(null);
+    const [productLoading, setProductLoading] = useState(false);
+    const [productError, setProductError] = useState(null);
+    const [findProductId, setFindProductId] = useState("");
+
+    const [inventory, setInventory] = useState([]);
+    const [inventoryError, setInventoryError] = useState(null);
+
     const [updatingOrder, setUpdatingOrder] = useState(false);
     const [updateOrderError, setUpdateOrderError] = useState(null);
 
@@ -117,6 +130,8 @@ function Orders() {
 
             const data = await response.json();
 
+            await fetchOrders();
+
             return data;
 
         } catch (error) {
@@ -124,6 +139,60 @@ function Orders() {
         } finally {
             setCreatingOrder(false);
         }
+    };
+
+    const findUser = async (id) => {
+        setUserLoading(true);
+        setUserError(false);
+
+        try {
+            const response = await fetch(`http://localhost:5000/users/${id}`);
+
+            if (!response.ok) {
+                throw new Error("User not found.")
+            };
+
+            const data = await response.json();
+
+            setUser(data);
+        } catch (error) {
+            console.error(error);
+            setUserError("Unable to find user.");
+        } finally {
+            setUserLoading(false);
+        }
+    };
+
+    const findProduct = async (id) => {
+        setProductLoading(true);
+        setProductError(null);
+        setInventoryError(null);
+        setProduct(null);
+        setInventory([]);
+
+        try {
+            const response = await fetch(`http://localhost:5000/products/${id}`)
+
+            if (!response.ok) {
+                throw new Error("Product not found.")
+            }
+
+            const data = await response.json();
+
+            setProduct(data.product);
+            setInventory(data.inventory);
+            
+        } catch (error) {
+            console.error(error);
+
+            if (!product) {
+                setProductError("Unable to find product.");
+            } else {
+                setInventoryError("Unable to find inventory.")
+            }
+        } finally {
+            setProductLoading(false);
+        };
     };
 
     const handleUpdateOrderSubmit = (event) => {
@@ -236,6 +305,7 @@ function Orders() {
                                     <thead>
                                         <tr>
                                             <th>Order ID</th>
+                                            <th>User</th>
                                             <th>Status</th>
                                             <th>Total</th>
                                         </tr>
@@ -244,6 +314,7 @@ function Orders() {
                                     <tbody>
                                         <tr>
                                             <td>{order.id}</td>
+                                            <td>{order.user_id}</td>
                                             <td>{order.status}</td>
                                             <td>${order.total}</td>
                                         </tr>
@@ -274,9 +345,9 @@ function Orders() {
                                                 }
                                         </tbody>
                                     </table>
-                            ) : (
-                                <p>No items found.</p>
-                            )}
+                                ) : (
+                                    <div></div>
+                                )}
                         </section>
                     </section>
 
@@ -286,6 +357,7 @@ function Orders() {
                             <thead>
                                 <tr>
                                     <th>Order ID</th>
+                                    <th>User ID</th>
                                     <th>Status</th>
                                     <th>Total</th>
                                 </tr>
@@ -296,6 +368,7 @@ function Orders() {
                                     reverseOrders.map((order) => (
                                         <tr key={order.id}>
                                             <td>{order.id}</td>
+                                            <td>{order.user_id}</td>
                                             <td>{order.status}</td>
                                             <td>${order.total}</td>
                                         </tr>
@@ -328,46 +401,50 @@ function Orders() {
 
                     </section>
 
-                    <section className="create-update-container">
+                    <section className="update-order">
+                        <h2>Update Order Status</h2>
 
-                        <section className="update-order">
-                            <h2>Update Order Status</h2>
+                        <form onSubmit={handleUpdateOrderSubmit}>
+                            <label>
+                                OrderID: 
+                                <input
+                                    type="number"
+                                    value={updateOrderId}
+                                    onChange={(event) => setUpdateOrderId(event.target.value)}
+                                    required
+                                />
+                            </label>
 
-                            <form onSubmit={handleUpdateOrderSubmit}>
-                                <label>
-                                    OrderID: 
-                                    <input
-                                        type="number"
-                                        value={updateOrderId}
-                                        onChange={(event) => setUpdateOrderId(event.target.value)}
-                                        required
-                                    />
-                                </label>
+                            <label>
+                                Status: 
+                                <select name="status" required>
+                                    <option value="">Select status</option>
+                                    <option value="Pending">Pending</option>
+                                    <option value="Processing">Processing</option>
+                                    <option value="Completed">Completed</option>
+                                    <option value="Cancelled">Cancelled</option>
+                                </select>
+                            </label>
 
-                                <label>
-                                    Status: 
-                                    <select name="status" required>
-                                        <option value="">Select status</option>
-                                        <option value="Pending">Pending</option>
-                                        <option value="Processing">Processing</option>
-                                        <option value="Completed">Completed</option>
-                                        <option value="Cancelled">Cancelled</option>
-                                    </select>
-                                </label>
+                            <button type="submit">
+                                Update Order
+                            </button>
+                        </form>
 
-                                <button type="submit">
-                                    Update Order
-                                </button>
-                            </form>
+                        {updatingOrder && <p>Updating order...</p>}
+                        {updateOrderError && <p>{updateOrderError}</p>}
+                    </section>
 
-                            {updatingOrder && <p>Updating order...</p>}
-                            {updateOrderError && <p>{updateOrderError}</p>}
-                        </section>
-
+                    <section className="create-order-container">
+                    
                         <section className="create-order">
                             <h2>Create Order</h2>
 
                             <form onSubmit={handleCreateSubmit}>
+                                <label>
+                                    User ID:
+                                    <input type="number" name="user_id" required />
+                                </label>
 
                                 <label>
                                     Status:
@@ -400,7 +477,121 @@ function Orders() {
                             {createOrderError && <p>{createOrderError}</p>}
                         </section>
 
+                        <h3>Additional References</h3>
+
+                        <section className="find-product-user-container">
+
+                            <details className="expand-find-product">
+                                <summary>Find Product</summary>
+
+                                <div className="find-product-content">
+
+                                    <section className="find-product">
+                                        <h2>Find Product</h2>
+
+                                        <p>Product ID:</p>
+
+                                        <input
+                                            type="text"
+                                            value={findProductId}
+                                            onChange={(event) => setFindProductId(event.target.value)}
+                                        />
+
+                                        <button onClick={() => findProduct(findProductId)}>
+                                            Search Product
+                                        </button>
+
+                                        <section className="orders-find-product-table">
+                                            {productLoading ? (
+                                                <p>Product loading...</p>
+                                            ) : productError ? (
+                                                <p>{productError}</p>
+                                            ) : inventoryError ? (
+                                                <p>{inventoryError}</p>
+                                            ) : product && inventory && (
+                                                <table>
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Product ID</th>
+                                                            <th>Name</th>
+                                                            <th>Price</th>
+                                                            <th>SKU</th>
+                                                            <th>Inventory</th>
+                                                        </tr>
+                                                    </thead>
+
+
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>{product.id}</td>
+                                                            <td>{product.product_name}</td>
+                                                            <td>{product.price}</td>
+                                                            <td>{product.sku}</td>
+                                                            <td>{inventory[0]?.quantity}</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            )}
+                                        </section>
+                                    </section>
+                                </div>
+                            </details>
+
+                            <details classname="expand-find-user">
+                                <summary>Find User</summary>
+
+                                <div className="find-user-content">
+
+                                    <section className="find-user">
+                                        <h2>Find User</h2>
+
+                                        <p>User ID:</p>
+
+                                        <input
+                                            type="text"
+                                            value={findUserId}
+                                            onChange={(event) => setFindUserId(event.target.value)}
+                                        />
+
+                                        <button onClick={() => findUser(findUserId)}>
+                                            Search User
+                                        </button>
+
+                                        <section className="orders-find-user-table">
+                                            {userLoading ? (
+                                                <p>user loading...</p>
+                                            ) : userError ? (
+                                                <p>{userError}</p>
+                                            ) : user && (
+                                                <table>
+                                                    <thead>
+                                                        <tr>
+                                                            <th>User ID</th>
+                                                            <th>Name</th>
+                                                            <th>Email</th>
+                                                            <th>Open Orders</th>
+                                                        </tr>
+                                                    </thead>
+
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>{user.id}</td>
+                                                            <td>{user.name}</td>
+                                                            <td>{user.email}</td>
+                                                            <td>{user.open_orders}</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            )}
+                                        </section>
+                                    </section>
+                                </div>
+                            </details>
+
+                        </section>
+
                     </section>
+
 
                     <section className="delete-order">
                         <h2>Delete Order</h2>
