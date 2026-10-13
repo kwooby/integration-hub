@@ -24,6 +24,11 @@ COMPLETED:
         - Find Order: TEST BAD
             - Forgot to add additional SQL to backend find user route
             - TEST OK CONTINUE
+    - Add to Orders.jsx:
+        - Find Product: TEST OK
+        - Find User: TEST OK
+    - Made 'Find Product' and 'Find User' click to expand and part of the create order container
+        - Much cleaner, also combines relevant resources without taking up too much space
 
 NOTES:
     - Ended up making a joined container for 'Update User' and 'Create User' to sit together in, I had them separate at first but the layout fits much better when they are nestled in their own area
@@ -31,6 +36,8 @@ NOTES:
     - Committing the finished Users CRUD functionality then fixing the bug on the orders page
     - There is a `fetch_orders` function I added in the users page that is not currently in use
         - I left this in on purpose in case there's a need to display the orders with the user in the near future
+    - Find orders and find products are now implemented on the orders page!
+        - Thought it might be useful as a quick reference to the user or product during order creation
 
 NEXT:
     - Consume API onto website :D

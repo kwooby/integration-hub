@@ -6,9 +6,9 @@ Integration Hub provides a Flask REST API backed by PostgreSQL, with a React fro
 
 ## Current Status
 
-** UNDER ACTIVE DEVELOPMENT
+** IN FINAL STAGES OF DEVELOPMENT
 
-The React frontend is currently under development with minor backend additions as the project continues to grow. Currently the Hub is about 80-90% done in the most basic sense, with continuing adaption to the application to make it more responsive and accessible to users.
+The React frontend is currently in its final stages of development with minor fixes to the project as I'm wrapping up. Currently the Hub is considered 95% done, with continuous adaption to the application to make it more responsive and accessible to users.
 
 ## Tech-Stack
 
@@ -127,13 +127,13 @@ Integration-Hub/
 
 | Resource      | Supported Operations                |
 | ------------- | ----------------------------------- |
-| Users         | GET, GET by ID, POST, PATCH         |
-| Orders        | GET, GET by ID, POST, PATCH         |
+| Users         | GET, GET by ID, POST, PATCH, DELETE |
+| Orders        | GET, GET by ID, POST, PATCH, DELETE |
 | Products      | GET, GET by ID, POST, PATCH, DELETE |
-| ->Inventory   | GET, GET by ID, PATCH               |
-| Payments      | GET, GET by ID, POST                |
-| Shipments     | GET, GET by ID, POST, PATCH         |
-| Notifications | GET, GET by ID, POST, PATCH         |
+| ->Inventory   | GET, GET by ID, PATCH, DELETE       |
+| Payments      | GET, GET by ID, POST, DELETE        |
+| Shipments     | GET, GET by ID, POST, PATCH, DELETE |
+| Notifications | GET, GET by ID, POST, PATCH, DELETE |
 
 >The API includes both hard-coded backend validation and error handling as well as REACT frontend validation and error handling to prevent invalid or inconsistent data from entering the system.
 
@@ -216,7 +216,7 @@ The frontend is being developed in stages:
 * [x] Add Dashboard statistic cards
 * [x] Add initial order and notification tables
 * [x] Finish Dashboard styling
-* [ ] Refine responsive application layout
+* [x] Refine responsive application layout
 * [x] Establish consistent frontend visual style
 * [x] Add application routing
 * [x] Create resource pages
