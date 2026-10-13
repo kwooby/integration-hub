@@ -2,7 +2,120 @@
 
 ----------
 
-## 10/05//2026
+## KNOWN BUGS
+
+    - Pagination bug is still present
+        - Pages can be continuously searched through even if there is no data on the given page
+        - It DOES say that there is no data available, yet still gives option to keep going through pages c':
+        - Next can be clicked a ridiculous amount of times and the page just keeps going up, instead, next should only be able to be clicked if data is available on the next page
+
+## 10/13/2026
+
+COMPLETED:
+    - Complete CSS styling for:
+        - Update User: OK
+        - Create User: OK
+        - Delete User: OK
+    - Rearranged layout
+        - Find User on top for facilitated user search
+        - Added container for 'update/create': notes below
+    - Add 'Open Orders' and 'Total Orders' to users lists
+        - All Orders: TEST OK
+        - Find Order: TEST BAD
+            - Forgot to add additional SQL to backend find user route
+            - TEST OK CONTINUE
+
+NOTES:
+    - Ended up making a joined container for 'Update User' and 'Create User' to sit together in, I had them separate at first but the layout fits much better when they are nestled in their own area
+    - Came to the realization that I need to add the User ID input to the create orders section omg none of the orders I've put through have a user associated to them aaaaaa
+    - Committing the finished Users CRUD functionality then fixing the bug on the orders page
+    - There is a `fetch_orders` function I added in the users page that is not currently in use
+        - I left this in on purpose in case there's a need to display the orders with the user in the near future
+
+NEXT:
+    - Consume API onto website :D
+    - Minor fixes and improvements as needed
+
+## 10/12/2026
+
+COMPLETED:
+    - Add create user
+        - TEST OK
+        - No issues CONTINUE
+    - Add update user
+        - TEST OK
+        - No issues CONTINUE
+    - Add delete user
+        - TEST BAD
+            - accidentally made the onChange the actual deleteUser function omg
+            - All good now, delete user is working as expected
+        - TEST OK
+
+NOTES:
+    - As expected, user cannot be deleted if there are any orders attached to the user ID
+        - This is good, in fact I don't think I'm going to be changing this too much for this API
+        - It's a good safety feature to prevent deletion of a user before an order is received
+        - Perhaps I can eventually put in some sort of override under more security before that
+    - I think it's a good idea to put in the orders associated with the users, at least the number of orders associated with the user
+        - This should be simple, just need the length of orders by id, same kind of idea as the dashboard stat cards
+
+NEXT:
+    - Add CSS styling to:
+        - Update user
+        - Create user
+        - Delete user
+    - Rearrange the features
+        - Find user at top, followed by users list with delete user at bottom
+        - Follow similar structure as rest of pages
+    - Add 'open orders' column to 'All Users' for clarification
+    - 'Find User' could also show open orders when searching for a specific user
+        - Might as well if we're gonna connect the orders table for the fourth column anyway?
+
+## 10/08/2026
+
+COMPLETED:
+    - Add get user by ID
+        - TEST OK
+        - Did not give many issues at all and whatever did come up was resolved quickly, very good
+    - Stylized get all users and get user by id
+        -Keeps same visual style as rest of API
+
+NOTES:
+    - Shorter work session today, pagination bug is still in the same place
+
+NEXT:
+    - Continue adding CRUD features
+        - Create User
+        - Update User
+        - Delete User
+    - Look into and further debug pagination issue
+
+## 10/06/2026
+
+COMPLETED:
+    - Begin to write users page with full CRUD functionality
+    - Additional Route created
+        - Link to Users OK
+    - Data shows from backend OK
+    - Add Fetch All Users feature
+        - Not stylized yet, looks kinda crazy
+    - Main focus was making sure backend data was being correctly fetched from the database SUCCESS!
+    - Pagination is working HOWEVER! I've found a weird little bug that is affecting pagination on all resource pages, more info in Notes below
+
+NOTES:
+    - Pagination is working, however you can potentially click the next button forever and reach as many pages as your heart desires
+        - Obviously, this shouldn't happen
+        - If page is empty, the page should not load. That's something I can do from either the backend or the frontend tbh, devs choice c:
+        - Pages DO show as not having any data, but again this should just not be reachable period
+        - Minor but on ALL pages is kinda brutal
+    - Overall, connection is good, data is reading reliably from database
+
+NEXT:
+    - Continue adding CRUD features
+        - Next is get by ID, or find user by ID
+    - Look into the pagination bug a little more, play around with it
+
+## 10/05/2026
 
 COMPLETED:
     - Stylize CRUD features on products page

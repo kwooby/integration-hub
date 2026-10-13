@@ -103,7 +103,9 @@ Integration-Hub/
 │   │   │   ├── Products.jsx
 │   │   │   ├── Products.css
 │   │   │   ├── Shipments.jsx
-│   │   │   └── Shipments.css
+│   │   │   ├── Shipments.css
+│   │   │   ├── Users.jsx
+│   │   │   └── Users.css
 │   │   │
 │   │   ├── App.jsx
 │   │   └── index.css
@@ -128,7 +130,7 @@ Integration-Hub/
 | Users         | GET, GET by ID, POST, PATCH         |
 | Orders        | GET, GET by ID, POST, PATCH         |
 | Products      | GET, GET by ID, POST, PATCH, DELETE |
-|   -Inventory  | GET, GET by ID, PATCH               |
+| ->Inventory   | GET, GET by ID, PATCH               |
 | Payments      | GET, GET by ID, POST                |
 | Shipments     | GET, GET by ID, POST, PATCH         |
 | Notifications | GET, GET by ID, POST, PATCH         |
@@ -187,7 +189,7 @@ Other pages and sections include:
 * [x] Shipments
 * [x] Notifications
 * [x] Products
-* [ ] Users
+* [x] Users
 
 The Dashboard also contains:
 
@@ -217,11 +219,11 @@ The frontend is being developed in stages:
 * [ ] Refine responsive application layout
 * [x] Establish consistent frontend visual style
 * [x] Add application routing
-* [/] Create resource pages
+* [x] Create resource pages
 * [x] Connect React frontend to Flask API
 * [x] Replace placeholder Dashboard data with live API data
-* [/] Add CRUD features for all resource pages added
-* [/] Add loading and error states
+* [x] Add CRUD features for all resource pages added
+* [x] Add loading and error states
 * [ ] Perform final UI and code cleanup
 
 ## Running the Project
@@ -258,7 +260,7 @@ Vite will provide the local development URL for the frontend.
 
 Sensitive configuration such as database credentials should be stored in environment variables rather than committed to the repository.
 
-A typical backend environment configuration includes values for:
+Typical backend environment configuration includes values for:
 
 ```text
 DB_HOST
