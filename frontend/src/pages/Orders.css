@@ -104,14 +104,14 @@
 
 /* CONTAINER FOR UPDATE/CREATE */
 
-.create-update-container {
+.orders .create-update-container {
     display: flex;
     flex-direction: row;
     width: 100%;
     gap: 10px;
 }
 
-.create-update-container > * {
+.orders .create-update-container > * {
     width: 100%;
 }
 
