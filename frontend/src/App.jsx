@@ -2,7 +2,7 @@ import './App.css'
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Header from './components/Header.jsx'
-import Sidebar from './components/Sidebar.jsx'
+import Sidebar from './components/sidebar.jsx'
 
 import Orders from './pages/Orders.jsx'
 import Dashboard from './pages/Dashboard.jsx';
