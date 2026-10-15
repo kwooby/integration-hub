@@ -156,6 +156,11 @@
     width: 100%;
 }
 
+.update-product h2,
+.update-inventory h2 {
+    border-radius: 5px 5px 0 0;
+}
+
 .update-product form, .update-inventory form {
     display: flex;
     flex-direction: row;

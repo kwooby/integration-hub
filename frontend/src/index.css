@@ -4,12 +4,17 @@
   font-weight: 400;
 
   color: #1f3023;
-  background-color: #f9fff3;
+  background-color: rgb(166, 206, 190);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0;
 }
 
 * {

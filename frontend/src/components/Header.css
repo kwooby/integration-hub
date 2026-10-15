@@ -4,14 +4,15 @@
     padding: 10px;
     background-color: rgb(31, 61, 46);
     color: white;
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 100%;
 }
 
 .header-title {
-    flex: 1;
     padding: 0 15px;
     margin: 0;
     border-radius: 5px;
-    width: 10%;
     text-align: center;
 }
 

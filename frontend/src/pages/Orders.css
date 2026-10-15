@@ -107,6 +107,8 @@
 .create-order-container {
     width: 100%;
     background-color: rgb(250, 249, 240);
+
+    border-radius: 5px;
 }
 
 .create-order-container details {
@@ -216,8 +218,6 @@
 .find-product-user-container {
     display: flex;
     flex-direction: row;
-    width: 100%;
-    gap: 10px;
 }
 
 .find-product-user-container > * {
@@ -231,10 +231,13 @@
     flex-direction: column;
 
     background-color: rgb(250, 249, 240);
-    border-radius: 5px;
 
     align-items: center;
-    gap: 9px;
+    margin-right: 0;
+}
+
+.orders .find-product h2 {
+    border-radius: 0;
 }
 
 .orders .find-product button {
@@ -246,7 +249,7 @@
 }
 
 .orders-find-product-table {
-    width: fit-content;
+    width: 100%;
 }
 
 /* FIND USER */
@@ -258,8 +261,22 @@
     background-color: rgb(250, 249, 240);
     border-radius: 5px;
     align-items: center;
+}
 
-    gap: 9px;
+.orders .find-user h2 {
+    border-radius: 0;
+}
+
+.orders .find-user button {
+    height: 25px;
+}
+
+.orders .find-user p {
+    margin: 0;
+}
+
+.orders-find-user-table {
+    width: 100%;
 }
 
 /* DELETE ORDER */
