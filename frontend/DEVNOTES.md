@@ -2,12 +2,19 @@
 
 ----------
 
-## KNOWN BUGS
+## 10/15/2026
 
-    - Pagination bug is still present
-        - Pages can be continuously searched through even if there is no data on the given page
-        - It DOES say that there is no data available, yet still gives option to keep going through pages c':
-        - Next can be clicked a ridiculous amount of times and the page just keeps going up, instead, next should only be able to be clicked if data is available on the next page
+COMPLETED:
+    - Finally got to the pagination bug fixes:
+        - Backend: Added total variable to all list resources to verify proper pagination in the frontend
+            - * Math.ceil(totalResource / itemsPerPage)
+            - Due to backend changes (dictionary creation for list resources), Dashboard was not loading, bug found and fixed OK CONTINUE
+        - USERS TEST OK
+        - ORDERS TEST OK
+        - PAYMENTS TEST OK
+        - NOTIFICATIONS TEST OK
+        - PRODUCTS TEST OK
+    - Minor styling fixes (CSS)
 
 ## 10/13/2026
 
