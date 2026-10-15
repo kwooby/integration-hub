@@ -1,5 +1,6 @@
 import './Notifications.css';
 import { useCallback, useEffect, useState } from "react";
+import API_BASE_URL from '../api';
 
 function Notifications() {
     const [notifications, setNotifications] = useState([]);
@@ -42,7 +43,7 @@ function Notifications() {
 
         try {
             const response= await fetch(
-                `http://localhost:5000/notifications?page=${page}&per_page=${itemsPerPage}}`
+                `${API_BASE_URL}/notifications?page=${page}&per_page=${itemsPerPage}}`
             );
 
             if (!response.ok) {
@@ -73,7 +74,7 @@ function Notifications() {
         setOrderItems([]);
 
         try {
-            const response = await fetch(`http://localhost:5000/orders/${id}`)
+            const response = await fetch(`${API_BASE_URL}/orders/${id}`)
 
             if (!response.ok) {
                 throw new Error("Order not found.")
@@ -98,7 +99,7 @@ function Notifications() {
         setNotification(null);
 
         try {
-            const response = await fetch(`http://localhost:5000/notifications/${id}`);
+            const response = await fetch(`${API_BASE_URL}/notifications/${id}`);
 
             if (!response.ok) {
                 throw new Error("Notification not found.");
@@ -137,7 +138,7 @@ function Notifications() {
         setUpdateNotificationError(null);
 
         try {
-            const response = await fetch(`http://localhost:5000/notifications/${id}`, {
+            const response = await fetch(`${API_BASE_URL}/notifications/${id}`, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json"
@@ -179,7 +180,7 @@ function Notifications() {
         setCreateNotificationError(null);
 
         try {
-            const response = await fetch(`http://localhost:5000/notifications`, {
+            const response = await fetch(`${API_BASE_URL}/notifications`, {
                 method: "POST", 
                 headers: {
                     "Content-Type" : "application/json"
@@ -216,7 +217,7 @@ function Notifications() {
         setDeleteNotificationError(null);
 
         try {
-            const response = await fetch(`http://localhost:5000/notifications/${id}`, {
+            const response = await fetch(`${API_BASE_URL}/notifications/${id}`, {
                 method: "DELETE"
             });
 

@@ -1,5 +1,6 @@
 import './Products.css'
 import { useCallback, useEffect, useState } from "react";
+import API_BASE_URL from '../api';
 
 function Products() {
     const [products, setProducts] = useState([]);
@@ -45,10 +46,10 @@ function Products() {
 
         try {
             const productsResponse = await fetch(
-                `http://localhost:5000/products?page=${page}&per_page=${itemsPerPage}`
+                `${API_BASE_URL}/products?page=${page}&per_page=${itemsPerPage}`
             );
 
-            const inventoryResponse = await fetch(`http://localhost:5000/inventory`)
+            const inventoryResponse = await fetch(`${API_BASE_URL}/inventory`)
 
             if (!productsResponse.ok || !inventoryResponse.ok) {
                 throw new Error("Unable to fetch products.");
@@ -82,7 +83,7 @@ function Products() {
 
         try {
             const response = await fetch(
-                `http://localhost:5000/products/${id}`
+                `${API_BASE_URL}/products/${id}`
             );
 
             if (!response.ok) {
@@ -123,7 +124,7 @@ function Products() {
         setCreateProductError(null);
 
         try {
-            const response = await fetch(`http://localhost:5000/products`, {
+            const response = await fetch(`${API_BASE_URL}/products`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -173,7 +174,7 @@ function Products() {
         setUpdateProductError(null);
 
         try {
-            const response = await fetch(`http://localhost:5000/products/${id}`, {
+            const response = await fetch(`${API_BASE_URL}/products/${id}`, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json"
@@ -215,7 +216,7 @@ function Products() {
     /* 
     const findInventoryByProduct = async (productId) => {
         try {
-            const response = await fetch(`http://localhost:5000/inventory/product/${productId}`);
+            const response = await fetch(`${API_BASE_URL}/inventory/product/${productId}`);
             
             if (!response.ok) {
                 const errorData = await response.json();
@@ -241,7 +242,7 @@ function Products() {
         setUpdateInventoryError(null);
 
         try {
-            const response = await fetch(`http://localhost:5000/inventory/product/${id}`, {
+            const response = await fetch(`${API_BASE_URL}/inventory/product/${id}`, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json"
@@ -277,7 +278,7 @@ function Products() {
         setDeleteProductError(null);
 
         try {
-            const response = await fetch(`http://localhost:5000/products/${id}`, {
+            const response = await fetch(`${API_BASE_URL}/products/${id}`, {
                 method: "DELETE"
             });
 

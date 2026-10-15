@@ -1,6 +1,7 @@
 import './Dashboard.css'
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import API_BASE_URL from '../api';
 
 function Dashboard() {
     const [orders, setOrders] = useState([])
@@ -23,10 +24,10 @@ function Dashboard() {
                     shipmentsResponse,
                     notificationsResponse
                 ] = await Promise.all([
-                    fetch("http://localhost:5000/orders"),
-                    fetch("http://localhost:5000/payments"),
-                    fetch("http://localhost:5000/shipments"),
-                    fetch("http://localhost:5000/notifications")
+                    fetch(`${API_BASE_URL}/orders`),
+                    fetch(`${API_BASE_URL}/payments`),
+                    fetch(`${API_BASE_URL}/shipments`),
+                    fetch(`${API_BASE_URL}/notifications`)
                 ]);
 
                 if (

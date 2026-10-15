@@ -1,5 +1,6 @@
 import './Payments.css';
 import { useCallback, useEffect, useState } from 'react';
+import API_BASE_URL from '../api';
 
 function Payments() {
     const [payments, setPayments] = useState([]);
@@ -42,7 +43,7 @@ function Payments() {
 
         try {
             const response = await fetch(
-                `http://localhost:5000/payments?page=${page}&per_page=${itemsPerPage}`
+                `${API_BASE_URL}/payments?page=${page}&per_page=${itemsPerPage}`
             );
 
             if (!response.ok) {
@@ -73,7 +74,7 @@ function Payments() {
         setOrderItems([]);
 
         try {
-            const response = await fetch(`http://localhost:5000/orders/${id}`);
+            const response = await fetch(`${API_BASE_URL}/orders/${id}`);
 
             if (!response.ok) {
                 throw new Error("Order not found.");
@@ -98,7 +99,7 @@ function Payments() {
         setPayment(null);
 
         try {
-            const response = await fetch(`http://localhost:5000/payments/${id}`);
+            const response = await fetch(`${API_BASE_URL}/payments/${id}`);
 
             if (!response.ok) {
                 throw new Error("Payment not found.");
@@ -133,7 +134,7 @@ function Payments() {
         setCreatePaymentError(null);
 
         try {
-            const response = await fetch(`http://localhost:5000/payments`, {
+            const response = await fetch(`${API_BASE_URL}/payments`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -184,7 +185,7 @@ function Payments() {
         setUpdatePaymentError(null);
 
         try {
-            const response = await fetch(`http://localhost:5000/payments/${id}`, {
+            const response = await fetch(`${API_BASE_URL}/payments/${id}`, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json"
@@ -222,7 +223,7 @@ function Payments() {
 
         try {
 
-            const response = await fetch(`http://localhost:5000/payments/${id}`, {
+            const response = await fetch(`${API_BASE_URL}/payments/${id}`, {
                 method: "DELETE"
             });
 

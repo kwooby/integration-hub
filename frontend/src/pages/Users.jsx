@@ -1,5 +1,6 @@
 import './Users.css';
 import { useCallback, useEffect, useState } from 'react';
+import API_BASE_URL from '../api';
 
 function Users() {
     const [users, setUsers] = useState([]);
@@ -39,7 +40,7 @@ function Users() {
 
         try {
             const response = await fetch(
-                `http://localhost:5000/users?page=${page}&per_page=${itemsPerPage}`
+                `${API_BASE_URL}/users?page=${page}&per_page=${itemsPerPage}`
             );
 
             if (!response.ok) {
@@ -64,7 +65,7 @@ function Users() {
         setOrders(null);
 
         try {
-            const ordersResponse = await fetch("http://localhost:5000/orders");
+            const ordersResponse = await fetch("${API_BASE_URL}/orders");
 
             if (!ordersResponse.ok) {
                 throw new Error("Failed to load orders.")
@@ -92,7 +93,7 @@ function Users() {
         setUserError(null);
 
         try {
-            const response = await fetch(`http://localhost:5000/users/${id}`);
+            const response = await fetch(`${API_BASE_URL}/users/${id}`);
 
             if (!response.ok) {
                 throw new Error("User not found.")
@@ -131,7 +132,7 @@ function Users() {
         setUpdateUserError(null);
 
         try {
-            const response = await fetch(`http://localhost:5000/users/${id}`, {
+            const response = await fetch(`${API_BASE_URL}/users/${id}`, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json"
@@ -171,7 +172,7 @@ function Users() {
         setCreateUserError(null);
 
         try {
-            const response = await fetch(`http://localhost:5000/users`, {
+            const response = await fetch(`${API_BASE_URL}/users`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -207,7 +208,7 @@ function Users() {
         setDeleteUserError(null);
 
         try  {
-            const response = await fetch(`http://localhost:5000/users/${id}`, {
+            const response = await fetch(`${API_BASE_URL}/users/${id}`, {
                 method: "DELETE"
             });
 

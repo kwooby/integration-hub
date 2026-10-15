@@ -1,5 +1,6 @@
 import './Orders.css'
 import { useCallback, useEffect, useState } from "react";
+import API_BASE_URL from '../api';
 
 function Orders() {
     const [orders, setOrders] = useState([]);
@@ -50,7 +51,7 @@ function Orders() {
 
         try {
             const response = await fetch(
-                `http://localhost:5000/orders?page=${page}&per_page=${itemsPerPage}`
+                `${API_BASE_URL}/orders?page=${page}&per_page=${itemsPerPage}`
             );
 
             if (!response.ok) {
@@ -81,7 +82,7 @@ function Orders() {
         setOrderItems([]);
 
         try {
-            const response = await fetch(`http://localhost:5000/orders/${id}`);
+            const response = await fetch(`${API_BASE_URL}/orders/${id}`);
 
             if (!response.ok) {
                 throw new Error("Order not found.");
@@ -118,7 +119,7 @@ function Orders() {
         setCreateOrderError(null);
 
         try {
-            const response = await fetch("http://localhost:5000/orders", {
+            const response = await fetch("${API_BASE_URL}/orders", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -149,7 +150,7 @@ function Orders() {
         setUserError(false);
 
         try {
-            const response = await fetch(`http://localhost:5000/users/${id}`);
+            const response = await fetch(`${API_BASE_URL}/users/${id}`);
 
             if (!response.ok) {
                 throw new Error("User not found.")
@@ -174,7 +175,7 @@ function Orders() {
         setInventory([]);
 
         try {
-            const response = await fetch(`http://localhost:5000/products/${id}`)
+            const response = await fetch(`${API_BASE_URL}/products/${id}`)
 
             if (!response.ok) {
                 throw new Error("Product not found.")
@@ -212,7 +213,7 @@ function Orders() {
         setUpdateOrderError(null);
 
         try {
-            const response = await fetch(`http://localhost:5000/orders/${id}`,  {
+            const response = await fetch(`${API_BASE_URL}/orders/${id}`,  {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json"
@@ -248,7 +249,7 @@ function Orders() {
 
         try {
 
-            const response = await fetch(`http://localhost:5000/orders/${id}`, {
+            const response = await fetch(`${API_BASE_URL}/orders/${id}`, {
                 method: "DELETE"
             });
 

@@ -1,5 +1,6 @@
 import './Shipments.css';
 import { useCallback, useEffect, useState } from 'react';
+import API_BASE_URL from '../api';
 
 function Shipments() {
     const [shipments, setShipments] = useState([]);
@@ -42,7 +43,7 @@ function Shipments() {
 
         try {
             const response = await fetch(
-                `http://localhost:5000/shipments?page=${page}&per_page=${itemsPerPage}`
+                `${API_BASE_URL}/shipments?page=${page}&per_page=${itemsPerPage}`
             );
 
             if (!response.ok) {
@@ -73,7 +74,7 @@ function Shipments() {
         setOrderItems([]);
 
         try {
-            const response = await fetch(`http://localhost:5000/orders/${id}`);
+            const response = await fetch(`${API_BASE_URL}/orders/${id}`);
 
             if (!response.ok) {
                 throw new Error("Order not found.");
@@ -97,7 +98,7 @@ function Shipments() {
         setShipment(null);
 
         try {
-            const response = await fetch(`http://localhost:5000/shipments/${id}`);
+            const response = await fetch(`${API_BASE_URL}/shipments/${id}`);
 
             if (!response.ok) {
                 throw new Error("Shipment not found.");
@@ -131,7 +132,7 @@ function Shipments() {
         setCreatingShipmentError(null);
 
         try {
-            const response = await fetch(`http://localhost:5000/shipments`, {
+            const response = await fetch(`${API_BASE_URL}/shipments`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -177,7 +178,7 @@ function Shipments() {
         setUpdateShipmentError(null);
 
         try {
-            const response = await fetch(`http://localhost:5000/shipments/${id}`, {
+            const response = await fetch(`${API_BASE_URL}/shipments/${id}`, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json"
@@ -212,7 +213,7 @@ function Shipments() {
         setDeletingShipmentError(null);
 
         try {
-            const response = await fetch(`http://localhost:5000/shipments/${id}`, {
+            const response = await fetch(`${API_BASE_URL}/shipments/${id}`, {
                 method: "DELETE"
             });
 
