@@ -16,6 +16,14 @@ COMPLETED:
         - PRODUCTS TEST OK
     - Minor styling fixes (CSS)
 
+NOTES:
+    - This header is making my brain hurt ugh
+        - Header is totally find on screen, but if the screen is small and both additional reference are open on the orders page, the header does not reach the end of the page
+        - Super tiny issue, it bothers me but it's really not a big deal
+    - Also removed the H2's from the orders page 'find product' and 'find user'
+        - With the summary there already, it seems a bit unnecessary to have both titles there at the same time
+        - I also was struggling to get the headers to sit the way I wanted them to in their styling so removing the excess seems the quickest and best fix
+
 ## 10/13/2026
 
 COMPLETED:
