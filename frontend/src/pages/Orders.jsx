@@ -491,8 +491,6 @@ function Orders() {
                                 <div className="find-product-content">
 
                                     <section className="find-product">
-                                        <h2>Find Product</h2>
-
                                         <p>Product ID:</p>
 
                                         <input
@@ -547,8 +545,6 @@ function Orders() {
                                 <div className="find-user-content">
 
                                     <section className="find-user">
-                                        <h2>Find User</h2>
-
                                         <p>User ID:</p>
 
                                         <input

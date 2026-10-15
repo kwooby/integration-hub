@@ -43,10 +43,10 @@ function Dashboard() {
                 const shipmentsData = await shipmentsResponse.json();
                 const notificationsData = await notificationsResponse.json();
 
-                setOrders(ordersData);
-                setPayments(paymentsData);
-                setShipments(shipmentsData);
-                setNotifications(notificationsData);
+                setOrders(ordersData.orders);
+                setPayments(paymentsData.payments);
+                setShipments(shipmentsData.shipments);
+                setNotifications(notificationsData.notifications);
             } catch (error) {
                 console.error(error)
                 setError("Unable to connect to the server.")
