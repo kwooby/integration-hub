@@ -34,6 +34,8 @@ function Payments() {
     const [page, setPage] = useState(1);
     const [itemsPerPage] = useState(7);
 
+    const [totalPayments, setTotalPayments] = useState(0);
+
     const fetchPayments = useCallback(async () => {
         setLoading(true)
         setError(null)
@@ -49,7 +51,8 @@ function Payments() {
 
             const data = await response.json();
 
-            setPayments(data);
+            setPayments(data.payments);
+            setTotalPayments(data.total);
 
         } catch (error) {
             console.error(error);
@@ -342,6 +345,7 @@ function Payments() {
 
                             <button
                                 onClick={() => setPage(page + 1)}
+                                disabled={page >= Math.ceil(totalPayments / itemsPerPage)}
                             >
                                 Next
                             </button>

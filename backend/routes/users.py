@@ -44,7 +44,10 @@ def get_users():
     page = request.args.get("page", 1, type=int)
     per_page = request.args.get("per_page", 7, type=int)
 
-    offset = (page - 1) * per_page  
+    offset = (page - 1) * per_page
+
+    cursor.execute("SELECT COUNT(*) AS total FROM users;")
+    total_users = cursor.fetchone()["total"]
 
     cursor.execute("""
         SELECT
@@ -70,7 +73,10 @@ def get_users():
     cursor.close()
     conn.close()
 
-    return jsonify(users), 200
+    return jsonify({
+        "users": users,
+        "total": total_users    
+    }), 200
 
 @users_bp.route("/users/<int:user_id>", methods=["GET"])
 def get_user(user_id):

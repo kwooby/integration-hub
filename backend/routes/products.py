@@ -39,6 +39,9 @@ def get_products():
 
     offset = (page - 1) * per_page
 
+    cursor.execute("SELECT COUNT(*) AS total FROM products;")
+    total_products = cursor.fetchone()["total"]
+
     cursor.execute("""
         SELECT *
         FROM products
@@ -51,7 +54,10 @@ def get_products():
     cursor.close()
     conn.close()
 
-    return jsonify(products), 200
+    return jsonify({
+        "products": products,
+        "total": total_products    
+    }), 200
 
 @products_bp.route("/products/<int:product_id>", methods=["GET"])
 def get_product(product_id):

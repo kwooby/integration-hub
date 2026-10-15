@@ -59,6 +59,9 @@ def get_shipments():
     per_page = request.args.get("per_page", 7, type=int)
 
     offset = (page - 1) * per_page
+
+    cursor.execute("SELECT COUNT(*) AS total FROM shipments;")
+    total_shipments = cursor.fetchone()["total"]
     
     try:
         cursor.execute("""
@@ -70,7 +73,10 @@ def get_shipments():
 
         shipments = cursor.fetchall()
 
-        return jsonify(shipments)
+        return jsonify({
+            "shipments": shipments,
+            "total": total_shipments
+        }), 200
 
     finally:
         cursor.close()

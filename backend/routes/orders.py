@@ -47,6 +47,9 @@ def get_orders():
 
     offset = (page - 1) * per_page
 
+    cursor.execute("SELECT COUNT(*) AS total FROM orders;")
+    total_orders = cursor.fetchone()["total"]
+
     cursor.execute("""
         SELECT *
         FROM orders
@@ -59,7 +62,10 @@ def get_orders():
     cursor.close()
     conn.close()
 
-    return jsonify(orders), 200
+    return jsonify({
+        "orders": orders,
+        "total": total_orders
+    }), 200
 
 @orders_bp.route("/orders/<int:order_id>", methods=["GET"])
 def get_order(order_id):

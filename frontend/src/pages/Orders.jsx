@@ -42,6 +42,8 @@ function Orders() {
     const [page, setPage] = useState(1);
     const [itemsPerPage] = useState(7);
 
+    const [totalOrders, setTotalOrders] = useState(0);
+
     const fetchOrders = useCallback(async () => {
         setLoading(true);
         setError(null);
@@ -57,7 +59,8 @@ function Orders() {
 
             const data = await response.json();
 
-            setOrders(data);
+            setOrders(data.orders);
+            setTotalOrders(data.total);
             
         } catch (error) {
             console.error(error);
@@ -393,6 +396,7 @@ function Orders() {
 
                             <button
                                 onClick={() => setPage(page + 1)}
+                                disabled={page >= Math.ceil(totalOrders / itemsPerPage)}
                             >
                                 Next
                             </button>

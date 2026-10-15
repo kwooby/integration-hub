@@ -35,6 +35,8 @@ function Products() {
     const [page, setPage] = useState(1);
     const [itemsPerPage] = useState(7);
 
+    const [totalProducts, setTotalProducts] = useState(0);
+
     const fetchProducts = useCallback(async () => {
         setLoading(true);
         setError(null);
@@ -55,8 +57,9 @@ function Products() {
             const productsData = await productsResponse.json();
             const inventoryData = await inventoryResponse.json();
 
-            setProducts(productsData);
+            setProducts(productsData.products);
             setInventory(inventoryData);
+            setTotalProducts(productsData.total);
 
         } catch (error) {
             console.error(error);
@@ -404,6 +407,7 @@ function Products() {
 
                             <button
                                 onClick={() => setPage(page + 1)}
+                                disabled={page >= Math.ceil(totalProducts / itemsPerPage)}
                             >
                                 Next
                             </button>

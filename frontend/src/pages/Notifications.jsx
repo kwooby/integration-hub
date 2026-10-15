@@ -34,6 +34,8 @@ function Notifications() {
     const [page, setPage] = useState(1);
     const [itemsPerPage] = useState(7);
 
+    const [totalNotifications, setTotalNotifications] = useState(0);
+
     const fetchNotifications = useCallback(async () => {
         setLoading(true)
         setError(null)
@@ -49,7 +51,9 @@ function Notifications() {
 
             const data = await response.json()
 
-            setNotifications(data);
+            setNotifications(data.notifications);
+            setTotalNotifications(data.total);
+
         } catch (error) {
             console.error(error);
             setError("Unable to connect to server.")
@@ -339,6 +343,7 @@ function Notifications() {
 
                             <button
                                 onClick={() => setPage(page + 1)}
+                                disabled={page >= Math.ceil(totalNotifications / itemsPerPage)}
                             >
                                 Next
                             </button>

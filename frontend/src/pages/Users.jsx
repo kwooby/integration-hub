@@ -31,6 +31,8 @@ function Users() {
     const [page, setPage] = useState(1);
     const [itemsPerPage] = useState(7);
 
+    const [totalUsers, setTotalUsers] = useState(0);
+
     const fetchUsers = useCallback(async () => {
         setLoading(true);
         setError(null);
@@ -46,7 +48,8 @@ function Users() {
 
             const data = await response.json();
 
-            setUsers(data);
+            setUsers(data.users);
+            setTotalUsers(data.total);
         } catch (error) {
             console.error(error);
             setError("Unable to connect to server.")
@@ -326,7 +329,10 @@ function Users() {
                             
                             <span>Page {page}</span>
 
-                            <button onClick={() => setPage(page + 1)}>
+                            <button 
+                                onClick={() => setPage(page + 1)}
+                                disabled={page >= Math.ceil(totalUsers / itemsPerPage)}
+                            >
                                 Next
                             </button>
 

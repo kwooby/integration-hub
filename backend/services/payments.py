@@ -58,6 +58,9 @@ def get_payments():
 
     offset = (page - 1) * per_page
 
+    cursor.execute("SELECT COUNT(*) AS total FROM payments;")
+    total_payments = cursor.fetchone()["total"]
+
     cursor.execute("""
         SELECT *
         FROM payments
@@ -70,7 +73,10 @@ def get_payments():
     cursor.close()
     conn.close()
 
-    return jsonify(payments)
+    return jsonify({
+        "payments": payments,
+        "total": total_payments
+    }), 200
 
 @payments_bp.route("/payments/<int:payment_id>", methods=["GET"])
 def get_payment(payment_id):

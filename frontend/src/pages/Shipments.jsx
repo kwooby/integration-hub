@@ -34,6 +34,8 @@ function Shipments() {
     const [page, setPage] = useState(1);
     const [itemsPerPage] = useState(7);
 
+    const [totalShipments, setTotalShipments] = useState(0);
+
     const fetchShipments = useCallback(async () => {
         setLoading(true)
         setError(null)
@@ -49,7 +51,8 @@ function Shipments() {
 
             const data = await response.json();
 
-            setShipments(data);
+            setShipments(data.shipments);
+            setTotalShipments(data.total);
 
         } catch (error) {
             console.error(error);
@@ -338,6 +341,7 @@ function Shipments() {
 
                         <button
                             onClick={() => setPage(page + 1)}
+                            disabled={page >= Math.ceil(totalShipments / itemsPerPage)}
                         >
                             Next
                         </button>

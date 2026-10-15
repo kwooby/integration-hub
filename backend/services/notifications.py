@@ -67,6 +67,9 @@ def get_notifications():
 
     offset= (page - 1) * per_page
 
+    cursor.execute("SELECT COUNT(*) AS total FROM notifications;")
+    total_notifications = cursor.fetchone()["total"]
+
     cursor.execute("""
         SELECT *
         FROM notifications
@@ -79,7 +82,10 @@ def get_notifications():
     cursor.close()
     conn.close()
 
-    return jsonify(notifications)
+    return jsonify({
+        "notifications": notifications,
+        "total": total_notifications
+    }), 200
 
 @notifications_bp.route("/notifications/<int:notification_id>", methods=["GET"])
 def get_notification(notification_id):
